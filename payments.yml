@@ -1075,7 +1075,7 @@ components:
             shipping fees (if present), plus tax fees (if present).
           example: 125.75
           minimum: 1
-          type: double
+          type: number
         cancel_url:
           x-sort: 25
           description: |-
@@ -1410,17 +1410,17 @@ components:
             The order shipping fee. It can be omitted if the shipping fee value
             is zero.
           example: 1.3
-          type: double
+          type: number
         tax:
           x-sort: 17
           description: The order tax fee. It can be omitted if the order tax value is zero.
           example: 1.1
-          type: double
+          type: number
         tax_rate:
           x-sort: 18
           description: The order tax rate.
           example: 1
-          type: double
+          type: number
       title: Common
       type: object
     Error:
@@ -1515,13 +1515,6 @@ components:
             Carrier description.
           example: La Poste, 27 Rue des Francs Bourgeois
           type: string
-        debit_agreement_id:
-          x-sort: 63
-          description: |-
-            **This parameter is specific to the SEPA Direct Debit payment product.**
-
-            If this is a recurring payment, this parameter provides the agreement ID (mandate) returned on first transaction.
-          type: integer
         delivery_date:
           x-sort: 60
           description: |-
