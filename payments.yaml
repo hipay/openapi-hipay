@@ -61,11 +61,11 @@ servers:
   - description: Production
     url: 'https://secure-gateway.hipay-tpp.com/rest'
 tags:
-  - name: Payments
+  - name: payments
     description: Everything you need to create orders and transactions
-  - name: Maintenance
+  - name: maintenance
     description: Perform operations (capture, refund) on transactions
-  - name: Transaction
+  - name: transaction
     description: Request all the details of existing transactions and orders
   - name: payment-products
     description: Get the list of all available Payment products
@@ -102,7 +102,7 @@ paths:
       security:
         - basicAuth: []
       tags:
-        - Payments
+        - payments
       description: |-
         This service allows you to **redirect your user to a payment page
         (hosted by HiPay)** in order to proceed checkout. This service creates
@@ -177,7 +177,7 @@ paths:
       security:
         - basicAuth: []
       tags:
-        - Maintenance
+        - maintenance
       description: |-
         Performs a maintenance operation on a given transaction.
 
@@ -229,7 +229,7 @@ paths:
       security:
         - basicAuth: []
       tags:
-        - Payments
+        - payments
       description: |-
         This service allows you to execute transactions through API with no need
         to redirect your customer to the payment page hosted by HiPay. This
@@ -297,7 +297,7 @@ paths:
       security:
         - basicAuth: []
       tags:
-        - Transaction
+        - transaction
       description: Gets details of existing transactions related to a given order.
       operationId: getTransactionsByReference
       summary: Gets details of existing transactions related to a given order
@@ -339,7 +339,7 @@ paths:
       security:
         - basicAuth: []
       tags:
-        - Transaction
+        - transaction
       description: Gets details of existing transactions based on a transaction ID.
       operationId: getTransactionByReference
       summary: Gets details of existing transactions based on a transaction ID
