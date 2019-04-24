@@ -180,16 +180,6 @@ paths:
         - maintenance
       description: |-
         Performs a maintenance operation on a given transaction.
-
-        The payment gateway supports the following types of maintenance transactions.
-
-        | Operation Type | Description |
-        | --- | --- |
-        | `capture` | A request instructing the payment gateway to capture a previously-authorized transaction, i.e. transfer the funds from the customer's bank account to the merchant's bank account. This transaction is always preceded by an authorization. |
-        | `refund` | A request instructing the payment gateway to refund a previously captured transaction. A captured transaction can be partly or fully refunded. |
-        | `cancel` | A request instructing the payment gateway to cancel a previously authorized transaction. Only authorized transactions can be cancelled, captured transactions must be refunded. |
-        | `acceptChallenge` | A request instructing the payment gateway to accept a previously challenged transaction. |
-        | `denyChallenge` | A request instructing the payment gateway to deny a previously challenged transaction. |
       operationId: performMaintenanceOperation
       requestBody:
         content:
@@ -274,8 +264,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Transaction'
-          description: Transactionsretrieved successfully.
+                $ref: '#/components/schemas/TransactionDetail'
+          description: Transactions retrieved successfully.
         '400':
           content:
             application/json:
@@ -316,7 +306,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Transaction'
+                $ref: '#/components/schemas/TransactionDetail'
           description: Transaction retrieved successfully.
         '400':
           content:
@@ -393,7 +383,7 @@ paths:
             example: "visa, american-express"
         - description: |-
             Available categories of payment products.
-            
+
             - `credit-card`, `debit-card`, `realtime-banking` , `ewallet`
           in: query
           name: payment_product_category
@@ -1050,7 +1040,14 @@ paths:
         - security-settings
       security:
         - basicAuth: []
-      description: Returns the list of all hash algorithms.
+      description: |-
+          Returns the list of all hash algorithms.
+          </br>The possible values are:
+          <ul>
+            <li>SHA-1</li>
+            <li>SHA-256</li>
+            <li>SHA-512</li>
+          </ul>
       operationId: get_security-settings
 components:
   schemas:
@@ -1058,11 +1055,11 @@ components:
       description: Common model
       properties:
         accept_url:
-          x-sort: 21
+          x-sort: 100
           description: |-
             The URL to return your customer to once the payment process is
             completed successfully.
-            
+
             For more information about the user
             redirection workflow, check the [HiPay Enterprise
             Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
@@ -1077,22 +1074,22 @@ components:
           minimum: 1
           type: number
         cancel_url:
-          x-sort: 25
+          x-sort: 120
           description: |-
             The URL to return your customer to after a system failure.
-            
+
             For more information about the user redirection workflow, check the
             [HiPay Enterprise
             Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           example: 'https://developer.hipay.com/simulator/cancel/'
           type: string
         cid:
-          x-sort: 19
+          x-sort: 90
           description: Merchant's customer id. For fraud detection reasons.
           example: '283749291'
           type: string
         currency:
-          x-sort: 14
+          x-sort: 65
           example: EUR
           description: |-
             Base currency for this order. This three-character currency code
@@ -1262,37 +1259,37 @@ components:
             - ZWD
           type: string
         custom_data:
-          x-sort: 30
+          x-sort: 145
           description: |-
             Custom data. You can use these parameters to submit custom values
             you wish to show in HiPay back office transaction details, receive
             back in the API response messages, in the notifications or to
             activate specific FPS rules.
-            
+
             Please note that `cdata` have been deprecated. If you are still using them,
             they can’t be combined with custom data. We thus recommend migrating to
             custom data as soon as possible.
-          example: ''
+          example: '{"internal_reference": "ORD_987465", "customer_first_order": true, "other_sample_parameter": "Other sample value"}'
           type: string
         decline_url:
-          x-sort: 22
+          x-sort: 105
           description: |-
             The URL to return your customer to after the acquirer declines the
             payment.
-            
+
             For more information about the user redirection
             workflow, check the [HiPay Enterprise
             Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           example: 'https://developer.hipay.com/simulator/decline/'
           type: string
         description:
-          x-sort: 12
+          x-sort: 55
           description: The order short description.
           example: A super short description here.
           type: string
         eci:
-          x-sort: 3
-          default: '7'
+          x-sort: 45
+          default: '9'
           description: |-
             **This parameter is specific to SEPA Direct Debit as well as credit
             or debit card payment products.**
@@ -1326,57 +1323,57 @@ components:
           example: 7
           type: string
         exception_url:
-          x-sort: 24
+          x-sort: 115
           description: |-
             The URL to return your customer to after a system failure.
-            
+
             For more information about the user redirection workflow, check the
             [HiPay Enterprise
             Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           example: 'https://developer.hipay.com/simulator/exception/'
           type: string
         http_accept:
-          x-sort: 27
+          x-sort: 130
           description: |-
             This element should contain the exact content of the HTTP `Accept`
             header as sent to the merchant from the customer's browser.
           example: '*\/*'
           type: string
         http_user_agent:
-          x-sort: 28
+          x-sort: 135
           description: |-
             This element should contain the exact content of the HTTP `User-Agent`
             header as sent to the merchant from the customer's browser.
           example: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)
           type: string
         ipaddr:
-          x-sort: 20
+          x-sort: 95
           description: The IP address of your customer making a purchase.
           example: 127.0.0.1
           type: string
         language:
-          x-sort: 29
+          x-sort: 140
           description: |-
             Locale code of your customer. This will be used to display payment
             page in correct language.
           example: en_GB
           type: string
         long_description:
-          x-sort: 13
+          x-sort: 60
           description: |-
             Additional order description. You can show this description in HiPay
             payment page if desired.
           example: A super long description here...
           type: string
         notify_url:
-          x-sort: 26
+          x-sort: 125
           description: |-
             This field allows you to override the notification URL, available in the configuration in the HiPay back office,
             with the URL of your choice that will process the notification sent by the HiPay platform.
           example: 'https://developer.hipay.com/simulator/notify/'
           type: string
         operation:
-          x-sort: 2
+          x-sort: 5
           default: Authorization
           description: |-
             Transaction type:
@@ -1394,30 +1391,30 @@ components:
           example: ORDER_1537532589263
           type: string
         pending_url:
-          x-sort: 23
+          x-sort: 110
           description: |-
             The URL to return your customer to when the payment request was
             submitted to the acquirer but response is not yet available.
-            
+
             For more information about the user redirection workflow, check the
             [HiPay Enterprise
             Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           example: 'https://developer.hipay.com/simulator/pending/'
           type: string
         shipping:
-          x-sort: 16
+          x-sort: 75
           description: |-
             The order shipping fee. It can be omitted if the shipping fee value
             is zero.
           example: 1.3
           type: number
         tax:
-          x-sort: 17
+          x-sort: 80
           description: The order tax fee. It can be omitted if the order tax value is zero.
           example: 1.1
           type: number
         tax_rate:
-          x-sort: 18
+          x-sort: 85
           description: The order tax rate.
           example: 1
           type: number
@@ -1460,7 +1457,7 @@ components:
       description: InputOrder model
       properties:
         authentication_indicator:
-          x-sort: 4
+          x-sort: 70
           default: '0'
           description: |-
             **This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**
@@ -1495,39 +1492,39 @@ components:
         bank_name:
           description: |-
             **This parameter is specific to the SEPA Direct Debit payment product.**
-            
+
             Issuer Bank Name.
           example: BNP
           type: string
         cardtoken:
-          x-sort: 53
+          x-sort: 260
           description: |-
             **This parameter is specific to credit or debit card payment products.**
-            
+
             This is the token obtained from the HiPay Enterprise Secure Vault API when tokenizing a credit or debit card. To generate a token, please refer to the HiPay Enterprise Tokenization API documentation.
           example: f39bfab2b6c96fa30dcc0e55aa3da4125a49ab03
           type: string
         carrier_description:
-          x-sort: 62
+          x-sort: 305
           description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-            
+
             Carrier description.
           example: La Poste, 27 Rue des Francs Bourgeois
           type: string
         delivery_date:
-          x-sort: 60
+          x-sort: 295
           description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-            
+
             Estimated delivery date. Format is YYYY-MM-DD.
           example: '2022-12-20'
           type: string
         delivery_method:
-          x-sort: 61
+          x-sort: 300
           description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**`
-            
+
             The delivery method.
           enum:
             - CARRIER
@@ -1540,51 +1537,51 @@ components:
           x-sort: 28
           description: |-
             This element should contain the value of the 'ioBB' hidden field.
-            
+
             For more information about the device fingerprint integration, check the [HiPay Enterprise
             Overview](/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration).
           example: 042q0aAXOogFCkNMNf94lis1ztsdwpJAn3AFS6wesUIr2q
           type: string
         iban:
-          x-sort: 65
+          x-sort: 320
           description: |-
             **This parameter is specific to the SEPA Direct Debit payment product.**
-            
+
             International Bank Account Number (IBAN).
           example: FR1420041010050500013M02606
           type: string
         issuer_bank_id:
-          x-sort: 54
+          x-sort: 265
           description: |-
             **This parameter is specific to the iDEAL and the SEPA Direct Debit payment products.**
-            
+
             This is the Business Identifier Code (BIC) of the customer's issuer bank.
           example: BNPAFRPPXXX
           type: string
         order_category_code:
-          x-sort: 59
+          x-sort: 290
           description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-            
+
             The order category code.
 
             Please refer to the following list:
 
             | Code | Description |
             | --- | --- |
-            | 5499 | Alimentation & gastronomie 
+            | 5499 | Alimentation & gastronomie
             | 5571 | Auto & moto
-            | 7929 | Culture & divertissements 
+            | 7929 | Culture & divertissements
             | 5261 | Maison & jardin
             | 5200 | Electroménager
             | 7278 | Enchères et achats groupés
             | 5193 | Fleurs & cadeaux
-            | 5734 | Informatique & logiciels 
+            | 5734 | Informatique & logiciels
             | 7298 | Santé & beauté
-            | 0 | Services aux particuliers 
-            | 7361 | Services aux professionnels 
+            | 0 | Services aux particuliers
+            | 7361 | Services aux professionnels
             | 5941 | Sport
-            | 5651 | Vêtements & accessoires 
+            | 5651 | Vêtements & accessoires
             | 4722 | Voyage & tourisme
             | 5946 | Hifi, photo & vidéos
             | 4812 | Téléphonie & communication
@@ -1608,7 +1605,7 @@ components:
           example: '5941'
           type: integer
         payment_product:
-          x-sort: 5
+          x-sort: 20
           description: |-
             The payment method used to proceed checkout. Depending on the
             payment product, parameters specific to the payment method are
@@ -1649,21 +1646,21 @@ components:
           example: visa
           type: string
         qiwiuser:
-          x-sort: 55
+          x-sort: 270
           description: |-
             **This parameter is specific to the Qiwi Wallet payment product.**
-            
+
             The Qiwi user's ID, to whom the invoice is issued. It is the user's phone number, in international format.
           example: '33670985712'
           type: string
         recurring_payment:
-          x-sort: 64
+          x-sort: 315
           default: '0'
           description: |-
             **This parameter is specific to the SEPA Direct Debit payment product.**
 
             Indicates if the debit agreement will be created for a single-use or a multi-use.
-      
+
             Possible values:
 
             - `0`: Generate a single-use agreement id.
@@ -1674,7 +1671,7 @@ components:
           example: '0'
           type: string
         shipto_gender:
-          x-sort: 56
+          x-sort: 275
           description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
@@ -1686,18 +1683,18 @@ components:
           example: U
           type: string
         shipto_msisdn:
-          x-sort: 58
+          x-sort: 285
           description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-            
+
             The customer's ship-to mobile phone number.
           example: '33112345678'
           type: string
         shipto_phone:
-          x-sort: 57
+          x-sort: 280
           description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-            
+
             The customer's ship-to phone number.
           example: '33112345678'
           type: string
@@ -1718,6 +1715,12 @@ components:
         - eci
       title: InputOrder
       type: object
+    TransactionDetail:
+      description: Operation model
+      properties:
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+
     Operation:
       description: Operation model
       properties:
@@ -1781,7 +1784,7 @@ components:
       description: Order model
       properties:
         birthdate:
-          x-sort: 33
+          x-sort: 160
           description: Birth date of the customer (YYYYMMDD). For fraud detection reasons.
           example: '19880612'
           type: string
@@ -1791,12 +1794,12 @@ components:
           example: Paris
           type: string
         country:
-          x-sort: 43
+          x-sort: 210
           description: The zip or postal code of the customer.
           example: FR
           type: string
         email:
-          x-sort: 31
+          x-sort: 150
           description: The customer's e-mail address.
           example: john.doe@foobar99.com
           type: string
@@ -1808,7 +1811,7 @@ components:
           example: Cathy
           type: string
         gender:
-          x-sort: 34
+          x-sort: 165
           description: |-
             Gender of the customer:
 
@@ -1822,98 +1825,98 @@ components:
           example: U
           type: string
         lastname:
-          x-sort: 36
+          x-sort: 175
           description: |-
             The customer's last name. This value will be use to pre-fill
             cardholder name on credit card payment form.
           example: Doe
           type: string
         phone:
-          x-sort: 32
+          x-sort: 155
           description: The customer's phone number.
           example: '330123456789'
           type: string
         recipientinfo:
-          x-sort: 37
+          x-sort: 180
           description: |-
             Additional information about the customer (e.g., quality or
             function, company name, department, etc.).
           example: Dr.
           type: string
         shipto_city:
-          x-sort: 49
+          x-sort: 240
           description: The city to which the order is to be shipped.
           example: Paris
           type: string
         shipto_country:
-          x-sort: 52
+          x-sort: 255
           description: |-
             Country code to which the order is being shipped. This two-letter
             country code complies with ISO 3166-1 (alpha 2).
           example: FR
           type: string
         shipto_firstname:
-          x-sort: 44
+          x-sort: 215
           description: The first name of the order recipient.
           example: Cathy
           type: string
         shipto_lastname:
-          x-sort: 45
+          x-sort: 220
           description: The last name of the order recipient.
           example: Doe
           type: string
         shipto_recipientinfo:
-          x-sort: 46
+          x-sort: 225
           description: |-
             Additional information about the order recipient (e.g., quality or
             function, company name, department, etc.).
           example: Dr.
           type: string
         shipto_state:
-          x-sort: 50
+          x-sort: 245
           description: |-
             The USA state or Canada state to which the order is being shipped.
             Send this information only if the shipping country is US (USA) or CA
             (Canada).
           type: string
         shipto_streetaddress:
-          x-sort: 47
+          x-sort: 230
           description: Street address to which the order is to be shipped.
           example: 101 Rue de Rivoli
           type: string
         shipto_streetaddress2:
-          x-sort: 48
+          x-sort: 235
           description: |-
             The additional information about address to which the order is to be
             shipped (e.g., building, floor, flat, etc.).
           example: Immeuble B
           type: string
         shipto_zipcode:
-          x-sort: 51
+          x-sort: 250
           description: The zip or postal code to which the order is being shipped.
           example: '75001'
           type: string
         state:
-          x-sort: 41
+          x-sort: 200
           description: |-
             The USA state or the Canada state of the customer making the
             purchase. Send this information only if the address country of the
             customer is US (USA) or CA (Canada).
           type: string
         streetaddress:
-          x-sort: 38
+          x-sort: 185
           description: Street address of the customer.
           example: 101 Rue de Rivoli
           type: string
         streetaddress2:
-          x-sort: 39
+          x-sort: 190
           description: |-
             Additional address information of the customer (e.g., building,
             floor, flat, etc.).
           example: Immeuble B
           type: string
         zipcode:
-          x-sort: 42
+          x-sort: 205
           description: The zip or postal code of the customer.
           example: '75001'
           type: string
@@ -2184,7 +2187,7 @@ components:
           example: 0
           type: string
         css:
-          x-sort: 7
+          x-sort: 30
           description: URL to merchant style sheet. **HTTPS protocol is required.**
           example: 'https://developer.hipay.com/misc/simulator/css-responsive.css'
           type: string
@@ -2201,14 +2204,14 @@ components:
           example: '1'
           type: integer
         merchant_display_name:
-          x-sort: 9
+          x-sort: 195
           description: |-
             The merchant name displayed on payment page, otherwise the name is
             retrieved from order.
           example: ACME Consolidated
           type: string
         multi_use:
-          x-sort: 11
+          x-sort: 50
           description: |-
             Indicates the tokenization module whether the payment card token
             should be generated either for a single-use or a multi-use. Possible values:
@@ -2221,11 +2224,11 @@ components:
           example: '0'
           type: integer
         payment_product_category_list:
-          x-sort: 6
+          x-sort: 25
           default: credit-card
           description: |-
             The categories of payment products to be displayed on the payment page.
-            
+
             - `credit-card`, `debit-card`, `realtime-banking`, `ewallet`
           enum:
             - credit-card
@@ -2243,7 +2246,7 @@ components:
           example: "mastercard, cb, visa"
           type: string
         template:
-          x-sort: 8
+          x-sort: 170
           description: |-
             The template name. Possible values:
 
@@ -2302,6 +2305,17 @@ components:
           description: |-
             Operation merchant ID. This value will be returned to merchant with
             the notifications related to this operation.
+
+
+            The payment gateway supports the following types of maintenance transactions.
+
+            | Operation Type | Description |
+            | --- | --- |
+            | `capture` | A request instructing the payment gateway to capture a previously-authorized transaction, i.e. transfer the funds from the customer's bank account to the merchant's bank account. This transaction is always preceded by an authorization. |
+            | `refund` | A request instructing the payment gateway to refund a previously captured transaction. A captured transaction can be partly or fully refunded. |
+            | `cancel` | A request instructing the payment gateway to cancel a previously authorized transaction. Only authorized transactions can be cancelled, captured transactions must be refunded. |
+            | `acceptChallenge` | A request instructing the payment gateway to accept a previously challenged transaction. |
+            | `denyChallenge` | A request instructing the payment gateway to deny a previously challenged transaction. |
           example: 204OJ23LKJ234
           type: string
       required:
@@ -2314,18 +2328,23 @@ components:
         brand:
           description: ''
           type: string
+          example: 'VISA'
         cardExpiryMonth:
           description: ''
           type: string
+          example: '03'
         cardExpiryYear:
           description: ''
           type: string
+          example: '2020'
         cardHolder:
           description: ''
           type: string
+          example: 'JOHN DOE'
         country:
           description: The country code where payment method was issued.
           type: string
+          example: 'US'
         issuer:
           description: |-
             Name of the financial institution that
@@ -2334,6 +2353,7 @@ components:
         pan:
           description: ''
           type: string
+          example: "400000******0002"
         token:
           description: ''
           type: string
@@ -2352,26 +2372,32 @@ components:
       type: object
     Hipay.Gateway.AvailablePaymentProductBundle.Response.AvailablePaymentProduct.AvailablePaymentProduct:
       description: AvailablePaymentProduct model
-      properties:
-        code:
-          description: Code
-          type: string
-        customer_description:
-          description: Customer Description
-          type: string
-        description:
-          description: Description
-          type: string
-        id:
-          description: Id
-          type: string
-        payment_product_category_code:
-          description: Payment Product Category Code
-          type: string
-        tokenizable:
-          description: Tokenizable
-          type: boolean
-      type: object
+      type: array
+      items:
+        type: object
+        properties:
+          code:
+            description: Code
+            type: string
+            example: "visa"
+          customer_description:
+            description: Customer Description
+            type: string
+            example: "VISA"
+          description:
+            description: Description
+            type: string
+          id:
+            description: Id
+            type: string
+            example: "52DY02WM"
+          payment_product_category_code:
+            description: Payment Product Category Code
+            type: string
+            example: "credit-card"
+          tokenizable:
+            description: Tokenizable
+            type: boolean
       title: AvailablePaymentProduct
     Hipay.Gateway.CommonBundle.Response.CommonError:
       description: Common Error model
@@ -2394,6 +2420,7 @@ components:
         hashing_algorithm:
           description: Hashing Algorithm
           type: string
+          example: SHA-1
       type: object
       title: SecuritySetting
   securitySchemes:
