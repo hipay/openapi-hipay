@@ -305,7 +305,7 @@ components:
             - basic-js
             - iframe-js
           example: basic-js
-          x-sort: 170
+          x-sort: 168
         merchant_display_name:
           description: 'The merchant name displayed on payment page, otherwise the name is retrieved from order.'
           type: string
@@ -680,22 +680,22 @@ components:
           example: 'https://developer.hipay.com/simulator/success/'
           x-sort: 100
         decline_url:
-          description: 'The URL to return your customer to after the acquirer declines the payment.<br/>For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).'
+          description: "\nThe URL to return your customer to after the acquirer declines the\npayment.\n\nFor more information about the user redirection\nworkflow, check the [HiPay Enterprise\nOverview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages). "
           type: string
           example: 'https://developer.hipay.com/simulator/decline/'
           x-sort: 105
         pending_url:
-          description: 'The URL to return your customer to when the payment request was submitted to the acquirer but response is not yet available.<br/>For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).'
+          description: "\nThe URL to return your customer to when the payment request was\nsubmitted to the acquirer but response is not yet available.\n\nFor more information about the user redirection workflow, check the\n[HiPay Enterprise\nOverview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages)."
           type: string
           example: 'https://developer.hipay.com/simulator/pending/'
           x-sort: 110
         exception_url:
-          description: 'The URL to return your customer to after a system failure.<br/>For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).'
+          description: "\nThe URL to return your customer to after a system failure.\n\nFor more information about the user redirection workflow, check the\n[HiPay Enterprise\nOverview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages)."
           type: string
           example: 'https://developer.hipay.com/simulator/exception/'
           x-sort: 115
         cancel_url:
-          description: 'The URL to return your customer to after a system failure.<br/>For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).'
+          description: "\nThe URL to return your customer to after a system failure.\n\nFor more information about the user redirection workflow, check the\n[HiPay Enterprise\nOverview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages)."
           type: string
           example: 'https://developer.hipay.com/simulator/cancel/'
           x-sort: 120
@@ -731,7 +731,7 @@ components:
           example: 7
           x-sort: 45
         authentication_indicator:
-          description: '**This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**'
+          description: "\n**This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**\n\n### Credit or debit card\n\nIf the payment product is a credit or debit card, this parameter indicates if the 3-D Secure authentication should be performed for this transaction.\n\n- `0`: Bypass 3-D Secure authentication.\n\n- `1`: 3-D Secure authentication if available.\n\n- `2`: 3-D Secure authentication mandatory.\n\nFor more information about the 3-D Secure workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#3-d-secure-integration).\n\n### SEPA Direct Debit\n\nIf the payment product is SEPA Direct Debit, this parameter indicates if the debit agreement (mandate) must be electronically signed or not.\n\n- `0`: Bypass electronic signature.\n\n- `1`: Ask for electronic signature.\n\nFor more information about the SEPA Direct Debit integration (including examples), check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#sepa-direct-debit-sdd)."
           type: string
           default: '0'
           enum:
@@ -798,7 +798,7 @@ components:
           description: 'The customer''s city.'
           type: string
           example: Paris
-          x-sort: 240
+          x-sort: 218
         state:
           description: 'The USA state or the Canada state of the customer making the purchase. Send this information only if the address country of the customer is US (USA) or CA (Canada).'
           type: string
