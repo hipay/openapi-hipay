@@ -281,6 +281,7 @@ components:
           description: "\n The list of payment products to display on the payment page.\n\n- `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`"
           type: string
           example: 'mastercard,visa,american-express'
+          x-sort: 5
         payment_product_category_list:
           description: "The categories of payment products to be displayed on the payment page.<br/>\n                        <br/>`credit-card`, `debit-card`, `realtime-banking`, `ewallet`"
           type: string
@@ -291,10 +292,12 @@ components:
             - realtime-banking
             - ewallet
           example: credit-card
+          x-sort: 25
         css:
           description: 'URL to merchant style sheet. **HTTPS protocol is required.**'
           type: string
           example: 'https://developer.hipay.com/misc/simulator/css2.css'
+          x-sort: 30
         template:
           description: "The template name. Possible values:\n  - `basic-js` for a full page redirection\n  - `iframe-js` for an iframe integration"
           type: string
@@ -302,10 +305,12 @@ components:
             - basic-js
             - iframe-js
           example: basic-js
+          x-sort: 170
         merchant_display_name:
           description: 'The merchant name displayed on payment page, otherwise the name is retrieved from order.'
           type: string
           example: 'ACME Consolidated'
+          x-sort: 195
         display_selector:
           description: "Enable/disable the payment products selector. Possible values:\n  - `0`: the selector is not displayed\n  - `1`: the selector is displayed"
           type: integer
@@ -313,6 +318,7 @@ components:
             - 0
             - 1
           example: '0'
+          x-sort: 10
         multi_use:
           description: "Indicates the tokenization module whether the payment card token should be generated either for a single-use or a multi-use.\n                        Possible values:\n  - `1`: Generates a multi-use token\n  - `0`: Generates a single-use token\n    While a single-use token is typically generated for a short time and for processing a single transaction, multi-use tokens are generally generated"
           type: integer
@@ -320,10 +326,12 @@ components:
             - 0
             - 1
           example: '0'
+          x-sort: 50
         time_limit_to_pay:
           description: 'The time limit to pay allows you to specify the validity period of a payment page in seconds starting from the moment the payment link (forwardUrl) is generated. If empty, default value is fixed to 7 days. Max value: 24 days (2140000 seconds).'
           type: string
           example: '1800'
+          x-sort: 173
       type: object
       allOf:
         -
@@ -714,7 +722,10 @@ components:
         custom_data:
           description: 'Custom data. You can use these parameters to submit custom values you wish to show in HiPay back office transaction details, receive back in the API response messages, in the notifications or to activate specific FPS rules. Please note that cdata have been deprecated. If you are still using them, they can’t be combined with custom data. We thus recommend migrating to custom data as soon as possible.'
           type: string
-          example: '{''kk'':''ll''}'
+          example:
+            internal_reference: ORD_987465
+            customer_first_order: true
+            other_sample_parameter: 'Other sample value'
           x-sort: 145
         eci:
           description: "\n **This parameter is specific to SEPA Direct Debit as well as credit\nor debit card payment products.**\n\nElectronic Commerce Indicator (ECI).\n\nThe ECI indicates the security level at which the payment information is processed between the cardholder and merchant.\n\n### Credit or debit card\n\nIf the payment product is a credit or debit card:\n\n- `1`: MO/TO (Mail Order/Telephone Order)\n- `2`: MO/TO – Recurring\n- `7`: E-commerce with SSL/TLS Encryption\n- `9`: Recurring E-commerce\n\nA default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.\n\n### SEPA Direct Debit\n\nIf the payment product is SEPA Direct Debit:\n- `7`: First transaction/one-shot transaction\n- `9`: Recurring transaction"
@@ -758,7 +769,7 @@ components:
           example: '19880612'
           x-sort: 160
         gender:
-          description: "Gender of the customer:\n    - M:male\n    - F:female\n    - U:unknown"
+          description: "\n    Gender of the customer:\n\n    - `M`: male\n    - `F`: female\n    - `U`: unknown\n     *     "
           type: string
           enum:
             - U
@@ -917,27 +928,27 @@ components:
           example: BNPAFRPPXXX
           x-sort: 265
         qiwiuser:
-          description: "**This parameter is specific to the Qiwi Wallet payment product.**\n                        <br />The Qiwi user's ID, to whom the invoice is issued. It is the user's phone number, in international format."
+          description: "\n**This parameter is specific to the Qiwi Wallet payment product.**\n\nThe Qiwi user's ID, to whom the invoice is issued. It is the user's phone number, in international format."
           type: string
           example: '33670985712'
           x-sort: 270
         shipto_gender:
-          description: '**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**'
+          description: "\n **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nGender of the recipient:\n\n- `M`: male\n- `F`: female\n- `U`: unknown"
           type: string
           example: U
           x-sort: 275
         shipto_phone:
-          description: "**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n                        <br />The customer's ship-to phone number."
+          description: "\n     **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\n    The customer's ship-to phone number."
           type: string
           example: '33112345678'
           x-sort: 280
         shipto_msisdn:
-          description: "**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n                        <br />The customer's ship-to mobile phone number."
+          description: "\n **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe customer's ship-to mobile phone number."
           type: string
           example: '33112345678'
           x-sort: 285
         order_category_code:
-          description: "**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n                        <br />The customer's ship-to mobile phone number."
+          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe order category code.\n\nPlease refer to the following list:\n\n| Code | Description |\n| --- | --- |\n| 5499 | Alimentation & gastronomie\n| 5571 | Auto & moto\n| 7929 | Culture & divertissements\n| 5261 | Maison & jardin\n| 5200 | Electroménager\n| 7278 | Enchères et achats groupés\n| 5193 | Fleurs & cadeaux\n| 5734 | Informatique & logiciels\n| 7298 | Santé & beauté\n| 0 | Services aux particuliers\n| 7361 | Services aux professionnels\n| 5941 | Sport\n| 5651 | Vêtements & accessoires\n| 4722 | Voyage & tourisme\n| 5946 | Hifi, photo & vidéos\n| 4812 | Téléphonie & communication"
           type: integer
           enum:
             - '5499'
@@ -959,12 +970,12 @@ components:
           example: '5941'
           x-sort: 290
         delivery_date:
-          description: "**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n                        <br />Estimated delivery date. Format is YYYY-MM-DD."
+          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nEstimated delivery date. Format is YYYY-MM-DD."
           type: string
           example: '2022-12-20'
           x-sort: 295
         delivery_method:
-          description: "**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**`\n                        <br />The delivery method."
+          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**`\n\nThe delivery method.\n     *     "
           type: string
           enum:
             - CARRIER
@@ -974,11 +985,11 @@ components:
           example: CARRIER
           x-sort: 300
         carrier_description:
-          description: "**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n                        <br />Carrier description."
+          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nCarrier description."
           type: string
           x-sort: 305
         recurring_payment:
-          description: '**This parameter is specific to the SEPA Direct Debit payment product.**'
+          description: "\n**This parameter is specific to the SEPA Direct Debit payment product.**\n\nIndicates if the debit agreement will be created for a single-use or a multi-use.\n\nPossible values:\n\n- `0`: Generate a single-use agreement id.\n- `1`: Generate a multi-use agreement id."
           type: string
           default: '0'
           enum:
@@ -987,17 +998,17 @@ components:
           example: '0'
           x-sort: 315
         iban:
-          description: "**This parameter is specific to the SEPA Direct Debit payment product.**\n                        <br />International Bank Account Number (IBAN)."
+          description: "\n**This parameter is specific to the SEPA Direct Debit payment product.**\n\nInternational Bank Account Number (IBAN)."
           type: string
           example: FR1420041010050500013M02606
           x-sort: 320
         bank_name:
-          description: "**This parameter is specific to the SEPA Direct Debit payment product.**\n                        <br/>Issuer Bank Name."
+          description: "\n**This parameter is specific to the SEPA Direct Debit payment product.**\n\nIssuer Bank Name."
           type: string
           example: BNP
           x-sort: 321
         cardtoken:
-          description: "**This parameter is specific to credit or debit card payment products.**\n    <br/>This is the token obtained from the HiPay Enterprise Secure Vault API when tokenizing a credit or debit card. To generate a token, please refer to the HiPay Enterprise Tokenization API documentation."
+          description: "\n**This parameter is specific to credit or debit card payment products.**\n\nThis is the token obtained from the HiPay Enterprise Secure Vault API when tokenizing a credit or debit card. To generate a token, please refer to the HiPay Enterprise Tokenization API documentation."
           type: string
           example: f39bfab2b6c96fa30dcc0e55aa3da4125a49ab03
           x-sort: 260
