@@ -16,7 +16,7 @@ paths:
   /hpayment:
     post:
       tags:
-        - Payments
+        - payments
       summary: 'Creates a secure payment page to which you can redirect your customer to proceed checkout'
       description: "This service allows you to **redirect your user to a payment page\n(hosted by HiPay)** in order to proceed checkout. This service creates\nan order and returns a forward URL. This forward URL is dedicated to\ndisplay a payment page with your CSS and validated payment products.\nAfter payment form validation, the checkout is processed and the user is\nbeing returned to your website.\n\nAccording to transaction state and `authentication_indicator` parameter (see below), the user will be redirected either to the accept or the decline page.\n\nThere are two strategies for implementing this service:\n\n### Hosted: Full redirection mode\n\nOnce the payment page is created, you redirect your user to it. Your user is redirected back to your website once the transaction si executed.\n\n### iFrame mode\n\nYou may also display the payment page in an iFrame, in order to have a unified checkout workflow. To do so, you have to provide the `template` parameter with the value `iframe-js` (see below)."
       operationId: generateHostedPaymentPage
@@ -115,7 +115,7 @@ paths:
   /order:
     post:
       tags:
-        - Payments
+        - payments
       summary: 'Creates an order and a transaction based on payment details'
       description: "This service allows you to execute transactions through API with no need to redirect your customer to the payment page hosted by HiPay. This service supports payments with credit or debit cards as well as alternative payment methods.\nIn **order** to make a payment with a credit or debit card, a token must have been generated beforehand. In fact, this service cannot receive credit or debit card numbers in clear. Instead, you must provide this service with a token associated to a card number. Use the HiPay Enterprise SDK for JavaScript in order to generate tokens.\nIf you need to make payments with alternative payment methods, you can use this service directly. Note that the use of some alternative payment products implies that you redirect your user to an external URL. In such a case, the `forwardUrl` parameter will be set with the appropriate URL. Moreover, the activation of *3-D Secure* also implies a redirection of your customer."
       operationId: requestNewOrder
