@@ -773,7 +773,7 @@ components:
           description: 'The customer''s first name. This value will be use to pre-fill cardholder name on credit card payment form.'
           type: string
           example: Cathy
-          x-sort: 35
+          x-sort: 170
         lastname:
           description: 'The customer''s last name. This value will be use to pre-fill cardholder name on credit card payment form.'
           type: string
@@ -798,7 +798,7 @@ components:
           description: 'The customer''s city.'
           type: string
           example: Paris
-          x-sort: 40
+          x-sort: 240
         state:
           description: 'The USA state or the Canada state of the customer making the purchase. Send this information only if the address country of the customer is US (USA) or CA (Canada).'
           type: string
