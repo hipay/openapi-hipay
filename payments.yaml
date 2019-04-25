@@ -317,7 +317,7 @@ components:
           enum:
             - 0
             - 1
-          example: '0'
+          example: '1'
           x-sort: 10
         multi_use:
           description: "Indicates the tokenization module whether the payment card token should be generated either for a single-use or a multi-use.\n                        Possible values:\n  - `1`: Generates a multi-use token\n  - `0`: Generates a single-use token\n    While a single-use token is typically generated for a short time and for processing a single transaction, multi-use tokens are generally generated"
@@ -709,11 +709,6 @@ components:
           type: string
           example: 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)'
           x-sort: 135
-        device_fingerprint:
-          description: 'This element should contain the value of the ''ioBB'' hidden field.<br/>For more information about the device fingerprint integration, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration).'
-          type: string
-          example: 042q0aAXOogFCkNMNf94lis1ztsdwpJAn3AFS6wesUIr2q
-          x-sort: 28
         language:
           description: 'Locale code of your customer. This will be used to display payment page in correct language.'
           type: string
@@ -885,6 +880,11 @@ components:
         - lastname
         - eci
       properties:
+        device_fingerprint:
+          description: 'This element should contain the value of the ''ioBB'' hidden field.<br/>For more information about the device fingerprint integration, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration).'
+          type: string
+          example: 042q0aAXOogFCkNMNf94lis1ztsdwpJAn3AFS6wesUIr2q
+          x-sort: 28
         payment_product:
           description: 'The payment method used to proceed checkout. Depending on the payment product, parameters specific to the payment method are required. The list of payment products to display on the payment page.'
           type: string
