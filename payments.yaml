@@ -18,7 +18,7 @@ paths:
       tags:
         - payments
       summary: 'Creates a secure payment page to which you can redirect your customer to proceed checkout'
-      description: "This service allows you to **redirect your user to a payment page\n(hosted by HiPay)** in order to proceed checkout. This service creates\nan order and returns a forward URL. This forward URL is dedicated to\ndisplay a payment page with your CSS and validated payment products.\nAfter payment form validation, the checkout is processed and the user is\nbeing returned to your website.\n\nAccording to transaction state and `authentication_indicator` parameter (see below), the user will be redirected either to the accept or the decline page.\n\nThere are two strategies for implementing this service:\n\n### Hosted: Full redirection mode\n\nOnce the payment page is created, you redirect your user to it. Your user is redirected back to your website once the transaction si executed.\n\n### iFrame mode\n\nYou may also display the payment page in an iFrame, in order to have a unified checkout workflow. To do so, you have to provide the `template` parameter with the value `iframe-js` (see below)."
+      description: "\n This service allows you to **redirect your user to a payment page\n(hosted by HiPay)** in order to proceed checkout. This service creates\nan order and returns a forward URL. This forward URL is dedicated to\ndisplay a payment page with your CSS and validated payment products.\nAfter payment form validation, the checkout is processed and the user is\nbeing returned to your website.\n\nAccording to transaction state and `authentication_indicator` parameter (see below), the user will be redirected either to the accept or the decline page.\n\nThere are two strategies for implementing this service:\n\n### Hosted: Full redirection mode\n\nOnce the payment page is created, you redirect your user to it. Your user is redirected back to your website once the transaction si executed.\n\n### iFrame mode\n\nYou may also display the payment page in an iFrame, in order to have a unified checkout workflow. To do so, you have to provide the `template` parameter with the value `iframe-js` (see below)."
       operationId: generateHostedPaymentPage
       requestBody:
         description: 'HPayment information'
@@ -117,7 +117,7 @@ paths:
       tags:
         - payments
       summary: 'Creates an order and a transaction based on payment details'
-      description: "This service allows you to execute transactions through API with no need to redirect your customer to the payment page hosted by HiPay. This service supports payments with credit or debit cards as well as alternative payment methods.\nIn **order** to make a payment with a credit or debit card, a token must have been generated beforehand. In fact, this service cannot receive credit or debit card numbers in clear. Instead, you must provide this service with a token associated to a card number. Use the HiPay Enterprise SDK for JavaScript in order to generate tokens.\nIf you need to make payments with alternative payment methods, you can use this service directly. Note that the use of some alternative payment products implies that you redirect your user to an external URL. In such a case, the `forwardUrl` parameter will be set with the appropriate URL. Moreover, the activation of *3-D Secure* also implies a redirection of your customer."
+      description: "\n    This service allows you to execute transactions through API with no need\n    to redirect your customer to the payment page hosted by HiPay. This\n    service supports payments with credit or debit cards as well as\n    alternative payment methods.\n\n    In **order** to make a payment with a credit or debit card, a token must\n    have been generated beforehand. In fact, this service cannot receive\n    credit or debit card numbers in clear. Instead, you must provide this\n    service with a token associated to a card number. Use the HiPay\n    Enterprise SDK for JavaScript in order to generate tokens.\n\n    If you need to make payments with alternative payment methods, you can\n    use this service directly. Note that the use of some alternative payment\n    products implies that you redirect your user to an external URL. In such\n    a case, the `forwardUrl` parameter will be set with the appropriate URL.\n    Moreover, the activation of *3-D Secure* also implies a redirection of\n    your customer."
       operationId: requestNewOrder
       requestBody:
         description: 'Order information'
@@ -283,7 +283,7 @@ components:
           example: 'mastercard,visa,american-express'
           x-sort: 5
         payment_product_category_list:
-          description: "The categories of payment products to be displayed on the payment page.<br/>\n                        <br/>`credit-card`, `debit-card`, `realtime-banking`, `ewallet`"
+          description: "\n The categories of payment products to be displayed on the payment page.\n\n- `credit-card`, `debit-card`, `realtime-banking`, `ewallet`\n     *     "
           type: string
           default: credit-card
           enum:
@@ -717,10 +717,7 @@ components:
         custom_data:
           description: 'Custom data. You can use these parameters to submit custom values you wish to show in HiPay back office transaction details, receive back in the API response messages, in the notifications or to activate specific FPS rules. Please note that cdata have been deprecated. If you are still using them, they can’t be combined with custom data. We thus recommend migrating to custom data as soon as possible.'
           type: string
-          example:
-            internal_reference: ORD_987465
-            customer_first_order: true
-            other_sample_parameter: 'Other sample value'
+          example: '{''internal_reference'': ''ORD_987465'', ''customer_first_order'': true, ''other_sample_parameter'': ''Other sample value''}'
           x-sort: 145
         eci:
           description: "\n **This parameter is specific to SEPA Direct Debit as well as credit\nor debit card payment products.**\n\nElectronic Commerce Indicator (ECI).\n\nThe ECI indicates the security level at which the payment information is processed between the cardholder and merchant.\n\n### Credit or debit card\n\nIf the payment product is a credit or debit card:\n\n- `1`: MO/TO (Mail Order/Telephone Order)\n- `2`: MO/TO – Recurring\n- `7`: E-commerce with SSL/TLS Encryption\n- `9`: Recurring E-commerce\n\nA default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.\n\n### SEPA Direct Debit\n\nIf the payment product is SEPA Direct Debit:\n- `7`: First transaction/one-shot transaction\n- `9`: Recurring transaction"
@@ -764,7 +761,7 @@ components:
           example: '19880612'
           x-sort: 160
         gender:
-          description: "\n    Gender of the customer:\n\n    - `M`: male\n    - `F`: female\n    - `U`: unknown\n     *     "
+          description: "\nGender of the customer:\n\n- `M`: male\n- `F`: female\n- `U`: unknown\n     *     "
           type: string
           enum:
             - U
