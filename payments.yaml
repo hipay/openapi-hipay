@@ -1044,9 +1044,9 @@ paths:
           Returns the list of all hash algorithms.
           </br>The possible values are:
           <ul>
-            <li>SHA-1</li>
-            <li>SHA-256</li>
-            <li>SHA-512</li>
+            <li>SHA1</li>
+            <li>SHA256</li>
+            <li>SHA512</li>
           </ul>
       operationId: get_security-settings
 components:
@@ -1716,7 +1716,7 @@ components:
       title: InputOrder
       type: object
     TransactionDetail:
-      description: Operation model
+      description: Transaction Detail model
       properties:
         transaction:
           $ref: '#/components/schemas/Transaction'
@@ -2420,7 +2420,7 @@ components:
         hashing_algorithm:
           description: Hashing Algorithm
           type: string
-          example: SHA-1
+          example: SHA1
       type: object
       title: SecuritySetting
   securitySchemes:
