@@ -717,7 +717,7 @@ components:
           example: '{''kk'':''ll''}'
           x-sort: 145
         eci:
-          description: '**This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**'
+          description: "\n **This parameter is specific to SEPA Direct Debit as well as credit\nor debit card payment products.**\n\nElectronic Commerce Indicator (ECI).\n\nThe ECI indicates the security level at which the payment information is processed between the cardholder and merchant.\n\n### Credit or debit card\n\nIf the payment product is a credit or debit card:\n\n- `1`: MO/TO (Mail Order/Telephone Order)\n- `2`: MO/TO – Recurring\n- `7`: E-commerce with SSL/TLS Encryption\n- `9`: Recurring E-commerce\n\nA default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.\n\n### SEPA Direct Debit\n\nIf the payment product is SEPA Direct Debit:\n- `7`: First transaction/one-shot transaction\n- `9`: Recurring transaction"
           type: string
           default: '7'
           enum:
