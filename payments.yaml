@@ -926,7 +926,7 @@ components:
           example: 042q0aAXOogFCkNMNf94lis1ztsdwpJAn3AFS6wesUIr2q
           x-sort: 145
         source:
-          description: 'To identify the origin of the transaction.'
+          description: "To identify the origin of the transaction. Here are the authorized values for source property: \n\n- `AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`, `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`\n     "
           type: string
           example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
           x-sort: 146
