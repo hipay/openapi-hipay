@@ -346,7 +346,7 @@ components:
         - operation
       properties:
         operation:
-          description: 'The operation to perform on the transaction.'
+          description: "The operation to perform on the transaction.\n\nThe payment gateway supports the following types of maintenance transactions.\n\n| Operation Type | Description |\n| --- | --- |\n| `capture` | A request instructing the payment gateway to capture a previously-authorized transaction, i.e. transfer the funds from the customer's bank account to the merchant's bank account. This transaction is always preceded by an authorization. |\n| `refund` | A request instructing the payment gateway to refund a previously captured transaction. A captured transaction can be partly or fully refunded. |\n| `cancel` | A request instructing the payment gateway to cancel a previously authorized transaction. Only authorized transactions can be cancelled, captured transactions must be refunded. |\n| `acceptChallenge` | A request instructing the payment gateway to accept a previously challenged transaction. |\n| `denyChallenge` | A request instructing the payment gateway to deny a previously challenged transaction. |"
           type: string
           enum:
             - capture
@@ -355,12 +355,16 @@ components:
             - acceptChallenge
             - denyChallenge
           example: capture
+        basket:
+          description: "Shopping cart details. **You must send only items that must be captured or refunded.**\n\nPlease refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation."
+          type: string
+          example: "[{\n    \"quantity\": 1,\n    \"product_reference\": \"My product\",\n    \"type\": \"good\",\n    \"unit_price\": 20.50,\n    \"discount\": 0,\n    \"total_amount\": 20.50\n    },\n    {\n    \"quantity\": 1,\n    \"product_reference\": \"Birthdaygift\",\n    \"type\": \"discount\",\n    \"unit_price\": -5,\n    \"discount\": 0,\n    \"total_amount\": -5\n    }]"
         amount:
           description: 'Amount is required for partial maintenances. Do not specify amount for full captures or refunds.'
           type: string
           example: '3.5'
         operation_id:
-          description: "Operation merchant ID. This value will be returned to merchant with the notifications related to this operation.\n\nThe payment gateway supports the following types of maintenance transactions.\n\n| Operation Type | Description |\n| --- | --- |\n| `capture` | A request instructing the payment gateway to capture a previously-authorized transaction, i.e. transfer the funds from the customer's bank account to the merchant's bank account. This transaction is always preceded by an authorization. |\n| `refund` | A request instructing the payment gateway to refund a previously captured transaction. A captured transaction can be partly or fully refunded. |\n| `cancel` | A request instructing the payment gateway to cancel a previously authorized transaction. Only authorized transactions can be cancelled, captured transactions must be refunded. |\n| `acceptChallenge` | A request instructing the payment gateway to accept a previously challenged transaction. |\n| `denyChallenge` | A request instructing the payment gateway to deny a previously challenged transaction. |"
+          description: 'Operation merchant ID. This value will be returned to merchant with the notifications related to this operation.'
           type: string
           example: 204OJ23LKJ234
       type: object
@@ -490,6 +494,11 @@ components:
           additionalProperties:
             default: Authorization
           x-sort: 5
+        basket:
+          description: "Shopping cart details.\n    \nPlease refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation.\n     "
+          type: string
+          example: "[{\n    \"european_article_numbering\": \"4711892728946\",\n    \"product_reference\": \"NF-a1690\",\n    \"name\": \"My first product\",\n    \"type\": \"good\",\n    \"quantity\": 1,\n    \"unit_price\": 8.99,\n    \"discount\": 0,\n    \"tax_rate\": \"8.20\",\n    \"total_amount\": 8.99\n    }]"
+          x-sort: 69
         description:
           description: 'The order short description.'
           type: string
@@ -674,7 +683,7 @@ components:
           description: 'Total order amount, calculated as the sum of purchased items, plus shipping fees (if present), plus tax fees (if present).'
           type: number
           minimum: 1
-          example: 125.75
+          example: 8.99
           x-sort: 75
         shipping:
           description: 'The order shipping fee. It can be omitted if the shipping fee value is zero.'
@@ -785,11 +794,21 @@ components:
           type: string
           example: john.doe@foobar99.com
           x-sort: 210
+        national_identification_number:
+          description: "\n**This parameter is specific to Astropay payment methods.**\n\nCustomer’s personal identification number."
+          type: string
+          example: 'AA 01 23 44 B'
+          x-sort: 217
         phone:
           description: 'The customer''s phone number.'
           type: string
-          example: '330123456789'
+          example: '33012345678'
           x-sort: 215
+        msisdn:
+          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe customer's ship-to mobile phone number."
+          type: string
+          example: '33612345678'
+          x-sort: 216
         birthdate:
           description: 'Birth date of the customer (YYYYMMDD). For fraud detection reasons.'
           type: string
@@ -819,6 +838,11 @@ components:
           type: string
           example: Dr.
           x-sort: 240
+        house_number:
+          description: 'House number of the customer.'
+          type: string
+          example: '101'
+          x-sort: 244
         streetaddress:
           description: 'Street address of the customer.'
           type: string
@@ -863,6 +887,11 @@ components:
           type: string
           example: Dr.
           x-sort: 295
+        shipto_house_number:
+          description: 'House number of the recipient.'
+          type: string
+          example: '101'
+          x-sort: 299
         shipto_streetaddress:
           description: 'Street address to which the order is to be shipped.'
           type: string
@@ -897,6 +926,11 @@ components:
           type: string
           example: 042q0aAXOogFCkNMNf94lis1ztsdwpJAn3AFS6wesUIr2q
           x-sort: 145
+        source:
+          description: 'To identify the origin of the transaction.'
+          type: string
+          example: '{ "integration_version" : "1.9.0", "brand" : "ios", "source" : "CSDK", "brand_version" : "12.2.0" }'
+          x-sort: 146
         issuer_bank_id:
           description: "**This parameter is specific to the iDEAL and the SEPA Direct Debit payment products.**\n\nThis is the Business Identifier Code (BIC) of the customer's issuer bank."
           type: string
@@ -913,15 +947,15 @@ components:
           example: U
           x-sort: 280
         shipto_phone:
-          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe customer's ship-to phone number."
+          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe recipient's ship-to phone number."
           type: string
           example: '33112345678'
           x-sort: 275
         shipto_msisdn:
-          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe customer's ship-to mobile phone number."
+          description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe recipient's ship-to mobile phone number."
           type: string
-          example: '33112345678'
-          x-sort: 285
+          example: '3362345678'
+          x-sort: 276
         order_category_code:
           description: "\n**This parameter is specific to the 3x and 4x Carte Bancaire payment products.**\n\nThe order category code.\n\nPlease refer to the following list:\n\n| Code | Description |\n| --- | --- |\n| 5499 | Alimentation & gastronomie\n| 5571 | Auto & moto\n| 7929 | Culture & divertissements\n| 5261 | Maison & jardin\n| 5200 | Electroménager\n| 7278 | Enchères et achats groupés\n| 5193 | Fleurs & cadeaux\n| 5734 | Informatique & logiciels\n| 7298 | Santé & beauté\n| 0 | Services aux particuliers\n| 7361 | Services aux professionnels\n| 5941 | Sport\n| 5651 | Vêtements & accessoires\n| 4722 | Voyage & tourisme\n| 5946 | Hifi, photo & vidéos\n| 4812 | Téléphonie & communication"
           type: integer
