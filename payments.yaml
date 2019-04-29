@@ -242,6 +242,718 @@ paths:
       security:
         -
           basicAuth: []
+  /v2/available-payment-products:
+    get:
+      parameters:
+        - description: |-
+            **This parameter is specific to SEPA Direct Debit as well as credit or
+            debit card payment products.**
+
+            Electronic Commerce Indicator (ECI).
+
+            The ECI indicates the security level at which the payment information is processed between the cardholder and merchant.
+
+            ### Credit or debit card
+
+            If the payment product is a credit or debit card:
+
+            - `1`: MO/TO (Mail Order/Telephone Order)
+            - `2`: MO/TO – Recurring
+            - `7`: E-commerce with SSL/TLS Encryption
+            - `9`: Recurring E-commerce
+
+            A default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.
+
+            ### SEPA Direct Debit
+
+            If the payment product is SEPA Direct Debit:
+            - `7`: First transaction/one-shot transaction
+            - `9`: Recurring transaction
+          in: query
+          name: eci
+          schema:
+            example: 7
+            default: 7
+            enum:
+              - 1
+              - 2
+              - 7
+              - 9
+              - 10
+            type: string
+        - in: query
+          name: payment_product
+          description: |-
+            Available payment products.
+
+            - `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`
+          schema:
+            type: string
+            example: "visa, american-express"
+        - description: |-
+            Available categories of payment products.
+
+            - `credit-card`, `debit-card`, `realtime-banking` , `ewallet`
+          in: query
+          name: payment_product_category
+          schema:
+            enum:
+              - credit-card
+              - debit-card
+              - realtime-banking
+              - ewallet
+            type: string
+            example: credit-card
+        - description: ' The country code of the customer. This two-letter country code complies with ISO 3166-1 (alpha 2).'
+          in: query
+          name: customer_country
+          schema:
+            example: FR
+            default: FR
+            enum:
+              - AF
+              - AL
+              - DZ
+              - AS
+              - AD
+              - AO
+              - AI
+              - AQ
+              - AG
+              - AR
+              - AM
+              - AW
+              - AC
+              - AU
+              - AT
+              - AZ
+              - BS
+              - BH
+              - BD
+              - BB
+              - BY
+              - BE
+              - BZ
+              - BJ
+              - BM
+              - BT
+              - BO
+              - BA
+              - BW
+              - BR
+              - IO
+              - VG
+              - BN
+              - BG
+              - BF
+              - BI
+              - KH
+              - CM
+              - CA
+              - IC
+              - CV
+              - BQ
+              - KY
+              - CF
+              - EA
+              - TD
+              - CL
+              - CN
+              - CX
+              - CC
+              - CO
+              - KM
+              - CG
+              - CD
+              - CK
+              - CR
+              - HR
+              - CU
+              - CW
+              - CY
+              - CZ
+              - CI
+              - DK
+              - DG
+              - DJ
+              - DM
+              - DO
+              - EC
+              - EG
+              - SV
+              - GQ
+              - ER
+              - EE
+              - ET
+              - FK
+              - FO
+              - FJ
+              - FI
+              - FR
+              - GF
+              - PF
+              - TF
+              - GA
+              - GM
+              - GE
+              - DE
+              - GH
+              - GI
+              - GR
+              - GL
+              - GD
+              - GP
+              - GU
+              - GT
+              - GG
+              - GN
+              - GW
+              - GY
+              - HT
+              - HN
+              - HK
+              - HU
+              - IS
+              - IN
+              - ID
+              - IR
+              - IQ
+              - IE
+              - IM
+              - IL
+              - IT
+              - JM
+              - JP
+              - JE
+              - JO
+              - KZ
+              - KE
+              - KI
+              - XK
+              - KW
+              - KG
+              - LA
+              - LV
+              - LB
+              - LS
+              - LR
+              - LY
+              - LI
+              - LT
+              - LU
+              - MO
+              - MK
+              - MG
+              - MW
+              - MY
+              - MV
+              - ML
+              - MT
+              - MH
+              - MQ
+              - MR
+              - MU
+              - YT
+              - MX
+              - FM
+              - MD
+              - MC
+              - MN
+              - ME
+              - MS
+              - MA
+              - MZ
+              - MM
+              - NA
+              - NR
+              - NP
+              - NL
+              - NC
+              - NZ
+              - NI
+              - NE
+              - NG
+              - NU
+              - NF
+              - KP
+              - MP
+              - 'NO'
+              - OM
+              - PK
+              - PW
+              - PS
+              - PA
+              - PG
+              - PY
+              - PE
+              - PH
+              - PN
+              - PL
+              - PT
+              - PR
+              - QA
+              - RO
+              - RU
+              - RW
+              - RE
+              - WS
+              - SM
+              - SA
+              - SN
+              - RS
+              - SC
+              - SL
+              - SG
+              - SX
+              - SK
+              - SI
+              - SB
+              - SO
+              - ZA
+              - GS
+              - KR
+              - SS
+              - ES
+              - LK
+              - BL
+              - SH
+              - KN
+              - LC
+              - MF
+              - PM
+              - VC
+              - SD
+              - SR
+              - SJ
+              - SZ
+              - SE
+              - CH
+              - SY
+              - ST
+              - TW
+              - TJ
+              - TZ
+              - TH
+              - TL
+              - TG
+              - TK
+              - TO
+              - TT
+              - TA
+              - TN
+              - TR
+              - TM
+              - TC
+              - TV
+              - UM
+              - VI
+              - UG
+              - UA
+              - AE
+              - GB
+              - US
+              - UY
+              - UZ
+              - VU
+              - VA
+              - VE
+              - VN
+              - WF
+              - EH
+              - YE
+              - ZM
+              - ZW
+              - AX
+            type: string
+        - description: |-
+            Base currency for this order. This three-character currency code
+            complies with ISO 4217.
+          in: query
+          name: currency
+          schema:
+            example: EUR
+            default: EUR
+            enum:
+              - AFN
+              - AFA
+              - ALL
+              - ALK
+              - DZD
+              - ADP
+              - AOA
+              - AOK
+              - AON
+              - AOR
+              - ARA
+              - ARS
+              - ARM
+              - ARP
+              - ARL
+              - AMD
+              - AWG
+              - AUD
+              - ATS
+              - AZN
+              - AZM
+              - BSD
+              - BHD
+              - BDT
+              - BBD
+              - BYN
+              - BYB
+              - BYR
+              - BEF
+              - BEC
+              - BEL
+              - BZD
+              - BMD
+              - BTN
+              - BOB
+              - BOL
+              - BOV
+              - BOP
+              - BAM
+              - BAD
+              - BAN
+              - BWP
+              - BRC
+              - BRZ
+              - BRE
+              - BRR
+              - BRN
+              - BRB
+              - BRL
+              - GBP
+              - BND
+              - BGL
+              - BGN
+              - BGO
+              - BGM
+              - BUK
+              - BIF
+              - XPF
+              - KHR
+              - CAD
+              - CVE
+              - KYD
+              - XAF
+              - CLE
+              - CLP
+              - CLF
+              - CNX
+              - CNY
+              - CNH
+              - COP
+              - COU
+              - KMF
+              - CDF
+              - CRC
+              - HRD
+              - HRK
+              - CUC
+              - CUP
+              - CYP
+              - CZK
+              - CSK
+              - DKK
+              - DJF
+              - DOP
+              - NLG
+              - XCD
+              - DDM
+              - ECS
+              - ECV
+              - EGP
+              - GQE
+              - ERN
+              - EEK
+              - ETB
+              - EUR
+              - XEU
+              - FKP
+              - FJD
+              - FIM
+              - FRF
+              - XFO
+              - XFU
+              - GMD
+              - GEK
+              - GEL
+              - DEM
+              - GHS
+              - GHC
+              - GIP
+              - GRD
+              - GTQ
+              - GWP
+              - GNF
+              - GNS
+              - GYD
+              - HTG
+              - HNL
+              - HKD
+              - HUF
+              - ISK
+              - ISJ
+              - INR
+              - IDR
+              - IRR
+              - IQD
+              - IEP
+              - ILS
+              - ILP
+              - ILR
+              - ITL
+              - JMD
+              - JPY
+              - JOD
+              - KZT
+              - KES
+              - KWD
+              - KGS
+              - LAK
+              - LVL
+              - LVR
+              - LBP
+              - LSL
+              - LRD
+              - LYD
+              - LTL
+              - LTT
+              - LUL
+              - LUC
+              - LUF
+              - MOP
+              - MKD
+              - MKN
+              - MGA
+              - MGF
+              - MWK
+              - MYR
+              - MVR
+              - MVP
+              - MLF
+              - MTL
+              - MTP
+              - MRU
+              - MRO
+              - MUR
+              - MXV
+              - MXN
+              - MXP
+              - MDC
+              - MDL
+              - MCF
+              - MNT
+              - MAD
+              - MAF
+              - MZE
+              - MZN
+              - MZM
+              - MMK
+              - NAD
+              - NPR
+              - ANG
+              - TWD
+              - NZD
+              - NIO
+              - NIC
+              - NGN
+              - KPW
+              - NOK
+              - OMR
+              - PKR
+              - PAB
+              - PGK
+              - PYG
+              - PEI
+              - PEN
+              - PES
+              - PHP
+              - PLN
+              - PLZ
+              - PTE
+              - GWE
+              - QAR
+              - XRE
+              - RHD
+              - RON
+              - ROL
+              - RUB
+              - RUR
+              - RWF
+              - SVC
+              - WST
+              - SAR
+              - RSD
+              - CSD
+              - SCR
+              - SLL
+              - SGD
+              - SKK
+              - SIT
+              - SBD
+              - SOS
+              - ZAR
+              - ZAL
+              - KRH
+              - KRW
+              - KRO
+              - SSP
+              - SUR
+              - ESP
+              - ESA
+              - ESB
+              - LKR
+              - SHP
+              - SDD
+              - SDG
+              - SDP
+              - SRD
+              - SRG
+              - SZL
+              - SEK
+              - CHF
+              - SYP
+              - STN
+              - STD
+              - TJR
+              - TJS
+              - TZS
+              - THB
+              - TPE
+              - TOP
+              - TTD
+              - TND
+              - TRY
+              - TRL
+              - TMT
+              - TMM
+              - USD
+              - USN
+              - USS
+              - UGX
+              - UGS
+              - UAH
+              - UAK
+              - AED
+              - UYU
+              - UYP
+              - UYI
+              - UZS
+              - VUV
+              - VEF
+              - VEB
+              - VND
+              - VNN
+              - CHE
+              - CHW
+              - XOF
+              - YDD
+              - YER
+              - YUN
+              - YUD
+              - YUM
+              - YUR
+              - ZRN
+              - ZRZ
+              - ZMW
+              - ZMK
+              - ZWD
+              - ZWR
+              - ZWL
+            type: string
+        - in: query
+          name: payment_terminal
+          schema:
+            type: string
+        - in: query
+          name: initialize_payment_terminal
+          schema:
+            type: string
+        - in: query
+          name: operation
+          schema:
+            type: string
+        - in: query
+          name: acquirer_registration_id
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.AvailablePaymentProductBundle.Response.AvailablePaymentProduct.AvailablePaymentProduct
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.CommonBundle.Response.CommonError
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.CommonBundle.Response.CommonError
+          description: Forbidden
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.CommonBundle.Response.CommonError
+          description: Internal Server Error
+      tags:
+        - payment-products
+      security:
+        - basicAuth: []
+      description: Returns the list of all available payment products for the merchant.
+      operationId: get_available-payment-products
+  /v2/security-settings:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.SecuritySettingBundle.Response.SecuritySetting.SecuritySetting
+          description: Hash algorithm successfully returned
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.CommonBundle.Response.CommonError
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.CommonBundle.Response.CommonError
+          description: Forbidden
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: |-
+                  #/components/schemas/Hipay.Gateway.CommonBundle.Response.CommonError
+          description: Internal Server Error
+      tags:
+        - security-settings
+      security:
+        - basicAuth: []
+      description: |-
+          Returns the list of all hash algorithms. The possible values are:
+
+          - SHA1, SHA256, SHA512
+      operationId: get_security-settings
 components:
   schemas:
     Forward:
@@ -1394,6 +2106,59 @@ components:
           type: string
           example: ''
       type: object
+    Hipay.Gateway.AvailablePaymentProductBundle.Response.AvailablePaymentProduct.AvailablePaymentProduct:
+      description: AvailablePaymentProduct model
+      type: array
+      items:
+        type: object
+        properties:
+          code:
+            description: Code
+            type: string
+            example: "visa"
+          customer_description:
+            description: Customer Description
+            type: string
+            example: "VISA"
+          description:
+            description: Description
+            type: string
+          id:
+            description: Id
+            type: string
+            example: "52DY02WM"
+          payment_product_category_code:
+            description: Payment Product Category Code
+            type: string
+            example: "credit-card"
+          tokenizable:
+            description: Tokenizable
+            type: boolean
+      title: AvailablePaymentProduct
+    Hipay.Gateway.CommonBundle.Response.CommonError:
+      description: Common Error model
+      properties:
+        code:
+          description: Code
+          format: int32
+          type: integer
+        description:
+          description: Description
+          type: string
+        message:
+          description: Message
+          type: string
+      type: object
+      title: CommonError
+    Hipay.Gateway.SecuritySettingBundle.Response.SecuritySetting.SecuritySetting:
+      description: SecuritySetting model
+      properties:
+        hashing_algorithm:
+          description: Hashing Algorithm
+          type: string
+          example: SHA1
+      type: object
+      title: SecuritySetting
   securitySchemes:
     basicAuth:
       type: http
@@ -1408,6 +2173,10 @@ tags:
   -
     name: transaction
     description: 'Request all the details of existing transactions and orders'
+  - name: payment-products
+    description: Get the list of all available Payment products
+  - name: security-settings
+    description: Get the hash algorithm
 externalDocs:
   description: 'Find out more about HiPay'
   url: 'https://developer.hipay.com/'
