@@ -928,7 +928,7 @@ components:
         source:
           description: 'To identify the origin of the transaction.'
           type: string
-          example: '{"integration_version":"1.9.0","brand":"DEV","source":"PORTAL","brand_version":"12.2.0"}'
+          example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
           x-sort: 146
         issuer_bank_id:
           description: "**This parameter is specific to the iDEAL and the SEPA Direct Debit payment products.**\n\nThis is the Business Identifier Code (BIC) of the customer's issuer bank."
