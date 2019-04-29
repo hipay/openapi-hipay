@@ -7,13 +7,13 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'https://stage-secure-gateway.hipay-tpp.com/rest/v1'
+    url: 'https://stage-secure-gateway.hipay-tpp.com/rest'
     description: Stage
   -
-    url: 'https://secure-gateway.hipay-tpp.com/rest/v1'
+    url: 'https://secure-gateway.hipay-tpp.com/rest'
     description: Production
 paths:
-  /hpayment:
+  /v1/hpayment:
     post:
       tags:
         - payments
@@ -55,7 +55,7 @@ paths:
       security:
         -
           basicAuth: []
-  '/maintenance/transaction/{transaction_reference}':
+  '/v1/maintenance/transaction/{transaction_reference}':
     post:
       tags:
         - maintenance
@@ -112,7 +112,7 @@ paths:
       security:
         -
           basicAuth: []
-  /order:
+  /v1/order:
     post:
       tags:
         - payments
@@ -154,7 +154,7 @@ paths:
       security:
         -
           basicAuth: []
-  '/transaction/{transaction_reference}':
+  '/v1/transaction/{transaction_reference}':
     get:
       tags:
         - transaction
@@ -198,7 +198,7 @@ paths:
       security:
         -
           basicAuth: []
-  /transaction:
+  /v1/transaction:
     get:
       tags:
         - transaction
