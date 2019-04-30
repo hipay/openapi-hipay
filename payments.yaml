@@ -1496,11 +1496,6 @@ components:
             default: '0'
           x-sort: 15
       type: object
-    TransactionDetail:
-      description: Transaction Detail model
-      properties:
-        transaction:
-          $ref: '#/components/schemas/Transaction'
 
     Order:
       description: Order model
