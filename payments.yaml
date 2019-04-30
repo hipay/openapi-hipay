@@ -1502,8 +1502,8 @@ components:
         transaction:
           $ref: '#/components/schemas/Transaction'
 
-    Operation:
-      description: Operation model
+    Order:
+      description: Order model
       properties:
         email:
           description: 'The customer''s e-mail address.'
