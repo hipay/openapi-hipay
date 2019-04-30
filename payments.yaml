@@ -1496,9 +1496,14 @@ components:
             default: '0'
           x-sort: 15
       type: object
-    Order:
-      title: Order
-      description: 'Order model'
+    TransactionDetail:
+      description: Transaction Detail model
+      properties:
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+
+    Operation:
+      description: Operation model
       properties:
         email:
           description: 'The customer''s e-mail address.'
