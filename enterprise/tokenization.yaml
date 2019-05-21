@@ -1,0 +1,471 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: HiPay Enterprise Tokenization API
+  description: |
+    The Tokenization (Secure Vault) API allows merchants to retrieve and update data associated with their customers' payment information stored in the HiPay Enterprise Secure Vault. Using Tokenization API, merchants eliminate the risk, liability and cost of storing sensitive data on their local servers and storage devices.
+
+    The Tokenization API aims to be used **alongside the HiPay Enterprise Gateway API**. In particular, with the Request New Order (`POST /order`) service of the Gateway API. In fact, when you need to make payments with credit or debit cards using the Gateway API, you first need to tokenize card numbers thanks to the Tokenization API.  
+
+    This API integrates a BIN lookup tool. Every submitted card number is automatically searched in the BIN database to determine its issuing bank. When the BIN lookup succeeds, the response includes the card brand, the 2-letter country code where card was issued and when applicable the issuing bank name.
+
+    Note: this documentation describes the Tokenization API parameters and response fields and allows you to test the platform in real time.  
+    This page aims to be used alongside the **[HiPay Enterprise Platform Overview documentation](/getting-started/platform-hipay-enterprise/overview/)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documentations in parallel when integrating HiPay Enterprise.
+
+    ## Tokenization API base URLs
+
+    | Environment | Base URL |
+    | --- | --- |
+    | Stage | https://stage-secure2-vault.hipay-tpp.com/rest/v2/token |
+    | Production | https://secure2-vault.hipay-tpp.com/rest/v2/token |
+
+    ## Authentication
+
+    All requests to HiPay Enterprise API require you to authenticate using the HTTP *Basic Authentication* to convey your identity. Your API credentials can be found in your HiPay Enterprise back office in the Integration section. Most HTTP clients (including web-browsers) have built-in support for HTTP Basic Authentication. If not, the following header must be included in all HTTP requests.
+
+    `Authorization: Basic base64("<API login>:<API password>")`
+host: stage-secure2-vault.hipay-tpp.com
+basePath: /rest/v2/token/
+securityDefinitions:
+  basicAuth:
+    type: basic
+tags:
+  - name: tokenization
+    description: Everything you need to tokenize payment cards
+schemes:
+  - https
+consumes:
+  - multipart/form-data
+produces:
+  - application/json
+paths:
+  /create:
+    post:
+      tags:
+        - tokenization
+      summary: Performs credit or debit card tokenization
+      description: |
+        Performs credit or debit card tokenization. Once the card is tokenized, you can use the generated token to make payments thanks to the HiPay Enterprise Gateway API.
+      operationId: createToken
+      produces:
+        - application/json
+      parameters:
+        - name: card_number
+          in: formData
+          description: The card number.
+          required: true
+          x-is-map: false
+          type: string
+          value: '4000000000000002'
+        - name: card_expiry_month
+          description: The card expiry month.
+          in: formData
+          required: true
+          x-is-map: false
+          type: integer
+          value: 12
+        - name: card_expiry_year
+          description: The card expiry year.
+          in: formData
+          required: true
+          x-is-map: false
+          type: integer
+          value: 2025
+        - name: card_holder
+          description: The cardholder name as it appears on the card.
+          in: formData
+          required: true
+          x-is-map: false
+          type: string
+          value: Cathy Doe
+        - name: cvc
+          description: The 3 or 4 digit security code (called CVV2 or CID depending on the card brand) that appears on the credit card.
+          in: formData
+          required: false
+          x-is-map: false
+          type: string
+          value: '514'
+          pattern: |
+            (\d{3})|(\d{4})
+        - name: multi_use
+          description: Indicates if the token should be generated either for a single-use. or a multi-use.
+          in: formData
+          required: false
+          x-is-map: false
+          type: integer
+          schema:
+            default: 0
+          enum:
+            - 0
+            - 1
+        - name: generate_request_id
+          description: Indicates if a request ID should be generated.
+          in: formData
+          required: false
+          x-is-map: false
+          type: integer
+          schema:
+            default: 0
+          enum:
+            - 0
+            - 1
+      responses:
+        '201':
+          description: Token successfully created.
+          schema:
+            type: object
+            required:
+              - card_token
+              - request_id
+              - brand
+              - pan
+              - card_holder
+              - card_expiry_month
+              - card_expiry_year
+              - issuer
+              - country
+            properties:
+              card_token:
+                type: string
+              request_id:
+                type: string
+              brand:
+                type: string
+              pan:
+                type: string
+              card_holder:
+                type: string
+              card_expiry_month:
+                type: string
+              card_expiry_year:
+                type: string
+              issuer:
+                type: string
+              country:
+                type: string
+              card_type:
+                type: string
+              card_category:
+                type: string
+              domestic_network:
+                type: string
+        '400':
+          description: The request was rejected due to a validation error.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '401':
+          description: An authentication error occurred/invalid credentials.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '403':
+          description: Access to this resource is fordidden.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+      security:
+        - basicAuth: []
+  '/{token}':
+    get:
+      tags:
+        - tokenization
+      summary: Gets the details of a credit card that you have previsouly tokenized
+      description: Gets the details of a credit card that you have previsouly tokenized.
+      operationId: lookupToken
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          description: The token to look for.
+          in: path
+          required: true
+          x-is-map: false
+          type: string
+          value: 85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388
+        - name: request_id
+          description: The request ID linked to the card token.
+          in: query
+          required: true
+          x-is-map: false
+          type: string
+          value: '0'
+      responses:
+        '200':
+          description: Token successfully retrieved.
+          schema:
+            type: object
+            required:
+              - card_token
+              - request_id
+              - brand
+              - pan
+              - card_holder
+              - card_expiry_month
+              - card_expiry_year
+              - issuer
+              - country
+            properties:
+              card_token:
+                type: string
+              request_id:
+                type: string
+              brand:
+                type: string
+              pan:
+                type: string
+              card_holder:
+                type: string
+              card_expiry_month:
+                type: string
+              card_expiry_year:
+                type: string
+              issuer:
+                type: string
+              country:
+                type: string
+              card_type:
+                type: string
+              card_category:
+                type: string
+              domestic_network:
+                type: string
+        '400':
+          description: The request was rejected due to a validation error.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '401':
+          description: An authentication error occurred/invalid credentials.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '403':
+          description: Access to this resource is fordidden.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '404':
+          description: Token was not found.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+      security:
+        - basicAuth: []
+  /update:
+    post:
+      tags:
+        - tokenization
+      summary: Updates the details of a previsouly tokenized credit or debit card
+      description: Updates the details of a previsouly tokenized credit or debit card.
+      operationId: updateToken
+      produces:
+        - application/json
+      parameters:
+        - name: card_token
+          in: formData
+          description: The token to be updated.
+          required: true
+          x-is-map: false
+          type: string
+          value: 85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388
+        - name: request_id
+          in: formData
+          description: The request ID linked to the card token.
+          required: true
+          x-is-map: false
+          type: string
+          value: '0'
+        - name: card_expiry_month
+          description: The card expiry month.
+          in: formData
+          required: true
+          x-is-map: false
+          type: integer
+          value: 12
+        - name: card_expiry_year
+          description: The card expiry year.
+          in: formData
+          required: true
+          x-is-map: false
+          type: integer
+          value: 2025
+        - name: card_holder
+          description: The cardholder name as it appears on the card.
+          in: formData
+          required: true
+          x-is-map: false
+          type: string
+          value: Cathy Doe
+      responses:
+        '200':
+          description: Token successfully updated.
+          schema:
+            type: object
+            required:
+              - card_token
+              - request_id
+              - brand
+              - pan
+              - card_holder
+              - card_expiry_month
+              - card_expiry_year
+              - issuer
+              - country
+            properties:
+              card_token:
+                type: string
+              request_id:
+                type: string
+              brand:
+                type: string
+              pan:
+                type: string
+              card_holder:
+                type: string
+              card_expiry_month:
+                type: string
+              card_expiry_year:
+                type: string
+              issuer:
+                type: string
+              country:
+                type: string
+              card_type:
+                type: string
+              card_category:
+                type: string
+              domestic_network:
+                type: string
+        '400':
+          description: The request was rejected due to a validation error.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '401':
+          description: An authentication error occurred/invalid credentials.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '403':
+          description: Access to this resource is fordidden.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+        '404':
+          description: Token was not found.
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              description:
+                type: string
+      security:
+        - basicAuth: []
