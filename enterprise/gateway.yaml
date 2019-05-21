@@ -1333,7 +1333,7 @@ components:
       properties:
         css:
           description: URL to merchant style sheet. **HTTPS protocol is required.**
-          example: https://developer.hipay.com/misc/simulator/css2.css
+          example: https://developer.hipay.com/misc/simulator/css-responsive.css
           type: string
           x-sort: 30
         display_selector:
