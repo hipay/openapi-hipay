@@ -1081,7 +1081,7 @@ paths:
           x-is-map: false
           description: The unique identifier of the transaction.
           type: string
-          value: '800000420435'
+          value: '800000074698'
         - name: operation
           description: The operation to perform on the transaction.
           enum:
@@ -1438,7 +1438,7 @@ paths:
           x-is-map: false
           description: Merchant unique order id. Return all the transactions related to an order id.
           type: string
-          value: ORDER_1487239265080
+          value: ORDER_1524236552907
       responses:
         '200':
           description: Transactions retrieved successfully.
