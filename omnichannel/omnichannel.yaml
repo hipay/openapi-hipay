@@ -1081,7 +1081,7 @@ paths:
           x-is-map: false
           description: The unique identifier of the transaction.
           type: string
-          value: '800000074698'
+          value: '800000420435'
         - name: operation
           description: The operation to perform on the transaction.
           enum:
@@ -2165,7 +2165,7 @@ paths:
           x-is-map: false
           description: The unique identifier of the transaction.
           type: string
-          value: '800000420435'
+          value: '800000074698'
       responses:
         '200':
           description: Transaction retrieved successfully.
