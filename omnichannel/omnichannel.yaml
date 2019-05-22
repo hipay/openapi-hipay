@@ -87,7 +87,6 @@ paths:
           x-uniqId: true
           description: Unique order ID.
           type: string
-          value: ORDER_ID-XXX
         - name: operation
           in: formData
           required: true
@@ -104,6 +103,7 @@ paths:
             - Sale
           schema:
             default: Authorization
+          value: Sale
         - name: description
           in: formData
           required: true
@@ -116,6 +116,7 @@ paths:
           in: formData
           schema:
             default: EUR
+          value: EUR
           required: true
           x-is-map: false
           description: Base currency for this order. This three-character currency code complies with ISO 4217.
@@ -296,14 +297,15 @@ paths:
           required: true
           x-is-map: false
           schema:
-            default: 10
+            default: "10"
           description: |
             Electronic Commerce Indicator (ECI).
 
             - `10`: Point of sale payment
           type: string
           enum:
-            - 10
+            - "10"
+          value: "10"
         - name: initialize_payment_terminal
           in: formData
           required: true
@@ -321,6 +323,7 @@ paths:
             - 1
           schema:
             default: 1
+          value: 1
         - name: payment_terminal_id
           in: formData
           required: false
@@ -346,6 +349,7 @@ paths:
             - web
           schema:
             default: store
+          value: store
         - name: pos_transaction_lifetime
           in: formData
           required: false
@@ -358,6 +362,7 @@ paths:
           minimum: 30
           schema:
             default: 30
+          value: 30
       responses:
         '200':
           description: Order successfully created and transaction executed.
@@ -1088,6 +1093,7 @@ paths:
           type: string
           schema:
             default: refund
+          value: refund
         - name: amount
           in: formData
           required: false
@@ -1432,7 +1438,7 @@ paths:
           x-is-map: false
           description: Merchant unique order id. Return all the transactions related to an order id.
           type: string
-          value: ORDER_1487239265080
+          value: ORDER_1524236552907
       responses:
         '200':
           description: Transactions retrieved successfully.
@@ -2159,7 +2165,7 @@ paths:
           x-is-map: false
           description: The unique identifier of the transaction.
           type: string
-          value: '800000420435'
+          value: '800000074698'
       responses:
         '200':
           description: Transaction retrieved successfully.
