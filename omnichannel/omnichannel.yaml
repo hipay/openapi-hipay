@@ -87,7 +87,6 @@ paths:
           x-uniqId: true
           description: Unique order ID.
           type: string
-          value: ORDER_ID-XXX
         - name: operation
           in: formData
           required: true
@@ -104,6 +103,7 @@ paths:
             - Sale
           schema:
             default: Authorization
+          value: Sale
         - name: description
           in: formData
           required: true
@@ -304,6 +304,7 @@ paths:
           type: string
           enum:
             - 10
+          value: 10
         - name: initialize_payment_terminal
           in: formData
           required: true
@@ -320,7 +321,8 @@ paths:
             - 0
             - 1
           schema:
-            default: 1
+            default: 
+          value: 1
         - name: payment_terminal_id
           in: formData
           required: false
@@ -346,6 +348,7 @@ paths:
             - web
           schema:
             default: store
+          value: store
         - name: pos_transaction_lifetime
           in: formData
           required: false
@@ -358,6 +361,7 @@ paths:
           minimum: 30
           schema:
             default: 30
+          value: 30
       responses:
         '200':
           description: Order successfully created and transaction executed.

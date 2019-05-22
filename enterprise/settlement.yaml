@@ -29,7 +29,7 @@ info:
     All requests to HiPay Enterprise API require you to authenticate using the HTTP *Basic Authentication* to convey your identity. Your API credentials can be found in your HiPay Enterprise back office in the Integration section. Most HTTP clients (including web-browsers) have built-in support for HTTP Basic Authentication. If not, the following header must be included in all HTTP requests.
 
     `Authorization: Basic base64("<API login>:<API password>")`
-host: api.hipay-tpp.com
+host: stage-api.hipay-tpp.com
 basePath: /v1
 securityDefinitions:
   basicAuth:
