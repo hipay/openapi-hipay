@@ -14,6 +14,6 @@ This repository only contains the latest version of our API specification groupe
 
 There are multiple ways you can use the OpenAPI specification to explore the HiPay API:
 
-- If you want to see the OpenAPI specification in action, please visit the [HiPay API Developer portal](https://developer.hipay.com/).
+- If you want to see the OpenAPI specification in action, please visit the [HiPay Developer portal](https://developer.hipay.com/).
 - If you prefer to use the classic Swagger toolset, upload these specifications to the [Swagger Editor](http://editor.swagger.io/) or [SwaggerHub](https://swagger.io/tools/swaggerhub/).
 - Also we recommend you use [Postman](https://www.getpostman.com/postman) to import the OpenAPI specification and create your personal collection of requests.
