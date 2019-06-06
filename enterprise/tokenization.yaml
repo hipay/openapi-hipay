@@ -88,7 +88,13 @@ paths:
           pattern: |
             (\d{3})|(\d{4})
         - name: multi_use
-          description: Indicates if the token should be generated either for a single-use. or a multi-use.
+          description: |
+            Indicates the tokenization module whether the payment card token should be generated either for a single-use or a multi-use.
+            Possible values:
+            - `0`: Generates a single-use token
+            - `1`: Generates a multi-use token
+
+            While a single-use token is typically generated for a short time and for processing a single transaction, multi-use tokens are generally generated.
           in: formData
           required: false
           x-is-map: false
