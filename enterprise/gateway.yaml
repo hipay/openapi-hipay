@@ -66,24 +66,24 @@ paths:
     post:
       tags:
       - payments
-      summary: Creates a secure payment page to which you can redirect your customer
-        to proceed checkout
+      summary: Creates a secure payment page which you can redirect your customer
+        to, in order to proceed checkout
       description: |2-
 
-         This service allows you to **redirect your user to a payment page
+         This service allows you to **redirect your customer to a payment page
         (hosted by HiPay)** in order to proceed checkout. This service creates
         an order and returns a forward URL. This forward URL is dedicated to
         display a payment page with your CSS and validated payment products.
-        After payment form validation, the checkout is processed and the user is
+        After payment form validation, the checkout is processed and the customer is
         being returned to your website.
 
-        According to transaction state and `authentication_indicator` parameter (see below), the user will be redirected either to the accept or the decline page.
+        According to transaction state and `authentication_indicator` parameter (see below), the customer will be redirected either to the accept or the decline page.
 
         There are two strategies for implementing this service:
 
         ### Hosted: Full redirection mode
 
-        Once the payment page is created, you redirect your user to it. Your user is redirected back to your website once the transaction si executed.
+        Once the payment page is created, you redirect your customer to it. Your customer is redirected back to your website once the transaction si executed.
 
         ### iFrame mode
 
@@ -1119,38 +1119,34 @@ components:
       description: HPayment model
       required:
       - orderid
-      - operation
       - description
       - currency
       - amount
-      - accept_url
-      - decline_url
-      - pending_url
-      - exception_url
-      - cancel_url
-      - firstname
-      - lastname
-      - eci
       properties:
         payment_product_list:
           description: |2-
 
              The list of payment products to display on the payment page.
 
-            - `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`
+            - `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`, `itau`, `payshop`, `ukash`, `webmoney-transfer`, `elo-card`, `carte-cadeau`, `safetypay`, `skrill`, `bnpp-4xcb`, `bnpp-3xcb`, `discover`, `banco-do-brasil`, `bradesco`, `caixa`, `multibanco`, `cofinoga`, `hipercard`, `santander-home-banking`, `santander-cash`, `banamex`, `bbva-bancomer`, `credit-long`, `carte-titre-restaurant`, `alipay-ecommerce`, `divido`, `bacs`, `wechatpay`, `klarnacheckout`, `cup`, `bancontactqrcode`
           type: string
           example: mastercard,visa,american-express
           x-sort: 20
         payment_product_category_list:
-          description: "\n The categories of payment products to be displayed on the\
-            \ payment page.\n\n- `credit-card`, `debit-card`, `realtime-banking`,\
-            \ `ewallet`\n     *     "
+          description: |2-
+
+             The categories of payment products to be displayed on the payment page.
+
+            - `credit-card`, `debit-card`, `realtime-banking`, `ewallet`, `prepaid-card`, `open-invoice`, `credit-consumption`
           type: string
           enum:
           - credit-card
           - debit-card
           - realtime-banking
           - ewallet
+          - prepaid-card
+          - open-invoice
+          - credit-consumption
           example: credit-card
           additionalProperties:
             default: credit-card
@@ -1163,12 +1159,18 @@ components:
         template:
           description: |-
             The template name. Possible values:
-              - `basic-js` for a full page redirection
-              - `iframe-js` for an iframe integration
+            - `basic-js` : Template with customizable CSS
+            - `basic` [Deprecated] : Template with customizable CSS
+            - `iframe-js` : Template with hosted iFrame integration
+            - `iframe` [Deprecated] : Template with hosted iFrame integration
+            - `autodetection` : Automatic detection of the brand of the card, if the merchant has the option
           type: string
           enum:
           - basic-js
           - iframe-js
+          - autodetection
+          - basic
+          - iframe
           example: basic-js
           x-sort: 35
         merchant_display_name:
@@ -1188,19 +1190,6 @@ components:
           - 1
           example: '1'
           x-sort: 45
-        multi_use:
-          description: |-
-            Indicates the tokenization module whether the payment card token should be generated either for a single-use or a multi-use.
-                                    Possible values:
-              - `1`: Generates a multi-use token
-              - `0`: Generates a single-use token
-                While a single-use token is typically generated for a short time and for processing a single transaction, multi-use tokens are generally generated
-          type: integer
-          enum:
-          - 0
-          - 1
-          example: '0'
-          x-sort: 50
         time_limit_to_pay:
           description: 'The time limit to pay allows you to specify the validity period
             of a payment page in seconds starting from the moment the payment link
@@ -1232,6 +1221,7 @@ components:
             | `cancel` | A request instructing the payment gateway to cancel a previously authorized transaction. Only authorized transactions can be cancelled, captured transactions must be refunded. |
             | `acceptChallenge` | A request instructing the payment gateway to accept a previously challenged transaction. |
             | `denyChallenge` | A request instructing the payment gateway to deny a previously challenged transaction. |
+            | `finalize` | A request instructing the payment gateway to finalize an asynchronous operation. |
           type: string
           enum:
           - capture
@@ -1239,13 +1229,178 @@ components:
           - cancel
           - acceptChallenge
           - denyChallenge
+          - finalize
           example: capture
-        basket:
-          description: |-
-            Shopping cart details. **You must send only items that must be captured or refunded.**
-
-            Please refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation.
+        currency:
+          description: Base currency for this order. This three-character currency
+            code complies with ISO 4217.
           type: string
+          enum:
+          - FRF
+          - SKK
+          - EEK
+          - TMT
+          - AED
+          - AFN
+          - ALL
+          - AMD
+          - ANG
+          - AOA
+          - ARS
+          - AUD
+          - AWG
+          - AZN
+          - BAM
+          - BBD
+          - BDT
+          - BGN
+          - BHD
+          - BIF
+          - BMD
+          - BND
+          - BOB
+          - BRL
+          - BSD
+          - BTN
+          - BWP
+          - BYR
+          - BZD
+          - CAD
+          - CDF
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CUC
+          - CUP
+          - CVE
+          - CZK
+          - DJF
+          - DKK
+          - DOP
+          - DZD
+          - EGP
+          - ERN
+          - ETB
+          - EUR
+          - FJD
+          - FKP
+          - GBP
+          - GEL
+          - GHS
+          - GIP
+          - GMD
+          - GNF
+          - GTQ
+          - GYD
+          - HKD
+          - HNL
+          - HRK
+          - HTG
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - IQD
+          - IRR
+          - ISK
+          - JMD
+          - JOD
+          - JPY
+          - KES
+          - KGS
+          - KHR
+          - KMF
+          - KPW
+          - KRW
+          - KWD
+          - KYD
+          - KZT
+          - LAK
+          - LBP
+          - LKR
+          - LRD
+          - LSL
+          - LTL
+          - LVL
+          - LYD
+          - MAD
+          - MDL
+          - MGA
+          - MKD
+          - MMK
+          - MNT
+          - MOP
+          - MRO
+          - MUR
+          - MVR
+          - MWK
+          - MXN
+          - MYR
+          - MZN
+          - NAD
+          - NGN
+          - NIO
+          - NOK
+          - NPR
+          - NZD
+          - OMR
+          - PAB
+          - PEN
+          - PGK
+          - PHP
+          - PKR
+          - PLN
+          - PYG
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - RWF
+          - SAR
+          - SBD
+          - SCR
+          - SDG
+          - SEK
+          - SGD
+          - SHP
+          - SLL
+          - SOS
+          - SRD
+          - STD
+          - SVC
+          - SYP
+          - SZL
+          - THB
+          - TJS
+          - TND
+          - TOP
+          - TRY
+          - TTD
+          - TWD
+          - TZS
+          - UAH
+          - UGX
+          - USD
+          - UYU
+          - UZS
+          - VEF
+          - VND
+          - VUV
+          - TMM
+          - WST
+          - XAF
+          - XCD
+          - XOF
+          - XPF
+          - YER
+          - ZAR
+          - ZMK
+          - ZWL
+          example: EUR
+          additionalProperties:
+            default: EUR
         amount:
           description: Amount is required for partial maintenances. Do not specify
             amount for full captures or refunds.
@@ -1256,6 +1411,22 @@ components:
             with the notifications related to this operation.
           type: string
           example: 204OJ23LKJ234
+        basket:
+          description: |-
+            Shopping cart details. **You must send only items that must be captured or refunded.**
+
+            Please refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation.
+          type: string
+        sub_transaction_reference:
+          description: Number of the subtransaction to be refunded.
+          type: string
+          example: '134470136955'
+        source:
+          description: "To identify the origin of the transaction. Here are the authorized\
+            \ values for source property: \n\n- `AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`,\
+            \ `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`"
+          type: string
+          example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
       type: object
     Operation:
       title: Operation
@@ -1338,6 +1509,127 @@ components:
           example: EUR
           x-sort: 65
       type: object
+    InputOrder:
+      title: InputOrder
+      description: InputOrder model
+      required:
+      - orderid
+      - payment_product
+      - description
+      - currency
+      - amount
+      - cardtoken
+      properties:
+        payment_product:
+          description: The payment method used to proceed checkout. Depending on the
+            payment product, parameters specific to the payment method are required.
+            The list of payment products to display on the payment page.
+          type: string
+          enum:
+          - visa
+          - mastercard
+          - maestro
+          - cb
+          - 3xcb
+          - 3xcb-no-fees
+          - 4xcb
+          - 4xcb-no-fees
+          - american-express
+          - bank-transfer
+          - bcmc
+          - bcmc-mobile
+          - cbc-online
+          - dexia-directnet
+          - giropay
+          - ideal
+          - ing-homepay
+          - kbc-online
+          - klarnainvoice
+          - paypal
+          - paysafecard
+          - payulatam
+          - przelewy24
+          - qiwi-wallet
+          - sdd
+          - sisal
+          - sofort-uberweisung
+          - yandex
+          - aura
+          - boleto-bancario
+          - oxxo
+          - itau
+          - payshop
+          - dankort
+          - postepay
+          - ukash
+          - mercadopago
+          - webmoney-transfer
+          - diners
+          - jcb
+          - dcb-cz-tmobile
+          - dcb-cz-o2
+          - dcb-cz-vodafone
+          - dcb-at-tmobile
+          - dcb-at-a1
+          - dcb-at-orange
+          - dcb-at-drei
+          - dcb-be-mobistar
+          - dcb-ch-easypay
+          - dcb-sg-singtel
+          - dcb-it-mobilepay
+          - sct
+          - elo-card
+          - dcb-be-proximus
+          - postfinance-card
+          - postfinance-efinance
+          - carte-cadeau
+          - mybank
+          - safetypay
+          - skrill
+          - bnpp-4xcb
+          - bnpp-3xcb
+          - unionpay
+          - alipay-pos
+          - multi-payment
+          - discover
+          - sepa-refund-transfer
+          - banco-do-brasil
+          - bradesco
+          - carte-accord
+          - caixa
+          - edankort
+          - multibanco
+          - dcb-es-pagosmovistar
+          - cashu
+          - moneybookers
+          - afterpay
+          - cofinoga
+          - aurore
+          - 1eurocom
+          - hipercard
+          - santander-home-banking
+          - santander-cash
+          - banamex
+          - bbva-bancomer
+          - ecarte-bleue
+          - credit-long
+          - carte-titre-restaurant
+          - alipay-ecommerce
+          - divido
+          - bacs
+          - tpe
+          - wechatpay
+          - klarnacheckout
+          - sofort-lastschrift
+          - sepa-direct-debit
+          - cup
+          - bancontactqrcode
+          example: visa
+          x-sort: 20
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Common'
+      - $ref: '#/components/schemas/Order'
     Error:
       title: Error
       description: Error model
@@ -1375,8 +1667,8 @@ components:
         operation:
           description: |-
             Transaction type:
-              - `Sale` indicates that the transaction is automatically submitted for capture.
-              - `Authorization` indicates that this transaction is sent for authorization only.
+            - `Sale` indicates that the transaction is automatically submitted for capture.
+            - `Authorization` indicates that this transaction is sent for authorization only.
           type: string
           enum:
           - Authorization
@@ -1397,19 +1689,24 @@ components:
         description:
           description: The order short description.
           type: string
-          example: A super short description here.
+          example: Dell Inspiron 15 3583 (i3583-3112BLK-PFR)
           x-sort: 60
         long_description:
           description: Additional order description. You can show this description
             in HiPay payment page if desired.
           type: string
-          example: A super long description here...
+          example: Intel Core i3-8145U 8 Go SSD 256 Go 15.6 LED Full HD Wi-Fi AC/Bluetooth
+            Webcam Windows 10 Famille 64 bits
           x-sort: 65
         currency:
           description: Base currency for this order. This three-character currency
             code complies with ISO 4217.
           type: string
           enum:
+          - FRF
+          - SKK
+          - EEK
+          - TMT
           - AED
           - AFN
           - ALL
@@ -1458,7 +1755,6 @@ components:
           - FKP
           - GBP
           - GEL
-          - GGP
           - GHS
           - GIP
           - GMD
@@ -1472,12 +1768,10 @@ components:
           - HUF
           - IDR
           - ILS
-          - IMP
           - INR
           - IQD
           - IRR
           - ISK
-          - JEP
           - JMD
           - JOD
           - JPY
@@ -1495,6 +1789,8 @@ components:
           - LKR
           - LRD
           - LSL
+          - LTL
+          - LVL
           - LYD
           - MAD
           - MDL
@@ -1538,7 +1834,6 @@ components:
           - SHP
           - SLL
           - SOS
-          - SPL
           - SRD
           - STD
           - SVC
@@ -1546,12 +1841,10 @@ components:
           - SZL
           - THB
           - TJS
-          - TMT
           - TND
           - TOP
           - TRY
           - TTD
-          - TVD
           - TWD
           - TZS
           - UAH
@@ -1562,16 +1855,16 @@ components:
           - VEF
           - VND
           - VUV
+          - TMM
           - WST
           - XAF
           - XCD
-          - XDR
           - XOF
           - XPF
           - YER
           - ZAR
-          - ZMW
-          - ZWD
+          - ZMK
+          - ZWL
           example: EUR
           additionalProperties:
             default: EUR
@@ -1699,6 +1992,56 @@ components:
           example: '{"internal_reference":"ORD_987465","customer_first_order":true,"other_sample_parameter":"Other
             sample value"}'
           x-sort: 155
+        cdata1:
+          description: Custom data 1. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata2:
+          description: Custom data 2. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata3:
+          description: Custom data 3. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata4:
+          description: Custom data 4. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata5:
+          description: Custom data 5. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata6:
+          description: Custom data 6. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata7:
+          description: Custom data 7. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata8:
+          description: Custom data 8. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata9:
+          description: Custom data 9. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 156
+        cdata10:
+          description: Custom data 10. Deprecated, please use *custom_data* parameter.
+          type: string
+          deprecated: true
+          x-sort: 157
         eci:
           description: |2-
 
@@ -1717,6 +2060,7 @@ components:
             - `2`: MO/TO – Recurring
             - `7`: E-commerce with SSL/TLS Encryption
             - `9`: Recurring E-commerce
+            - `10`: TPE payment
 
             A default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.
 
@@ -1771,6 +2115,54 @@ components:
           additionalProperties:
             default: '0'
           x-sort: 15
+        expiration_limit:
+          description: |-
+            **This parameter is specific to provider COMPRAFACIL.**
+
+            Validity period of the payment code in days.
+          type: integer
+          example: '3'
+          x-sort: 206
+        payment_connectivity:
+          description: |-
+            **This parameter is specific to providers QIWIWALLET and DIMOCO.**
+
+            Origin of payment.
+          type: string
+          example: web
+          x-sort: 206
+        phone_operator:
+          description: |-
+            **This parameter is specific to providers DIMOCO and SINGTEL.**
+
+            Name of the mobile operator.
+          type: string
+          example: FASTWEB
+          x-sort: 206
+        prepaid_card_number:
+          description: |-
+            **This parameter is specific to provider ONEY (Gift Card).**
+
+            Gift Card number.
+          type: string
+          example: 6086300010000022383=35121011031363497
+          x-sort: 206
+        prepaid_card_security_code:
+          description: |-
+            **This parameter is specific to provider ONEY (Gift Card).**
+
+            Gift Card CVC.
+          type: string
+          example: '123'
+          x-sort: 206
+        website_id:
+          description: |-
+            **This parameter is specific to providers PAGOSMOVISTAR and MOBILEPAY, only into the discover.**
+
+            Website identifier.
+          type: string
+          example: STWAK4897048
+          x-sort: 206
       type: object
     Order:
       title: Order
@@ -1811,8 +2203,12 @@ components:
           example: '19880612'
           x-sort: 220
         gender:
-          description: "\nGender of the customer:\n\n- `M`: male\n- `F`: female\n\
-            - `U`: unknown\n     *     "
+          description: |-
+            Gender of the customer:
+
+            - `M`: male
+            - `F`: female
+            - `U`: unknown
           type: string
           enum:
           - U
@@ -1832,12 +2228,25 @@ components:
           type: string
           example: Doe
           x-sort: 235
+        card_holder:
+          description: |-
+            **This parameter is specific to provider PAYON.**
+
+            The customer's card holder.
+          type: string
+          example: Cathy Doe
+          x-sort: 236
         recipientinfo:
           description: Additional information about the customer (e.g., quality or
             function, company name, department, etc.).
           type: string
           example: Dr.
           x-sort: 240
+        house_extension:
+          description: House extension of the customer.
+          type: string
+          example: B
+          x-sort: 243
         house_number:
           description: House number of the customer.
           type: string
@@ -1939,7 +2348,7 @@ components:
         source:
           description: "To identify the origin of the transaction. Here are the authorized\
             \ values for source property: \n\n- `AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`,\
-            \ `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`\n     "
+            \ `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`"
           type: string
           example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
           x-sort: 146
@@ -1956,7 +2365,7 @@ components:
 
             **This parameter is specific to the Qiwi Wallet payment product.**
 
-            The Qiwi user's ID, to whom the invoice is issued. It is the user's phone number, in international format.
+            The Qiwi user's ID, whom the invoice is issued to. It is the user's phone number, in international format.
           type: string
           example: '33670985712'
           x-sort: 170
@@ -2055,10 +2464,14 @@ components:
             The delivery method.
           type: string
           enum:
-          - CARRIER
+          - EXPRESS24H
+          - EXPRESS48H
+          - STORE
           - STORE24H
+          - CARRIER
           - CARRIER24H
           - RELAYPOINT
+          - RELAYPOINT24H
           example: CARRIER
           x-sort: 185
         carrier_description:
@@ -2107,6 +2520,27 @@ components:
           type: string
           example: BNP
           x-sort: 205
+        sales_channel:
+          description: |-
+            Sales channel :
+
+            - `0`: Default.
+            - `1`: Ecommerce API.
+            - `2`: Hosted Payment Page.
+            - `3`: POS.
+          type: string
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          - '3'
+          example: ''
+          x-sort: 205
+        soft_descriptor:
+          description: Billing descriptor for machine learning.
+          type: string
+          example: Dell Inspiron 15 3583 (i3583-3112BLK-PFR)
+          x-sort: 205
         cardtoken:
           description: |2-
 
@@ -2114,71 +2548,14 @@ components:
 
             This is the token obtained from the HiPay Enterprise Secure Vault API when tokenizing a credit or debit card. To generate a token, please refer to the [HiPay Enterprise Tokenization API documentation](/doc-api/enterprise/token/#/tokenization/createToken).
           type: string
-          example: f39bfab2b6c96fa30dcc0e55aa3da4125a49ab03
+          example: db0eef6bfd4cd30ae4e30dc46b89d375b977656d04249741d8b60f533ffa0020
           x-sort: 160
+        request_id:
+          description: The request ID linked to the token.
+          type: integer
+          example: '7879454'
+          x-sort: 161
       type: object
-    InputOrder:
-      title: InputOrder
-      description: InputOrder model
-      required:
-      - orderid
-      - operation
-      - payment_product
-      - description
-      - currency
-      - amount
-      - accept_url
-      - decline_url
-      - pending_url
-      - exception_url
-      - cancel_url
-      - firstname
-      - lastname
-      - eci
-      properties:
-        payment_product:
-          description: The payment method used to proceed checkout. Depending on the
-            payment product, parameters specific to the payment method are required.
-            The list of payment products to display on the payment page.
-          type: string
-          enum:
-          - visa
-          - mastercard
-          - maestro
-          - cb
-          - 3xcb
-          - 3xcb-no-fees
-          - 4xcb
-          - 4xcb-no-fees
-          - american-express
-          - bank-transfer
-          - bcmc
-          - bcmc-mobile
-          - cbc-online
-          - dexia-directnet
-          - giropay
-          - ideal
-          - ing-homepay
-          - kbc-online
-          - klarnainvoice
-          - paypal
-          - paysafecard
-          - payulatam
-          - przelewy24
-          - qiwi-wallet
-          - sdd
-          - sisal
-          - sofort-uberweisung
-          - yandex
-          - aura
-          - boleto-bancario
-          - oxxo
-          example: visa
-          x-sort: 20
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Common'
-      - $ref: '#/components/schemas/Order'
     OrderResponse:
       title: Order Response
       description: Order Response model
