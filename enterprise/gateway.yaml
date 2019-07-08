@@ -1689,14 +1689,13 @@ components:
         description:
           description: The order short description.
           type: string
-          example: Dell Inspiron 15 3583 (i3583-3112BLK-PFR)
+          example: A super short description here...
           x-sort: 60
         long_description:
           description: Additional order description. You can show this description
             in HiPay payment page if desired.
           type: string
-          example: Intel Core i3-8145U 8 Go SSD 256 Go 15.6 LED Full HD Wi-Fi AC/Bluetooth
-            Webcam Windows 10 Famille 64 bits
+          example: A super long description here...
           x-sort: 65
         currency:
           description: Base currency for this order. This three-character currency
