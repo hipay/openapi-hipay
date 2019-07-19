@@ -261,28 +261,6 @@ paths:
           in: formData
           name: email
           type: string
-        - description: Merchant group code to apply to account.
-          in: formData
-          name: merchant_group_code
-          type: string
-          value: devportaltest
-        - description: 'The code of the entity to which the account is to be linked (HiPay will inform the merchant the entity to use) (ex. : direct, wallet).'
-          in: formData
-          name: entity_code
-          type: string
-        - description: |-
-            - `0` = personal account,
-
-            - `1` = business account.
-          enum:
-            - 0
-            - 1
-          in: formData
-          name: account_type
-          type: string
-          schema:
-            default: 0
-          value: 0
         - description: Alias of created account.
           in: formData
           name: alias
