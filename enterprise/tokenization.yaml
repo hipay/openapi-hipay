@@ -119,42 +119,7 @@ paths:
         '201':
           description: Token successfully created.
           schema:
-            type: object
-            required:
-              - card_token
-              - request_id
-              - brand
-              - pan
-              - card_holder
-              - card_expiry_month
-              - card_expiry_year
-              - issuer
-              - country
-            properties:
-              card_token:
-                type: string
-              request_id:
-                type: string
-              brand:
-                type: string
-              pan:
-                type: string
-              card_holder:
-                type: string
-              card_expiry_month:
-                type: string
-              card_expiry_year:
-                type: string
-              issuer:
-                type: string
-              country:
-                type: string
-              card_type:
-                type: string
-              card_category:
-                type: string
-              domestic_network:
-                type: string
+            $ref: "#/definitions/Token"
         '400':
           description: The request was rejected due to a validation error.
           schema:
@@ -230,42 +195,7 @@ paths:
         '200':
           description: Token successfully retrieved.
           schema:
-            type: object
-            required:
-              - card_token
-              - request_id
-              - brand
-              - pan
-              - card_holder
-              - card_expiry_month
-              - card_expiry_year
-              - issuer
-              - country
-            properties:
-              card_token:
-                type: string
-              request_id:
-                type: string
-              brand:
-                type: string
-              pan:
-                type: string
-              card_holder:
-                type: string
-              card_expiry_month:
-                type: string
-              card_expiry_year:
-                type: string
-              issuer:
-                type: string
-              country:
-                type: string
-              card_type:
-                type: string
-              card_category:
-                type: string
-              domestic_network:
-                type: string
+            $ref: "#/definitions/Token"
         '400':
           description: The request was rejected due to a validation error.
           schema:
@@ -379,40 +309,27 @@ paths:
           schema:
             type: object
             required:
-              - card_token
+              - token
               - request_id
-              - brand
-              - pan
               - card_holder
               - card_expiry_month
               - card_expiry_year
-              - issuer
-              - country
             properties:
-              card_token:
+              token:
                 type: string
+                example: "85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388"
               request_id:
                 type: string
-              brand:
-                type: string
-              pan:
-                type: string
+                example: "0"
               card_holder:
                 type: string
+                example: "Cathy Doe"
               card_expiry_month:
                 type: string
+                example: "02"
               card_expiry_year:
                 type: string
-              issuer:
-                type: string
-              country:
-                type: string
-              card_type:
-                type: string
-              card_category:
-                type: string
-              domestic_network:
-                type: string
+                example: "2025"
         '400':
           description: The request was rejected due to a validation error.
           schema:
@@ -475,3 +392,75 @@ paths:
                 type: string
       security:
         - basicAuth: []
+definitions:
+  Token:
+    type: object
+    required:
+      - token
+      - request_id
+      - card_hash
+      - card_id
+      - brand
+      - pan
+      - card_holder
+      - card_expiry_month
+      - card_expiry_year
+      - issuer
+      - country
+    properties:
+      token:
+        type: string
+        example: "85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388"
+      request_id:
+        description: The request ID linked to the token.
+        type: string
+        example: "0"
+      card_hash:
+        type: string
+        example: "ce5f096fa6bc05989c170e7c96f94432660491bd"
+      card_id:
+        type: string
+        example: "96ada09f-a844-4956-9593-cb758630dac2"
+      brand:
+        description: Card brand. (e.g., Visa, MasterCard, American Express, JCB, Discover, Diners Club, Solo, Laser, Maestro).
+        type: string
+        example: "VISA"
+      pan:
+        description: Card number (up to 19 characters). Note that, due to the PCI DSS security standards, our system has to mask credit card numbers in any output (e.g., 549619******4769).
+        type: string
+        example: "400000xxxxxx0002"
+      card_holder:
+        description: Cardholder name.
+        type: string
+        example: "Cathy Doe"
+      card_expiry_month:
+        description: Card expiry month (2 digits).
+        type: string
+        example: "12"
+      card_expiry_year:
+        description: Card expiry year (4 digits).
+        type: string
+        example: "2025"
+      issuer:
+        description: Card issuing bank name. Do not rely on this value to remain static over time. Bank names may change over time due to acquisitions and mergers.
+        type: string
+        example: "BNP PARIBAS"
+      country:
+        description: Bank country code where card was issued. This two-letter country code complies with ISO 3166-1 (alpha 2).
+        type: string
+        example: "US"
+      domestic_network:
+        description: Card domestic network (if applicable, e.g. “cb”).
+        type: string
+        example: "cb"
+      card_type:
+        description: Type of the card. (e.g.; Debit card, Credit card, Charge card, ATM card ...)
+        type: string
+        example: "CREDIT"
+      card_category:
+        description: Category of the card. (e.g., Classic, Business, Electron, Gold ...)
+        type: string
+        example: "PURCHASING"
+      forbidden_issuer_country:
+        type: boolean
+        example: false
