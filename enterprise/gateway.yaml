@@ -1626,6 +1626,157 @@ components:
           - bancontactqrcode
           example: visa
           x-sort: 20
+        browser_info:
+          description: >-
+            **This parameter is specific to the PSD2.**
+
+
+            Browser Information
+
+            <hr>
+
+
+            ### java_enabled 
+
+            Boolean that represents the ability of the cardholder browser to execute Java.
+
+            ### javascript_enabled 
+
+            Boolean that represents the ability of the cardholder browser to execute JavaScript.
+
+            ### ipaddr
+
+            Customer's IP address.
+
+            ### http_accept
+
+            This element should contain the exact content of the HTTP Accept header as sent to the merchant from the customer's browser.
+
+            ### http_user agent 
+
+            This element should contain the exact content of the HTTP User-Agent header as sent to the merchant from the customer's browser.
+
+            ### language
+
+            Value representing the browser language as defined in IETF BCP47.
+
+            ### color_depth
+
+            Value representing the bit depth of the colour palette for displaying images, in bits per pixel.
+
+            - `1` : 1 bit
+
+            - `4` : 4 bits
+
+            - `8` : 8 bits
+
+            - `15` : 15 bits
+
+            - `16` : 16 bits
+
+            - `24` : 24 bits
+
+            - `32` : 32 bits
+
+            - `48` : 48 bits
+
+            ### screen_height 
+
+            Total height of the Cardholder’s screen in pixels.
+
+            ### screen_width 
+
+            Total width of the cardholder’s screen in pixels.
+
+            ### timezone 
+
+            Time-zone offset in minutes between UTC and the Cardholder.
+
+            ### device_fingerprint 
+
+            This element should contain the value of the ioBB hidden field.
+          type: object
+          required:
+            - language
+          properties:
+            java_enabled:
+              description: >-
+                Boolean that represents the ability of the cardholder browser to
+                execute Java.
+              type: boolean
+              example: true
+            javascript_enabled:
+              description: >-
+                Boolean that represents the ability of the cardholder browser to
+                execute JavaScript.
+              type: boolean
+              example: true
+            ipaddr:
+              description: Customer's IP address.
+              type: string
+              maximum: 45
+              example: 127.0.0.1
+            http_accept:
+              description: >-
+                This element should contain the exact content of the HTTP Accept
+                header as sent to the merchant from the customer's browser.
+              type: string
+              maximum: 2048
+              example: '*/*'
+            http_user_agent:
+              description: >-
+                This element should contain the exact content of the HTTP
+                User-Agent header as sent to the merchant from the customer's
+                browser.
+              type: string
+              maximum: 2048
+              example: Mozilla/4.0
+            language:
+              description: >-
+                Value representing the browser language as defined in IETF
+                BCP47.
+              type: string
+              minimum: 1
+              maximum: 8
+              example: fr-FR
+            color_depth:
+              description: >-
+                Value representing the bit depth of the colour palette for
+                displaying images, in bits per pixel.
+              type: integer
+              minimum: 1
+              maximum: 2
+              enum:
+                - 1
+                - 4
+                - 8
+                - 15
+                - 16
+                - 24
+                - 32
+                - 48
+              example: 1
+            screen_height:
+              description: Total height of the Cardholder’s screen in pixels.
+              type: integer
+              minimum: 1
+              maximum: 6
+            screen_width:
+              description: Total width of the cardholder’s screen in pixels.
+              type: integer
+              minimum: 1
+              maximum: 6
+            timezone:
+              description: >-
+                Time-zone offset in minutes between UTC and the Cardholder
+                browser local time.
+              type: string
+              minimum: 1
+              maximum: 5
+            device_fingerprint:
+              description: This element should contain the value of the ioBB hidden field.
+              type: string
+          x-sort: xxx
       type: object
       allOf:
       - $ref: '#/components/schemas/Common'
@@ -2554,6 +2705,457 @@ components:
           type: integer
           example: '7879454'
           x-sort: 161
+        previous_auth_info:
+          description: >-
+            **This parameter is specific to the PSD2.**
+
+
+            Information about the previous authentication transaction on the
+            merchant's side.
+
+            <hr>
+
+
+            <div class="parameter__name">transaction_reference</div>
+            <div class="parameter__type">string</div>
+
+
+            PSP reference about the previous authenticated transaction.
+          type: object
+          properties:
+            transaction_reference:
+              description: PSP reference about the previous authenticated transaction.
+              type: string
+              example: '800000987283'
+          x-sort: xxx
+        merchant_risk_statement:
+          description: >-
+            **This parameter is specific to the PSD2.**
+
+
+            Merchant's statement about the transaction he wants to proceed.
+
+            *
+              <div class="parameter__name">email_delivery_address</div>
+              <div class="parameter__type">string</div>
+
+              Email address to which the goods needs to be sent to.
+
+            *
+              <div class="parameter__name">delivery_time_frame</div>
+              <div class="parameter__type">integer</div>
+
+              Indicates when the goods are willing to be received by the customer.
+
+              - `1` : ELECTRONIC DELIVERY
+
+              - `2` : SAME DAY SHIPPING
+
+              - `3` : OVERNIGHT SHIPPING
+
+              - `4` : TWO DAY OR MORE SHIPPING
+
+            *
+              <div class="parameter__name">purchase_indicator</div>
+              <div class="parameter__type">integer</div>
+
+              Availabilty of the goods.
+
+              - `1` : MERCHANDISE AVAILABLE
+
+              - `2` : FUTURE AVAILABILITY
+
+            *
+              <div class="parameter__name">reorder_indicator</div>
+              <div class="parameter__type">integer</div>
+
+              Unicity of the order for the customer.
+
+              - `1` : FIRST TIME ORDERED
+
+              - `2` : REORDERED
+
+            *
+              <div class="parameter__name">shipping_indicator</div>
+              <div class="parameter__type">integer</div>
+
+              Address to whom the goods are to be sent.
+
+              - `1` : SHIP TO CARDHOLDER'S BILLING ADDRESS
+
+              - `2` : SHIP TO ANOTHER VERIFIED ADDRESS ON FILE WITH MERCHANT
+
+              - `3` : SHIP TO ADDRESS THAT IS DIFFERENT THAN THE CARDHOLDER'S BILLING ADDRESS
+
+              - `4` : SHIP TO STORE / PICK UP AT LOCAL STORE
+
+              - `5` : DIGITAL GOODS
+
+              - `6` : TRAVEL AND EVENT TICKETS, NOT SHIPPED
+
+              - `7` : OTHER (Gaming, digital services not shipped, emedia subscriptions
+
+            *  
+              <div class="parameter__name">gift_card</div>
+              <div class="parameter__type">object</div>
+
+              Information on order making throught a gift card.
+
+              *
+                <div class="parameter__name">amount</div>
+                <div class="parameter__type">integer</div>
+
+                Amount of the gift card.
+
+                <div class="parameter__name">count</div>
+                <div class="parameter__type">integer</div>
+
+                Total count of individual gift cards purchased.
+
+                <div class="parameter__name">currency</div>
+                <div class="parameter__type">string</div>
+
+                Currency of the gift card.
+          type: object
+          properties:
+            email_delivery_address:
+              description: Email address to which the goods needs to be sent to.
+              type: string
+              maximum: 254
+              example: jane.doe@test.com
+            delivery_time_frame:
+              description: >-
+                Indicates when the goods are willing to be received by the
+                customer.
+              type: integer
+              enum:
+                - 1
+                - 2
+                - 3
+                - 4
+              example: 1
+            purchase_indicator:
+              description: Availabilty of the goods.
+              type: integer
+              enum:
+                - 1
+                - 2
+              example: 1
+            pre_order_date:
+              description: >-
+                For a pre-ordered purchase, the expected date that the
+                merchandise will be available.
+              type: integer
+              maximum: 8
+              example: 20190925
+            reorder_indicator:
+              description: Unicity of the order for the customer.
+              type: integer
+              enum:
+                - 1
+                - 2
+              example: 1
+            shipping_indicator:
+              description: Address to whom the goods are to be sent.
+              type: integer
+              enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                - 6
+                - 7
+              example: 1
+            gift_card:
+              description: Information on order making throught a gift card.
+              type: object
+              properties:
+                amount:
+                  description: Amount of the gift card.
+                  type: number
+                  example: 15
+                count:
+                  description: Total count of individual gift cards purchased.
+                  type: integer
+                  example: 0
+                currency:
+                  description: Currency of the gift card.
+                  type: string
+                  example: EUR
+          x-sort: xxx
+        account_info:
+          description: >-
+            **This parameter is specific to the PSD2.**
+
+
+            Information about the customer's account on the merchant's website.
+
+            <hr>
+
+
+            ### customer
+
+            Customer's account information
+
+            #### account_change
+
+            Customer's last change on his account. (YYYYMMDD)
+
+            #### opening_account_date
+
+            Date when the customer created his account
+            on the merchant's website. (YYYYMMDD)
+
+            #### password_change
+
+            Date when the customer made a password change on
+            his account. (YYYYMMDD)
+
+            ### purchase
+
+            Customer's purchase information
+
+            #### count
+
+            Number of purchases with the customer's account during the
+            last six months.
+
+            #### card_stored_24h
+
+            Number of attempts to add a card into the
+            customer's account in the last 24 hours.
+
+            #### payment_attempts_24h
+
+            Number of transactions (successful and
+            abandoned) for this customer's account across all payment accounts
+            in the previous 24 hours.
+
+            #### payment_attempts_1y
+
+            Number of transactions (successful and
+            abandoned) for this customer's account across all payment accounts
+            in the previous year.
+
+            ### payment
+
+            Customer's payment information
+
+            #### enrollment_date
+
+            Date that the payment account was enrolled in the
+            cardholder’s account with the 3DS Requestor.(YYYYMMDD) 
+
+            ### shipping
+
+            Customer's payment information
+
+            #### shipping_used_date
+
+            Date when the shipping address used for this
+            transaction was first used. (YYYYMMDD)
+
+            #### address_usage_duration
+
+            Indicates when the shipping address used
+            for this transaction was first used with the merchant.
+
+            - `1` : THIS TRANSACTION
+
+            - `2` : LESS THAN 30 DAYS
+
+            - `3` : 30-60 DAYS
+
+            - `4` : MORE THAN 60 DAYS
+
+            #### name_indicator
+
+            Indicates if the Cardholder Name on the account is
+            identical to the shipping Name used for this transaction.
+
+            - `1` : Account Name Identical to Shipping Name 
+
+            - `2` : Account Name different than shipping Name
+
+            #### suspicious_activity
+
+            Indicates whether the merchant has
+            experienced suspicious activity (including previous fraud) on the
+            cardholder account.
+
+            - `1` : No suspicious activity has been observed
+
+            - `2` : Suspicious activity has been observed
+          type: object
+          properties:
+            customer:
+              description: Customer's account information
+              type: object
+              properties:
+                account_change:
+                  description: Customer's last change on his account. (YYYYMMDD)
+                  type: integer
+                  example: 20180507
+                opening_account_date:
+                  description: >-
+                    Date when the customer created his account on the merchant's
+                    website. (YYYYMMDD)
+                  type: integer
+                  example: 20180507
+                password_change:
+                  description: >-
+                    Date when the customer made a password change on his account.
+                    (YYYYMMDD)
+                  type: integer
+                  example: 20180507
+            purchase:
+              description: Customer's purchase information
+              type: object
+              properties:
+                count:
+                  description: >-
+                    Number of purchases with the customer's account during the
+                    last six months.
+                  type: integer
+                  maximum: 4
+                  example: 2
+                card_stored_24h:
+                  description: >-
+                    Number of attempts to add a card into the customer's account
+                    in the last 24 hours.
+                  type: integer
+                  maximum: 3
+                  example: 0
+                payment_attempts_24h:
+                  description: >-
+                    Number of transactions (successful and abandoned) for this
+                    customer's account across all payment accounts in the
+                    previous 24 hours.
+                  type: integer
+                  maximum: 3
+                  example: 0
+                payment_attempts_1y:
+                  description: >-
+                    Number of transactions (successful and abandoned) for this
+                    customer's account across all payment accounts in the
+                    previous year.
+                  type: integer
+                  maximum: 3
+                  example: 0
+            payment:
+              description: Customer's payment information
+              type: object
+              properties:
+                enrollment_date:
+                  description: >-
+                    Date that the payment account was enrolled in the
+                    cardholder’s account with the 3DS Requestor.(YYYYMMDD)
+                  type: integer
+                  example: 20180507
+            shipping:
+              description: Customer's shipping information
+              type: object
+              properties:
+                shipping_used_date:
+                  description: >-
+                    Date when the shipping address used for this transaction was
+                    first used. (YYYYMMDD)
+                  type: integer
+                  example: 20180507
+                address_usage_duration:
+                  description: >-
+                    Indicates when the shipping address used for this
+                    transaction was first used with the merchant.
+                  type: integer
+                  enum:
+                    - 1
+                    - 2
+                    - 3
+                    - 4
+                  example: 1
+                name_indicator:
+                  description: >-
+                    Indicates if the Cardholder Name on the account is identical
+                    to the shipping Name used for this transaction.
+                  type: integer
+                  enum:
+                    - 1
+                    - 2
+                  example: 1
+                suspicious_activity:
+                  description: >-
+                    Indicates whether the merchant has experienced suspicious
+                    activity (including previous fraud) on the cardholder
+                    account.
+                  type: integer
+                  enum:
+                    - 1
+                    - 2
+                  example: 1
+          x-sort: xxx
+        device_channel:
+          description: >-
+            **This parameter is specific to the PSD2.**
+
+
+            Channel through which the transaction is being processed. By default
+            this value is set to 2.            
+
+            - `1` : App-based (APP)
+
+            - `2` : Browser (BRW)"
+
+            - `3` : 3DS Requestor Initiated (3RI)
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 1
+          x-sort: xxx
+        recurring_info:
+          description: >-
+            **This parameter is specific to the PSD2.**
+
+
+            Information on recurring transaction
+
+            <hr>
+
+
+            ### expiration date
+
+            Date after which no further authorisations shall
+            be performed. (YYYYMMDD)
+
+            ### frequency
+
+            Indicates the minimum number of days between
+            authorisations.
+          type: object
+          required:
+            - expiration_date
+            - frequency
+          properties:
+            expiration_date:
+              description: >-
+                Date after which no further authorisations shall be performed.
+                (YYYYMMDD)
+              type: integer
+              example: 20180507
+            frequency:
+              description: Indicates the minimum number of days between authorisations.
+              type: integer
+              example: 31
+          x-sort: xxx
+        exemption:
+          description: |
+            **This parameter is specific to the PSD2.**
+
+            If you have further questions on exemption, please contact Hipay.
+          type: object
+          x-sort: xxx
       type: object
     OrderResponse:
       title: Order Response
@@ -2963,4 +3565,3 @@ tags:
 externalDocs:
   description: Find out more about HiPay
   url: https://developer.hipay.com/
-
