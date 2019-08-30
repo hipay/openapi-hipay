@@ -1526,104 +1526,104 @@ components:
             The list of payment products to display on the payment page.
           type: string
           enum:
-          - visa
-          - mastercard
-          - maestro
-          - cb
-          - 3xcb
-          - 3xcb-no-fees
-          - 4xcb
-          - 4xcb-no-fees
-          - american-express
-          - bank-transfer
-          - bcmc
-          - bcmc-mobile
-          - cbc-online
-          - dexia-directnet
-          - giropay
-          - ideal
-          - ing-homepay
-          - kbc-online
-          - klarnainvoice
-          - paypal
-          - paysafecard
-          - payulatam
-          - przelewy24
-          - qiwi-wallet
-          - sdd
-          - sisal
-          - sofort-uberweisung
-          - yandex
-          - aura
-          - boleto-bancario
-          - oxxo
-          - itau
-          - payshop
-          - dankort
-          - postepay
-          - ukash
-          - mercadopago
-          - webmoney-transfer
-          - diners
-          - jcb
-          - dcb-cz-tmobile
-          - dcb-cz-o2
-          - dcb-cz-vodafone
-          - dcb-at-tmobile
-          - dcb-at-a1
-          - dcb-at-orange
-          - dcb-at-drei
-          - dcb-be-mobistar
-          - dcb-ch-easypay
-          - dcb-sg-singtel
-          - dcb-it-mobilepay
-          - sct
-          - elo-card
-          - dcb-be-proximus
-          - postfinance-card
-          - postfinance-efinance
-          - carte-cadeau
-          - mybank
-          - safetypay
-          - skrill
-          - bnpp-4xcb
-          - bnpp-3xcb
-          - unionpay
-          - alipay-pos
-          - multi-payment
-          - discover
-          - sepa-refund-transfer
-          - banco-do-brasil
-          - bradesco
-          - carte-accord
-          - caixa
-          - edankort
-          - multibanco
-          - dcb-es-pagosmovistar
-          - cashu
-          - moneybookers
-          - afterpay
-          - cofinoga
-          - aurore
-          - 1eurocom
-          - hipercard
-          - santander-home-banking
-          - santander-cash
-          - banamex
-          - bbva-bancomer
-          - ecarte-bleue
-          - credit-long
-          - carte-titre-restaurant
-          - alipay-ecommerce
-          - divido
-          - bacs
-          - tpe
-          - wechatpay
-          - klarnacheckout
-          - sofort-lastschrift
-          - sepa-direct-debit
-          - cup
-          - bancontactqrcode
+            - visa
+            - mastercard
+            - maestro
+            - cb
+            - 3xcb
+            - 3xcb-no-fees
+            - 4xcb
+            - 4xcb-no-fees
+            - american-express
+            - bank-transfer
+            - bcmc
+            - bcmc-mobile
+            - cbc-online
+            - dexia-directnet
+            - giropay
+            - ideal
+            - ing-homepay
+            - kbc-online
+            - klarnainvoice
+            - paypal
+            - paysafecard
+            - payulatam
+            - przelewy24
+            - qiwi-wallet
+            - sdd
+            - sisal
+            - sofort-uberweisung
+            - yandex
+            - aura
+            - boleto-bancario
+            - oxxo
+            - itau
+            - payshop
+            - dankort
+            - postepay
+            - ukash
+            - mercadopago
+            - webmoney-transfer
+            - diners
+            - jcb
+            - dcb-cz-tmobile
+            - dcb-cz-o2
+            - dcb-cz-vodafone
+            - dcb-at-tmobile
+            - dcb-at-a1
+            - dcb-at-orange
+            - dcb-at-drei
+            - dcb-be-mobistar
+            - dcb-ch-easypay
+            - dcb-sg-singtel
+            - dcb-it-mobilepay
+            - sct
+            - elo-card
+            - dcb-be-proximus
+            - postfinance-card
+            - postfinance-efinance
+            - carte-cadeau
+            - mybank
+            - safetypay
+            - skrill
+            - bnpp-4xcb
+            - bnpp-3xcb
+            - unionpay
+            - alipay-pos
+            - multi-payment
+            - discover
+            - sepa-refund-transfer
+            - banco-do-brasil
+            - bradesco
+            - carte-accord
+            - caixa
+            - edankort
+            - multibanco
+            - dcb-es-pagosmovistar
+            - cashu
+            - moneybookers
+            - afterpay
+            - cofinoga
+            - aurore
+            - 1eurocom
+            - hipercard
+            - santander-home-banking
+            - santander-cash
+            - banamex
+            - bbva-bancomer
+            - ecarte-bleue
+            - credit-long
+            - carte-titre-restaurant
+            - alipay-ecommerce
+            - divido
+            - bacs
+            - tpe
+            - wechatpay
+            - klarnacheckout
+            - sofort-lastschrift
+            - sepa-direct-debit
+            - cup
+            - bancontactqrcode
           example: visa
           x-sort: 20
         browser_info:
@@ -1841,7 +1841,7 @@ components:
             device_fingerprint:
               description: This element should contain the value of the ioBB hidden field.
               type: string
-          x-sort: xxx
+          x-sort: 360
       type: object
       allOf:
       - $ref: '#/components/schemas/Common'
@@ -2794,7 +2794,7 @@ components:
               description: PSP reference about the previous authenticated transaction.
               type: string
               example: '800000987283'
-          x-sort: xxx
+          x-sort: 330
         merchant_risk_statement:
           description: >-
             **This parameter is specific to the PSD2.**
@@ -2991,7 +2991,7 @@ components:
                   description: Currency of the gift card.
                   type: string
                   example: EUR
-          x-sort: xxx
+          x-sort: 335
         account_info:
           description: >-
             **This parameter is specific to the PSD2.**
@@ -3300,7 +3300,7 @@ components:
                     - 1
                     - 2
                   example: 1
-          x-sort: xxx
+          x-sort: 340
         device_channel:
           description: >-
             **This parameter is specific to the PSD2.**
@@ -3320,7 +3320,7 @@ components:
             - 2
             - 3
           example: 1
-          x-sort: xxx
+          x-sort: 345
         recurring_info:
           description: >-
             **This parameter is specific to the PSD2.**
@@ -3366,7 +3366,7 @@ components:
               description: Indicates the minimum number of days between authorisations.
               type: integer
               example: 31
-          x-sort: xxx
+          x-sort: 350
         exemption:
           description: >-
             **This parameter is specific to the PSD2.**
@@ -3374,7 +3374,7 @@ components:
 
             If you have further questions on exemption, please contact Hipay.
           type: object
-          x-sort: xxx
+          x-sort: 355
       type: object
     OrderResponse:
       title: Order Response
