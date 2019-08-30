@@ -1634,33 +1634,71 @@ components:
             Browser Information
 
             <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">java_enabled</div>
+            <div class="parameter__type">boolean</div>
+            <div class="parameter__description">
 
-
-            ### java_enabled 
 
             Boolean that represents the ability of the cardholder browser to execute Java.
 
-            ### javascript_enabled 
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">javascript_enabled</div>
+            <div class="parameter__type">boolean</div>
+            <div class="parameter__description">
+
 
             Boolean that represents the ability of the cardholder browser to execute JavaScript.
 
-            ### ipaddr
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">ipaddr</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
 
             Customer's IP address.
 
-            ### http_accept
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">http_accept</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
 
             This element should contain the exact content of the HTTP Accept header as sent to the merchant from the customer's browser.
 
-            ### http_user agent 
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">http_user_agent</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
 
             This element should contain the exact content of the HTTP User-Agent header as sent to the merchant from the customer's browser.
 
-            ### language
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">language</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
 
             Value representing the browser language as defined in IETF BCP47.
 
-            ### color_depth
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">color_depth</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
 
             Value representing the bit depth of the colour palette for displaying images, in bits per pixel.
 
@@ -1680,21 +1718,48 @@ components:
 
             - `48` : 48 bits
 
-            ### screen_height 
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">screen_height</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Total height of the Cardholder’s screen in pixels.
 
-            ### screen_width 
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">screen_width</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
 
-            Total width of the cardholder’s screen in pixels.
 
-            ### timezone 
+            Total width of the Cardholder’s screen in pixels.
+
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">timezone</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
 
             Time-zone offset in minutes between UTC and the Cardholder.
 
-            ### device_fingerprint 
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">device_fingerprint</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
 
             This element should contain the value of the ioBB hidden field.
+
+            </div>
+            </div>
           type: object
           required:
             - language
@@ -2714,13 +2779,15 @@ components:
             merchant's side.
 
             <hr>
-
-
+            <div class="parameter__description__object">
             <div class="parameter__name">transaction_reference</div>
             <div class="parameter__type">string</div>
-
+            <div class="parameter__description">
 
             PSP reference about the previous authenticated transaction.
+
+            </div>
+            </div>
           type: object
           properties:
             transaction_reference:
@@ -2735,87 +2802,128 @@ components:
 
             Merchant's statement about the transaction he wants to proceed.
 
-            *
-              <div class="parameter__name">email_delivery_address</div>
-              <div class="parameter__type">string</div>
+            <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">email_delivery_address</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
 
-              Email address to which the goods needs to be sent to.
 
-            *
-              <div class="parameter__name">delivery_time_frame</div>
-              <div class="parameter__type">integer</div>
+            Email address to which the goods needs to be sent to.
 
-              Indicates when the goods are willing to be received by the customer.
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">delivery_time_frame</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
 
-              - `1` : ELECTRONIC DELIVERY
 
-              - `2` : SAME DAY SHIPPING
+            Indicates when the goods are willing to be received by the customer.
 
-              - `3` : OVERNIGHT SHIPPING
+            - `1` : ELECTRONIC DELIVERY
 
-              - `4` : TWO DAY OR MORE SHIPPING
+            - `2` : SAME DAY SHIPPING
 
-            *
-              <div class="parameter__name">purchase_indicator</div>
-              <div class="parameter__type">integer</div>
+            - `3` : OVERNIGHT SHIPPING
 
-              Availabilty of the goods.
+            - `4` : TWO DAY OR MORE SHIPPING
 
-              - `1` : MERCHANDISE AVAILABLE
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">purchase_indicator</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
 
-              - `2` : FUTURE AVAILABILITY
 
-            *
-              <div class="parameter__name">reorder_indicator</div>
-              <div class="parameter__type">integer</div>
+            Availabilty of the goods.
 
-              Unicity of the order for the customer.
+            - `1` : MERCHANDISE AVAILABLE
 
-              - `1` : FIRST TIME ORDERED
+            - `2` : FUTURE AVAILABILITY
 
-              - `2` : REORDERED
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">reorder_indicator</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
 
-            *
-              <div class="parameter__name">shipping_indicator</div>
-              <div class="parameter__type">integer</div>
 
-              Address to whom the goods are to be sent.
+            Unicity of the order for the customer.
 
-              - `1` : SHIP TO CARDHOLDER'S BILLING ADDRESS
+            - `1` : FIRST TIME ORDERED
 
-              - `2` : SHIP TO ANOTHER VERIFIED ADDRESS ON FILE WITH MERCHANT
+            - `2` : REORDERED
 
-              - `3` : SHIP TO ADDRESS THAT IS DIFFERENT THAN THE CARDHOLDER'S BILLING ADDRESS
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">shipping_indicator</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
 
-              - `4` : SHIP TO STORE / PICK UP AT LOCAL STORE
 
-              - `5` : DIGITAL GOODS
+            Address to whom the goods are to be sent.
 
-              - `6` : TRAVEL AND EVENT TICKETS, NOT SHIPPED
+            - `1` : SHIP TO CARDHOLDER'S BILLING ADDRESS
 
-              - `7` : OTHER (Gaming, digital services not shipped, emedia subscriptions
+            - `2` : SHIP TO ANOTHER VERIFIED ADDRESS ON FILE WITH MERCHANT
 
-            *  
-              <div class="parameter__name">gift_card</div>
-              <div class="parameter__type">object</div>
+            - `3` : SHIP TO ADDRESS THAT IS DIFFERENT THAN THE CARDHOLDER'S BILLING ADDRESS
 
-              Information on order making throught a gift card.
+            - `4` : SHIP TO STORE / PICK UP AT LOCAL STORE
 
-              *
-                <div class="parameter__name">amount</div>
-                <div class="parameter__type">integer</div>
+            - `5` : DIGITAL GOODS
 
-                Amount of the gift card.
+            - `6` : TRAVEL AND EVENT TICKETS, NOT SHIPPED
 
-                <div class="parameter__name">count</div>
-                <div class="parameter__type">integer</div>
+            - `7` : OTHER (Gaming, digital services not shipped, emedia subscriptions
 
-                Total count of individual gift cards purchased.
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">gift_card</div>
+            <div class="parameter__type">object</div>
+            <div class="parameter__description">
 
-                <div class="parameter__name">currency</div>
-                <div class="parameter__type">string</div>
 
-                Currency of the gift card.
+            Information on order making throught a gift card.
+
+            <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">amount</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
+
+            Amount of the gift card.
+
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">count</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
+
+            Total count of individual gift cards purchased.
+
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">currency</div>
+            <div class="parameter__type">string</div>
+            <div class="parameter__description">
+
+
+            Currency of the gift card.
+
+            </div>
+            </div>
+            </div>
+            </div>
           type: object
           properties:
             email_delivery_address:
@@ -2892,71 +3000,153 @@ components:
             Information about the customer's account on the merchant's website.
 
             <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">customer</div>
+            <div class="parameter__type">object</div>
+            <div class="parameter__description">
 
-
-            ### customer
 
             Customer's account information
 
-            #### account_change
+            <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">account_change</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Customer's last change on his account. (YYYYMMDD)
 
-            #### opening_account_date
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">opening_account_date</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Date when the customer created his account
             on the merchant's website. (YYYYMMDD)
 
-            #### password_change
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">password_change</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Date when the customer made a password change on
             his account. (YYYYMMDD)
 
-            ### purchase
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">purchase</div>
+            <div class="parameter__type">object</div>
+            <div class="parameter__description">
+
 
             Customer's purchase information
 
-            #### count
+            <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">count</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Number of purchases with the customer's account during the
             last six months.
 
-            #### card_stored_24h
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">card_stored_24h</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Number of attempts to add a card into the
             customer's account in the last 24 hours.
 
-            #### payment_attempts_24h
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">payment_attempts_24h</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Number of transactions (successful and
             abandoned) for this customer's account across all payment accounts
             in the previous 24 hours.
 
-            #### payment_attempts_1y
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">payment_attempts_1y</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Number of transactions (successful and
             abandoned) for this customer's account across all payment accounts
             in the previous year.
 
-            ### payment
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">payment</div>
+            <div class="parameter__type">object</div>
+            <div class="parameter__description">
+
 
             Customer's payment information
 
-            #### enrollment_date
+            <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">enrollment_date</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Date that the payment account was enrolled in the
-            cardholder’s account with the 3DS Requestor.(YYYYMMDD) 
+            cardholder’s account with the 3DS Requestor.(YYYYMMDD)
 
-            ### shipping
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">shipping</div>
+            <div class="parameter__type">object</div>
+            <div class="parameter__description">
 
-            Customer's payment information
 
-            #### shipping_used_date
+            Customer's shipping information
+
+            <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">shipping_used_date</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Date when the shipping address used for this
             transaction was first used. (YYYYMMDD)
 
-            #### address_usage_duration
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">address_usage_duration</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Indicates when the shipping address used
             for this transaction was first used with the merchant.
@@ -2969,16 +3159,28 @@ components:
 
             - `4` : MORE THAN 60 DAYS
 
-            #### name_indicator
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">name_indicator</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Indicates if the Cardholder Name on the account is
             identical to the shipping Name used for this transaction.
 
-            - `1` : Account Name Identical to Shipping Name 
+            - `1` : Account Name Identical to Shipping Name
 
             - `2` : Account Name different than shipping Name
 
-            #### suspicious_activity
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">suspicious_activity</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Indicates whether the merchant has
             experienced suspicious activity (including previous fraud) on the
@@ -2987,6 +3189,11 @@ components:
             - `1` : No suspicious activity has been observed
 
             - `2` : Suspicious activity has been observed
+
+            </div>
+            </div>
+            </div>
+            </div>
           type: object
           properties:
             customer:
@@ -3100,7 +3307,7 @@ components:
 
 
             Channel through which the transaction is being processed. By default
-            this value is set to 2.            
+            this value is set to 2.
 
             - `1` : App-based (APP)
 
@@ -3122,17 +3329,28 @@ components:
             Information on recurring transaction
 
             <hr>
+            <div class="parameter__description__object">
+            <div class="parameter__name">expiration_date</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
 
-
-            ### expiration date
 
             Date after which no further authorisations shall
             be performed. (YYYYMMDD)
 
-            ### frequency
+            </div>
+            </div>
+            <div class="parameter__description__object">
+            <div class="parameter__name">frequency</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
 
             Indicates the minimum number of days between
             authorisations.
+
+            </div>
+            </div>
           type: object
           required:
             - expiration_date
@@ -3150,8 +3368,9 @@ components:
               example: 31
           x-sort: xxx
         exemption:
-          description: |
+          description: >-
             **This parameter is specific to the PSD2.**
+
 
             If you have further questions on exemption, please contact Hipay.
           type: object
