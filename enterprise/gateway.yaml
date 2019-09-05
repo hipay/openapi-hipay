@@ -1,8 +1,7 @@
 openapi: 3.0.0
 info:
   title: HiPay Enterprise Gateway API
-  description: |2-
-
+  description: |-
     The Gateway API allows you to get paid and manage orders and transactions.
 
     Please note: this documentation describes the Gateway API parameters and response fields and allows you to test the platform in real time.
@@ -42,7 +41,6 @@ info:
 
     ## Gateway API base URLs
 
-     *
     | Environment | Base URL |
     | --- | --- |
     | Stage | [https://stage-secure-gateway.hipay-tpp.com/rest/](https://stage-secure-gateway.hipay-tpp.com/rest/) |
