@@ -1993,7 +1993,7 @@ components:
           x-sort: 105
         decline_url:
           description: "The URL to return your customer to after the acquirer declines\
-            \ thepayment.\n\nFor more information about the user redirection workflow,\
+            \ the payment.\n\nFor more information about the user redirection workflow,\
             \ check the [HiPay Enterprise\nOverview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages). "
           type: string
           example: https://developer.hipay.com/simulator/decline/
