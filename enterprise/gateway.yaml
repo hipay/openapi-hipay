@@ -68,9 +68,8 @@ paths:
       - payments
       summary: Creates a secure payment page which you can redirect your customer
         to, in order to proceed checkout
-      description: |2-
-
-         This service allows you to **redirect your customer to a payment page
+      description: |-
+        This service allows you to **redirect your customer to a payment page
         (hosted by HiPay)** in order to proceed checkout. This service creates
         an order and returns a forward URL. This forward URL is dedicated to
         display a payment page with your CSS and validated payment products.
@@ -185,8 +184,7 @@ paths:
       tags:
       - payments
       summary: Creates an order and a transaction based on payment details
-      description: |2-
-
+      description: |-
         This service allows you to execute transactions through API with no need
         to redirect your customer to the payment page hosted by HiPay. This
         service supports payments with credit or debit cards as well as
@@ -334,19 +332,21 @@ paths:
       parameters:
       - description: |-
           **This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**
+
           Electronic Commerce Indicator (ECI).
+
           The ECI indicates the security level at which the payment information is processed between the cardholder and merchant.
           ### Credit or debit card
           If the payment product is a credit or debit card:
-          - `1`: MO/TO (Mail Order/Telephone Order)
-          - `2`: MO/TO – Recurring
-          - `7`: E-commerce with SSL/TLS Encryption
-          - `9`: Recurring E-commerce
+          * `1`: MO/TO (Mail Order/Telephone Order)
+          * `2`: MO/TO – Recurring
+          * `7`: E-commerce with SSL/TLS Encryption
+          * `9`: Recurring E-commerce
           A default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.
           ### SEPA Direct Debit
           If the payment product is SEPA Direct Debit:
-          - `7`: First transaction/one-shot transaction
-          - `9`: Recurring transaction
+          * `7`: First transaction/one-shot transaction
+          * `9`: Recurring transaction
         example:
         - 7
         explode: false
@@ -363,12 +363,25 @@ paths:
             - 9
             type: integer
           type: array
-      - description: "Available payment products.\n                \n- `visa`, `mastercard`,\
+      - description: "Available payment products.\n                \n `visa`, `mastercard`,\
           \ `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`,\
           \ `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`,\
           \ `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`,\
           \ `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`,\
-          \ `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`"
+          \ `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`, `itau`,\
+          \ `payshop`, `dankort`, `postepay`, `ukash`, `mercadopago`, `webmoney-transfer`,\
+          \ `diners`, `jcb`, `dcb-cz-tmobile`, `dcb-cz-o2`, `dcb-cz-vodafone`, `dcb-at-tmobile`,\
+          \ `dcb-at-a1`, `dcb-at-orange`, `dcb-at-drei`, `dcb-be-mobistar`, `dcb-ch-easypay`,\
+          \ `dcb-sg-singtel`, `dcb-it-mobilepay`, `sct`, `elo-card`, `dcb-be-proximus`,\
+          \ `postfinance-card`, `postfinance-efinance`, `carte-cadeau`, `mybank`,\
+          \ `safetypay`, `skrill`, `bnpp-4xcb`, `bnpp-3xcb`, `unionpay`, `alipay-pos`,\
+          \ `multi-payment`, `discover`, `sepa-refund-transfer`, `banco-do-brasil`,\
+          \ `bradesco`, `carte-accord`, `caixa`, `edankort`, `multibanco`, `dcb-es-pagosmovistar`,\
+          \ `cashu`, `moneybookers`, `afterpay`, `cofinoga`, `aurore`, `1eurocom`,\
+          \ `hipercard`, `santander-home-banking`, `santander-cash`, `banamex`, `bbva-bancomer`,\
+          \ `ecarte-bleue`, `credit-long`, `carte-titre-restaurant`, `alipay-ecommerce`,\
+          \ `divido`, `bacs`, `tpe`, `wechatpay`, `klarnacheckout`, `sofort-lastschrift`,\
+          \ `sepa-direct-debit`, `cup`, `bancontactqrcode`"
         example:
         - visa
         - american-express
@@ -382,7 +395,6 @@ paths:
             - mastercard
             - maestro
             - cb
-            - credit-card
             - 3xcb
             - 3xcb-no-fees
             - 4xcb
@@ -410,10 +422,78 @@ paths:
             - aura
             - boleto-bancario
             - oxxo
+            - itau
+            - payshop
+            - dankort
+            - postepay
+            - ukash
+            - mercadopago
+            - webmoney-transfer
+            - diners
+            - jcb
+            - dcb-cz-tmobile
+            - dcb-cz-o2
+            - dcb-cz-vodafone
+            - dcb-at-tmobile
+            - dcb-at-a1
+            - dcb-at-orange
+            - dcb-at-drei
+            - dcb-be-mobistar
+            - dcb-ch-easypay
+            - dcb-sg-singtel
+            - dcb-it-mobilepay
+            - sct
+            - elo-card
+            - dcb-be-proximus
+            - postfinance-card
+            - postfinance-efinance
+            - carte-cadeau
+            - mybank
+            - safetypay
+            - skrill
+            - bnpp-4xcb
+            - bnpp-3xcb
+            - unionpay
+            - alipay-pos
+            - multi-payment
+            - discover
+            - sepa-refund-transfer
+            - banco-do-brasil
+            - bradesco
+            - carte-accord
+            - caixa
+            - edankort
+            - multibanco
+            - dcb-es-pagosmovistar
+            - cashu
+            - moneybookers
+            - afterpay
+            - cofinoga
+            - aurore
+            - 1eurocom
+            - hipercard
+            - santander-home-banking
+            - santander-cash
+            - banamex
+            - bbva-bancomer
+            - ecarte-bleue
+            - credit-long
+            - carte-titre-restaurant
+            - alipay-ecommerce
+            - divido
+            - bacs
+            - tpe
+            - wechatpay
+            - klarnacheckout
+            - sofort-lastschrift
+            - sepa-direct-debit
+            - cup
+            - bancontactqrcode
             type: string
           type: array
       - description: "Available categories of payment products.\n                \
-          \    \n- `credit-card`, `debit-card`, `realtime-banking`, `ewallet`"
+          \    \n `credit-card`, `debit-card`, `realtime-banking`, `ewallet`, `prepaid-card`,\
+          \ `open-invoice`, `credit-consumption`"
         example:
         - credit-card
         explode: false
@@ -426,6 +506,9 @@ paths:
             - debit-card
             - realtime-banking
             - ewallet
+            - prepaid-card
+            - open-invoice
+            - credit-consumption
             type: string
           type: array
       - description: The country code of the customer. This two-letter country code
@@ -1124,20 +1207,18 @@ components:
       - amount
       properties:
         payment_product_list:
-          description: |2-
+          description: |-
+            The list of payment products to display on the payment page.
 
-             The list of payment products to display on the payment page.
-
-            - `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`, `itau`, `payshop`, `ukash`, `webmoney-transfer`, `elo-card`, `carte-cadeau`, `safetypay`, `skrill`, `bnpp-4xcb`, `bnpp-3xcb`, `discover`, `banco-do-brasil`, `bradesco`, `caixa`, `multibanco`, `cofinoga`, `hipercard`, `santander-home-banking`, `santander-cash`, `banamex`, `bbva-bancomer`, `credit-long`, `carte-titre-restaurant`, `alipay-ecommerce`, `divido`, `bacs`, `wechatpay`, `klarnacheckout`, `cup`, `bancontactqrcode`
+            `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`, `itau`, `payshop`, `ukash`, `webmoney-transfer`, `elo-card`, `carte-cadeau`, `safetypay`, `skrill`, `bnpp-4xcb`, `bnpp-3xcb`, `discover`, `banco-do-brasil`, `bradesco`, `caixa`, `multibanco`, `cofinoga`, `hipercard`, `santander-home-banking`, `santander-cash`, `banamex`, `bbva-bancomer`, `credit-long`, `carte-titre-restaurant`, `alipay-ecommerce`, `divido`, `bacs`, `wechatpay`, `klarnacheckout`, `cup`, `bancontactqrcode`
           type: string
           example: mastercard,visa,american-express
           x-sort: 20
         payment_product_category_list:
-          description: |2-
+          description: |-
+            The categories of payment products to be displayed on the payment page.
 
-             The categories of payment products to be displayed on the payment page.
-
-            - `credit-card`, `debit-card`, `realtime-banking`, `ewallet`, `prepaid-card`, `open-invoice`, `credit-consumption`
+            `credit-card`, `debit-card`, `realtime-banking`, `ewallet`, `prepaid-card`, `open-invoice`, `credit-consumption`
           type: string
           enum:
           - credit-card
@@ -1159,6 +1240,7 @@ components:
         template:
           description: |-
             The template name. Possible values:
+
             - `basic-js` : Template with customizable CSS
             - `basic` [Deprecated] : Template with customizable CSS
             - `iframe-js` : Template with hosted iFrame integration
@@ -1423,7 +1505,7 @@ components:
           example: '134470136955'
         source:
           description: "To identify the origin of the transaction. Here are the authorized\
-            \ values for source property: \n\n- `AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`,\
+            \ values for source property: \n\n`AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`,\
             \ `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`"
           type: string
           example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
@@ -1667,8 +1749,8 @@ components:
         operation:
           description: |-
             Transaction type:
-            - `Sale` indicates that the transaction is automatically submitted for capture.
-            - `Authorization` indicates that this transaction is sent for authorization only.
+            * `Sale` indicates that the transaction is automatically submitted for capture.
+            * `Authorization` indicates that this transaction is sent for authorization only.
           type: string
           enum:
           - Authorization
@@ -1903,55 +1985,41 @@ components:
           example: 127.0.0.1
           x-sort: 100
         accept_url:
-          description: |2-
+          description: |-
+            The URL to return your customer to once the payment process is completed successfully.
 
-            The URL to return your customer to once the payment process is
-            completed successfully.
-
-            For more information about the user
-            redirection workflow, check the [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           type: string
           example: https://developer.hipay.com/simulator/success/
           x-sort: 105
         decline_url:
-          description: "\nThe URL to return your customer to after the acquirer declines\
-            \ the\npayment.\n\nFor more information about the user redirection\nworkflow,\
+          description: "The URL to return your customer to after the acquirer declines\
+            \ thepayment.\n\nFor more information about the user redirection workflow,\
             \ check the [HiPay Enterprise\nOverview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages). "
           type: string
           example: https://developer.hipay.com/simulator/decline/
           x-sort: 110
         pending_url:
-          description: |2-
+          description: |-
+            The URL to return your customer to when the payment request was submitted to the acquirer but response is not yet available.
 
-            The URL to return your customer to when the payment request was
-            submitted to the acquirer but response is not yet available.
-
-            For more information about the user redirection workflow, check the
-            [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           type: string
           example: https://developer.hipay.com/simulator/pending/
           x-sort: 115
         exception_url:
-          description: |2-
-
+          description: |-
             The URL to return your customer to after a system failure.
 
-            For more information about the user redirection workflow, check the
-            [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           type: string
           example: https://developer.hipay.com/simulator/exception/
           x-sort: 120
         cancel_url:
-          description: |2-
-
+          description: |-
             The URL to return your customer to after a system failure.
 
-            For more information about the user redirection workflow, check the
-            [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
           type: string
           example: https://developer.hipay.com/simulator/cancel/
           x-sort: 125
@@ -2042,10 +2110,8 @@ components:
           deprecated: true
           x-sort: 157
         eci:
-          description: |2-
-
-             **This parameter is specific to SEPA Direct Debit as well as credit
-            or debit card payment products.**
+          description: |-
+            **This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**
 
             Electronic Commerce Indicator (ECI).
 
@@ -2055,19 +2121,19 @@ components:
 
             If the payment product is a credit or debit card:
 
-            - `1`: MO/TO (Mail Order/Telephone Order)
-            - `2`: MO/TO – Recurring
-            - `7`: E-commerce with SSL/TLS Encryption
-            - `9`: Recurring E-commerce
-            - `10`: TPE payment
+            * `1`: MO/TO (Mail Order/Telephone Order)
+            * `2`: MO/TO – Recurring
+            * `7`: E-commerce with SSL/TLS Encryption
+            * `9`: Recurring E-commerce
+            * `10`: TPE payment
 
             A default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.
 
             ### SEPA Direct Debit
 
             If the payment product is SEPA Direct Debit:
-            - `7`: First transaction/one-shot transaction
-            - `9`: Recurring transaction
+            * `7`: First transaction/one-shot transaction
+            * `9`: Recurring transaction
           type: string
           enum:
           - '1'
@@ -2080,19 +2146,16 @@ components:
             default: '7'
           x-sort: 10
         authentication_indicator:
-          description: |2-
-
+          description: |-
             **This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**
 
             ### Credit or debit card
 
             If the payment product is a credit or debit card, this parameter indicates if the 3-D Secure authentication should be performed for this transaction.
 
-            - `0`: Bypass 3-D Secure authentication.
-
-            - `1`: 3-D Secure authentication if available.
-
-            - `2`: 3-D Secure authentication mandatory.
+            * `0`: Bypass 3-D Secure authentication.
+            * `1`: 3-D Secure authentication if available.
+            * `2`: 3-D Secure authentication mandatory.
 
             For more information about the 3-D Secure workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#3-d-secure-integration).
 
@@ -2100,9 +2163,8 @@ components:
 
             If the payment product is SEPA Direct Debit, this parameter indicates if the debit agreement (mandate) must be electronically signed or not.
 
-            - `0`: Bypass electronic signature.
-
-            - `1`: Ask for electronic signature.
+            * `0`: Bypass electronic signature.
+            * `1`: Ask for electronic signature.
 
             For more information about the SEPA Direct Debit integration (including examples), check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#sepa-direct-debit-sdd).
           type: string
@@ -2173,8 +2235,7 @@ components:
           example: john.doe@foobar99.com
           x-sort: 210
         national_identification_number:
-          description: |2-
-
+          description: |-
             **This parameter is specific to Astropay payment methods.**
 
             Customer’s personal identification number.
@@ -2187,8 +2248,7 @@ components:
           example: '33012345678'
           x-sort: 215
         msisdn:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
             The customer's ship-to mobile phone number.
@@ -2205,9 +2265,9 @@ components:
           description: |-
             Gender of the customer:
 
-            - `M`: male
-            - `F`: female
-            - `U`: unknown
+            * `M`: male
+            * `F`: female
+            * `U`: unknown
           type: string
           enum:
           - U
@@ -2346,7 +2406,7 @@ components:
           x-sort: 145
         source:
           description: "To identify the origin of the transaction. Here are the authorized\
-            \ values for source property: \n\n- `AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`,\
+            \ values for source property: \n\n`AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`,\
             \ `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`"
           type: string
           example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
@@ -2360,8 +2420,7 @@ components:
           example: BNPAFRPPXXX
           x-sort: 165
         qiwiuser:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the Qiwi Wallet payment product.**
 
             The Qiwi user's ID, whom the invoice is issued to. It is the user's phone number, in international format.
@@ -2369,21 +2428,19 @@ components:
           example: '33670985712'
           x-sort: 170
         shipto_gender:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
             Gender of the recipient:
 
-            - `M`: male
-            - `F`: female
-            - `U`: unknown
+            * `M`: male
+            * `F`: female
+            * `U`: unknown
           type: string
           example: U
           x-sort: 280
         shipto_phone:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
             The recipient's ship-to phone number.
@@ -2391,8 +2448,7 @@ components:
           example: '33112345678'
           x-sort: 275
         shipto_msisdn:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
             The recipient's ship-to mobile phone number.
@@ -2400,8 +2456,7 @@ components:
           example: '3362345678'
           x-sort: 276
         order_category_code:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
             The order category code.
@@ -2410,22 +2465,22 @@ components:
 
             | Code | Description |
             | --- | --- |
-            | 5499 | Alimentation & gastronomie
-            | 5571 | Auto & moto
-            | 7929 | Culture & divertissements
-            | 5261 | Maison & jardin
-            | 5200 | Electroménager
-            | 7278 | Enchères et achats groupés
-            | 5193 | Fleurs & cadeaux
-            | 5734 | Informatique & logiciels
-            | 7298 | Santé & beauté
-            | 0 | Services aux particuliers
-            | 7361 | Services aux professionnels
-            | 5941 | Sport
-            | 5651 | Vêtements & accessoires
-            | 4722 | Voyage & tourisme
-            | 5946 | Hifi, photo & vidéos
-            | 4812 | Téléphonie & communication
+            | 5499 | Alimentation & gastronomie |
+            | 5571 | Auto & moto |
+            | 7929 | Culture & divertissements |
+            | 5261 | Maison & jardin |
+            | 5200 | Electroménager |
+            | 7278 | Enchères et achats groupés |
+            | 5193 | Fleurs & cadeaux |
+            | 5734 | Informatique & logiciels |
+            | 7298 | Santé & beauté |
+            | 0 | Services aux particuliers |
+            | 7361 | Services aux professionnels |
+            | 5941 | Sport |
+            | 5651 | Vêtements & accessoires |
+            | 4722 | Voyage & tourisme |
+            | 5946 | Hifi, photo & vidéos |
+            | 4812 | Téléphonie & communication |
           type: integer
           enum:
           - '5499'
@@ -2447,8 +2502,7 @@ components:
           example: '5941'
           x-sort: 175
         delivery_date:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
             Estimated delivery date. Format is YYYY-MM-DD.
@@ -2456,8 +2510,7 @@ components:
           example: '2022-12-20'
           x-sort: 180
         delivery_method:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**`
 
             The delivery method.
@@ -2474,8 +2527,7 @@ components:
           example: CARRIER
           x-sort: 185
         carrier_description:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
 
             Carrier description.
@@ -2483,16 +2535,15 @@ components:
           example: La Poste, 27 Rue des Francs Bourgeois
           x-sort: 190
         recurring_payment:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the SEPA Direct Debit payment product.**
 
             Indicates if the debit agreement will be created for a single-use or a multi-use.
 
             Possible values:
 
-            - `0`: Generate a single-use agreement id.
-            - `1`: Generate a multi-use agreement id.
+            * `0`: Generate a single-use agreement id.
+            * `1`: Generate a multi-use agreement id.
           type: string
           enum:
           - '0'
@@ -2502,8 +2553,7 @@ components:
             default: '0'
           x-sort: 195
         iban:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the SEPA Direct Debit payment product.**
 
             International Bank Account Number (IBAN).
@@ -2511,8 +2561,7 @@ components:
           example: FR1420041010050500013M02606
           x-sort: 200
         bank_name:
-          description: |2-
-
+          description: |-
             **This parameter is specific to the SEPA Direct Debit payment product.**
 
             Issuer Bank Name.
@@ -2523,10 +2572,10 @@ components:
           description: |-
             Sales channel :
 
-            - `0`: Default.
-            - `1`: Ecommerce API.
-            - `2`: Hosted Payment Page.
-            - `3`: POS.
+            * `0`: Default.
+            * `1`: Ecommerce API.
+            * `2`: Hosted Payment Page.
+            * `3`: POS.
           type: string
           enum:
           - '0'
@@ -2541,8 +2590,7 @@ components:
           example: Dell Inspiron 15 3583 (i3583-3112BLK-PFR)
           x-sort: 205
         cardtoken:
-          description: |2-
-
+          description: |-
             **This parameter is specific to credit or debit card payment products.**
 
             This is the token obtained from the HiPay Enterprise Secure Vault API when tokenizing a credit or debit card. To generate a token, please refer to the [HiPay Enterprise Tokenization API documentation](/doc-api/enterprise/token/#/tokenization/createToken).
