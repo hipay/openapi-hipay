@@ -1242,11 +1242,11 @@ components:
           description: |-
             The template name. Possible values:
 
-            - `basic-js` : Template with customizable CSS
-            - `basic` [Deprecated] : Template with customizable CSS
-            - `iframe-js` : Template with hosted iFrame integration
-            - `iframe` [Deprecated] : Template with hosted iFrame integration
-            - `autodetection` : Automatic detection of the brand of the card, if the merchant has the option
+            * `basic-js` : Template with customizable CSS
+            * `basic` [Deprecated] : Template with customizable CSS
+            * `iframe-js` : Template with hosted iFrame integration
+            * `iframe` [Deprecated] : Template with hosted iFrame integration
+            * `autodetection` : Automatic detection of the brand of the card, if the merchant has the option
           type: string
           enum:
           - basic-js
@@ -1265,8 +1265,9 @@ components:
         display_selector:
           description: |-
             Enable/disable the payment products selector. Possible values:
-              - `0`: the selector is not displayed
-              - `1`: the selector is displayed
+
+              * `0`: the selector is not displayed
+              * `1`: the selector is displayed
           type: integer
           enum:
           - 0
