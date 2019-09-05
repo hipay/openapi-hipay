@@ -416,9 +416,11 @@ definitions:
         type: string
         example: "0"
       card_hash:
+        description: Card token in SHA1. Deprecated
         type: string
         example: "ce5f096fa6bc05989c170e7c96f94432660491bd"
       card_id:
+        description: Unique card identifier.
         type: string
         example: "96ada09f-a844-4956-9593-cb758630dac2"
       brand:
@@ -462,5 +464,6 @@ definitions:
         type: string
         example: "PURCHASING"
       forbidden_issuer_country:
+        description: Indicates whether the card country is authorized.
         type: boolean
         example: false

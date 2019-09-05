@@ -336,6 +336,7 @@ paths:
           The ECI indicates the security level at which the payment information is processed between the cardholder and merchant.
           ### Credit or debit card
           If the payment product is a credit or debit card:
+
           * `1`: MO/TO (Mail Order/Telephone Order)
           * `2`: MO/TO – Recurring
           * `7`: E-commerce with SSL/TLS Encryption
@@ -344,6 +345,7 @@ paths:
           A default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.
           ### SEPA Direct Debit
           If the payment product is SEPA Direct Debit:
+
           * `7`: First transaction/one-shot transaction
           * `9`: Recurring transaction
         example:
@@ -1748,6 +1750,7 @@ components:
         operation:
           description: |-
             Transaction type:
+
             * `Sale` indicates that the transaction is automatically submitted for capture.
             * `Authorization` indicates that this transaction is sent for authorization only.
           type: string
@@ -2131,6 +2134,7 @@ components:
             ### SEPA Direct Debit
 
             If the payment product is SEPA Direct Debit:
+
             * `7`: First transaction/one-shot transaction
             * `9`: Recurring transaction
           type: string
