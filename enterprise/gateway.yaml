@@ -342,6 +342,7 @@ paths:
           * `2`: MO/TO – Recurring
           * `7`: E-commerce with SSL/TLS Encryption
           * `9`: Recurring E-commerce
+
           A default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.
           ### SEPA Direct Debit
           If the payment product is SEPA Direct Debit:
@@ -3011,4 +3012,3 @@ tags:
 externalDocs:
   description: Find out more about HiPay
   url: https://developer.hipay.com/
-
