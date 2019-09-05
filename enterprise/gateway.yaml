@@ -1266,8 +1266,8 @@ components:
           description: |-
             Enable/disable the payment products selector. Possible values:
 
-              * `0`: the selector is not displayed
-              * `1`: the selector is displayed
+            * `0`: the selector is not displayed
+            * `1`: the selector is displayed
           type: integer
           enum:
           - 0
