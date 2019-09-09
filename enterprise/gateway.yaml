@@ -1711,15 +1711,15 @@ components:
           description: Code
           format: int32
           type: integer
-          x-sort: "1"
+          x-sort: 1
         description:
           description: Description
           type: string
-          x-sort: "10"
+          x-sort: 10
         message:
           description: Message
           type: string
-          x-sort: "5"
+          x-sort: 5
       title: CommonResponse
       type: object
     Hipay.Gateway.SecuritySettingBundle.Response.SecuritySetting.SecuritySetting:
@@ -1729,7 +1729,7 @@ components:
           description: Hashing Algorithm
           example: SHA1
           type: string
-          x-sort: "1"
+          x-sort: 1
       title: SecuritySetting
       type: object
     InputOrder:
@@ -2614,31 +2614,31 @@ components:
           description: Code
           example: visa
           type: string
-          x-sort: "5"
+          x-sort: 5
         customer_description:
           description: Customer Description
           type: string
-          x-sort: "15"
+          x-sort: 15
         description:
           description: Description
           example: VISA
           type: string
-          x-sort: "10"
+          x-sort: 10
         id:
           description: Id
           example: 52DY02WM
           type: string
-          x-sort: "1"
+          x-sort: 1
         payment_product_category_code:
           description: Payment Product Category Code
           example: credit-card
           type: string
-          x-sort: "20"
+          x-sort: 20
         tokenizable:
           description: Tokenizable
           example: "true"
           type: boolean
-          x-sort: "25"
+          x-sort: 25
       title: PaymentProduct
       type: object
     ThreeDSecure:
