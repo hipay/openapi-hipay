@@ -1662,12 +1662,15 @@ components:
         code:
           description: Code
           type: integer
+          x-sort: 1
         description:
           description: Description
           type: string
+          x-sort: 10
         message:
           description: Message
           type: string
+          x-sort: 5
       title: Error
       type: object
     Forward:
@@ -1677,12 +1680,17 @@ components:
           description: ""
           example: https://stage-secure-gateway.hipay-tpp.com/payment/web/pay/df4d20da-7b6f-4fed-8603-c4ed3dca48
           type: string
+          x-sort: 1
         mid:
           description: ""
           example: 00001326589
           type: string
+          x-sort: 5
         order:
-          $ref: '#/components/schemas/OrderResponse'
+          allOf:
+          - $ref: '#/components/schemas/OrderResponse'
+          type: object
+          x-sort: 10
       title: Forward
       type: object
     Hipay.Gateway.AvailablePaymentProductBundle.Response.AvailablePaymentProduct.AvailablePaymentProduct_PaymentProduct_:
@@ -1703,12 +1711,15 @@ components:
           description: Code
           format: int32
           type: integer
+          x-sort: "1"
         description:
           description: Description
           type: string
+          x-sort: "10"
         message:
           description: Message
           type: string
+          x-sort: "5"
       title: CommonResponse
       type: object
     Hipay.Gateway.SecuritySettingBundle.Response.SecuritySetting.SecuritySetting:
@@ -1850,12 +1861,14 @@ components:
             amount for full captures or refunds.
           example: "3.5"
           type: string
+          x-sort: 10
         basket:
           description: |-
             Shopping cart details. **You must send only items that must be captured or refunded.**
 
             Please refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation.
           type: string
+          x-sort: 20
         currency:
           additionalProperties:
             default: EUR
@@ -2026,6 +2039,7 @@ components:
           - ZWL
           example: EUR
           type: string
+          x-sort: 5
         operation:
           description: |-
             The operation to perform on the transaction.
@@ -2049,11 +2063,13 @@ components:
           - finalize
           example: capture
           type: string
+          x-sort: 1
         operation_id:
           description: Operation merchant ID. This value will be returned to merchant
             with the notifications related to this operation.
           example: 204OJ23LKJ234
           type: string
+          x-sort: 15
         source:
           description: |-
             To identify the origin of the transaction. Here are the authorized values for source property:
@@ -2061,10 +2077,12 @@ components:
             `AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`, `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`
           example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
           type: string
+          x-sort: 30
         sub_transaction_reference:
           description: Number of the subtransaction to be refunded.
           example: "134470136955"
           type: string
+          x-sort: 25
       required:
       - operation
       title: Maintenance
@@ -2536,46 +2554,57 @@ components:
           description: ""
           example: "125.75"
           type: string
+          x-sort: 15
         attempts:
           description: ""
           example: "0"
           type: string
+          x-sort: 10
         currency:
           description: ""
           example: EUR
           type: string
+          x-sort: 35
         customerId:
           description: ""
           example: "283749291"
           type: string
+          x-sort: 40
         dateCreated:
           description: ""
           example: "2019-02-07T13:57:08+0000"
           type: string
+          x-sort: 5
         decimals:
           description: ""
           example: "2"
           type: string
+          x-sort: 30
         email:
           description: ""
           example: john.doe@foobar99.com
           type: string
+          x-sort: 50
         id:
           description: ""
           example: "1549547828947"
           type: string
+          x-sort: 1
         language:
           description: ""
           example: en_GB
           type: string
+          x-sort: 45
         shipping:
           description: ""
           example: "0"
           type: string
+          x-sort: 20
         tax:
           description: ""
           example: "1.1"
           type: string
+          x-sort: 25
       title: Order Response
       type: object
     PaymentProduct:
@@ -2619,30 +2648,37 @@ components:
           description: ""
           example: ""
           type: string
+          x-sort: 20
         authenticationStatus:
           description: ""
           example: ""
           type: string
+          x-sort: 15
         authenticationToken:
           description: ""
           example: ""
           type: string
+          x-sort: 25
         eci:
           description: ""
           example: "6"
           type: string
+          x-sort: 1
         enrollmentMessage:
           description: ""
           example: Cardholder Not Enrolled
           type: string
+          x-sort: 10
         enrollmentStatus:
           description: ""
           example: "N"
           type: string
+          x-sort: 5
         xid:
           description: ""
           example: ""
           type: string
+          x-sort: 30
       title: ThreeDSecure
       type: object
     Transaction:
@@ -2826,8 +2862,10 @@ components:
       properties:
         id:
           type: string
+          x-sort: 1
         status:
           type: string
+          x-sort: 5
       title: Debit Agreement
       type: object
     fraud:
@@ -2837,14 +2875,17 @@ components:
           description: ""
           example: ACCEPTED
           type: string
+          x-sort: 5
         review:
           description: ""
           example: ""
           type: string
+          x-sort: 10
         scoring:
           description: ""
           example: "0"
           type: string
+          x-sort: 1
       title: Fraud screening
       type: object
     hpayment:
@@ -2941,33 +2982,41 @@ components:
         brand:
           description: ""
           type: string
+          x-sort: 5
         cardExpiryMonth:
           description: ""
           example: "03"
           type: string
+          x-sort: 20
         cardExpiryYear:
           description: ""
           example: "2020"
           type: string
+          x-sort: 25
         cardHolder:
           description: ""
           example: JOHN DOE
           type: string
+          x-sort: 15
         country:
           description: The country code where payment method was issued.
           example: US
           type: string
+          x-sort: 35
         issuer:
           description: |-
             Name of the financial institution that
             issued the payment method.
           type: string
+          x-sort: 30
         pan:
           description: ""
           type: string
+          x-sort: 10
         token:
           description: ""
           type: string
+          x-sort: 1
       title: Payment
       type: object
     reason:
@@ -2976,9 +3025,11 @@ components:
         code:
           description: ""
           type: string
+          x-sort: 1
         message:
           description: ""
           type: string
+          x-sort: 5
       title: Reason
       type: object
   securitySchemes:
