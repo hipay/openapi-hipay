@@ -1836,11 +1836,13 @@ components:
                 Time-zone offset in minutes between UTC and the Cardholder
                 browser local time.
               type: string
+              example: -120
               minimum: 1
               maximum: 5
             device_fingerprint:
               description: This element should contain the value of the ioBB hidden field.
               type: string
+              example: 042q0aAXOogFCkNMNf94lis1ztsdwpJAn3AFS6wesUIr2q
           x-sort: 360
       type: object
       allOf:
