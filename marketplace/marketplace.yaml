@@ -531,8 +531,8 @@ paths:
             - `0` = personal account, 
             - `1` = business account
           enum:
-            - 1
             - 0
+            - 1
           in: formData
           name: account_type
           type: string
@@ -546,7 +546,7 @@ paths:
           enum:
             - 1
             - 2
-            - 0
+            - 3
           in: formData
           name: pro_type
           type: string
@@ -626,8 +626,8 @@ paths:
           type: string
         - description: '1 if the user agrees with the terms (default : `0`).'
           enum:
-            - 1
             - 0
+            - 1
           in: formData
           name: hipay_information
           type: string
@@ -635,8 +635,8 @@ paths:
             default: 1
         - description: '1 if the user agrees with the commercial offers (default : `0`).'
           enum:
-            - 1
             - 0
+            - 1
           in: formData
           name: commercial_information
           type: string
