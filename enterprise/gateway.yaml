@@ -2362,7 +2362,6 @@ components:
 
             Gift Card number.
           type: string
-          example: 6086300010000022383=35121011031363497
           x-sort: 206
         prepaid_card_security_code:
           description: |-
@@ -2370,7 +2369,6 @@ components:
 
             Gift Card CVC.
           type: string
-          example: '123'
           x-sort: 206
         website_id:
           description: |-
@@ -2765,12 +2763,12 @@ components:
 
             This is the token obtained from the HiPay Enterprise Secure Vault API when tokenizing a credit or debit card. To generate a token, please refer to the [HiPay Enterprise Tokenization API documentation](/doc-api/enterprise/token/#/tokenization/createToken).
           type: string
-          example: db0eef6bfd4cd30ae4e30dc46b89d375b977656d04249741d8b60f533ffa0020
+          example: ef3b4d50325268e59d216c0b053a4f5c7eb559f9abeca0ef178ea1941b2d156a
           x-sort: 160
         request_id:
           description: The request ID linked to the token.
           type: integer
-          example: '7879454'
+          example: '2078323'
           x-sort: 161
         previous_auth_info:
           description: >-
