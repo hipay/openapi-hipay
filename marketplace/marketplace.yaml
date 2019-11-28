@@ -145,7 +145,7 @@ paths:
                 description: Account currency.
                 type: string
               activated:
-                description: True if the account is activated.
+                description: True if the account is activated. activated = 0 => Means that the account can't access to the hipay backoffice. In fact, the password hasn't be registered or confirmed. activated = 1 => Means that the account can access to the hipay backoffice. Password registered.
                 format: int32
                 type: integer
               identified:
@@ -725,7 +725,7 @@ paths:
                 description: wsPassword of the HiPay account created.
                 type: string
               status:
-                description: True if the account is activated.
+                description: True if the account is activated. activated = 0 => Means that the account can't access to the hipay backoffice. In fact, the password hasn't be registered or confirmed. activated = 1 => Means that the account can access to the hipay backoffice. Password registered.
                 format: int32
                 type: integer
               account_id:
