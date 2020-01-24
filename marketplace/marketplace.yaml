@@ -1090,7 +1090,7 @@ paths:
           name: address_country
           required: true
           type: string
-        - description: '`0` : CEO, `1` : COO, `2` : CFO, `3` : Shareholder, `4` : Administrator, `5` : Company manager, `6` : Other'
+        - description: '`1` : CEO, `2` : COO, `3` : CFO, `4` : Shareholder, `5` : Administrator, `6` : Other, `7` : Company manager'
           enum:
             - 0
             - 1
