@@ -968,7 +968,7 @@ paths:
           required: true
           name: file
           type: file
-        - description: 'Back of file to upload (`jpg`, `gif`, `png`, `pdf`).'
+        - description: 'Back of file to upload (`jpg`, `gif`, `png`, `pdf`). Required for id cards in Belgium and Italy'
           in: formData
           name: back
           type: file
@@ -1341,6 +1341,7 @@ paths:
          If you initiate an UBO statement with a wrong number of UBO, and if you don't send all the UBO, You can delete this UBO statement and start a new one. If an UBO statement has been submitted (status WAITING or UPDATED), you can't delete it.
 
       operationId: delete_ubo-statement
+      x-disableTryItOut: true
       parameters:
         - in: path
           name: _format
