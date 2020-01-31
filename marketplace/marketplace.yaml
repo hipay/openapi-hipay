@@ -1194,6 +1194,8 @@ paths:
                 description: Id of the UBO statement.
                 format: int32
                 type: integer
+        '400':
+                description: Validation failed.
         '401':
           description: Authentication failed.
         '403':
@@ -1321,6 +1323,8 @@ paths:
                 description: Id of the UBO statement.
                 format: int32
                 type: integer
+        '400':
+          description: Validation failed.
         '401':
           description: Authentication failed.
         '403':
