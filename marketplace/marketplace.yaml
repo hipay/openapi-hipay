@@ -2153,6 +2153,7 @@ paths:
             | `4012` | Bank country is blacklisted. |
             | `4013` | Withdrawal maximal limit reached. |
             | `4014` | Balance after the withdrawal will be inferior to minimal amount. |
+            | `4015` | The declaration of your ultimate beneficial owners for your HiPay account has not been completed or has not been duly completed. |
           schema:
             properties:
               error_code_detail:
