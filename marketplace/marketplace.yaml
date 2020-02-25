@@ -1380,7 +1380,7 @@ paths:
           description: Authentication failed.
         '403':
           description: Forbidden.
-      summary: Delete a UBO statement. If you initiate an UBO statement with a wrong number of UBO, and if you don't send all the UBO, You can delete this UBO statement and start a new one. If an UBO statement has been submitted (status WAITING or UPDATED), you can't delete it
+      summary: Delete a UBO statement
       tags:
         - ubo
       security:
