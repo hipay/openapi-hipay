@@ -1462,7 +1462,7 @@ paths:
                                 format: int32
                                 type: integer
                               status_code:
-                                description: '0: new, 1: waiting, 2: to check, 3: identified, 4: rejected, 5: deleted, 6: updated.'
+                                description: '0: new, 1: waiting, 2: validated, 3: refused, 4: deleted, 11: to check.'
                                 type: integer
                               status_label:
                                 description: Text version of ubo[status_code].
