@@ -13,7 +13,6 @@ info:
     You may also download settlement files in spreadsheet formats (xls, csv) or plain text by leveraging the `/settlement/{id}/raw{ext}` endpoint.
 
     Note: this documentation describes the Finance API parameters and response fields and allows you to test the platform in real time.
-    This page aims to be used alongside the *Settlements* section of the **[HiPay Enterprise Platform Overview documentation](/getting-started/platform-hipay-enterprise/overview/#settlements)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documentations in parallel when integrating HiPay Enterprise.
 
     # Web service information
 
