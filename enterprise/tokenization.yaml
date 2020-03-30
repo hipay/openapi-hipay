@@ -3,6 +3,8 @@ info:
   version: ''
   title: HiPay Enterprise Tokenization API
   description: |
+    We strongly recommend to use the JS SDK to tokenize a card, instead of the Tokenization API.
+
     The Tokenization (Secure Vault) API allows merchants to retrieve and update data associated with their customers' payment information stored in the HiPay Enterprise Secure Vault. Using Tokenization API, merchants eliminate the risk, liability and cost of storing sensitive data on their local servers and storage devices.
 
     The Tokenization API aims to be used **alongside the HiPay Enterprise Gateway API**. In particular, with the Request New Order (`POST /order`) service of the Gateway API. In fact, when you need to make payments with credit or debit cards using the Gateway API, you first need to tokenize card numbers thanks to the Tokenization API.  
@@ -10,7 +12,6 @@ info:
     This API integrates a BIN lookup tool. Every submitted card number is automatically searched in the BIN database to determine its issuing bank. When the BIN lookup succeeds, the response includes the card brand, the 2-letter country code where card was issued and when applicable the issuing bank name.
 
     Note: this documentation describes the Tokenization API parameters and response fields and allows you to test the platform in real time.  
-    This page aims to be used alongside the **[HiPay Enterprise Platform Overview documentation](/getting-started/platform-hipay-enterprise/overview/)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documentations in parallel when integrating HiPay Enterprise.
 
     ## Tokenization API base URLs
 
