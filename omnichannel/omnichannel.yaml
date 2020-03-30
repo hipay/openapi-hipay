@@ -9,26 +9,7 @@ info:
     The Gateway API allows you to get paid and manage orders and transactions.
 
     Please note: this documentation describes the Gateway API parameters and response fields for POS payments. It allows you to test the platform in real time.
-
-    This page is to be used alongside the **[HiPay Omnichannel Platform Overview documentation](/getting-started/platform-hipay-omnichannel/overview/)**, which gives you more information and details on the HiPay Enterprise workflow.
-    You may use both documents in parallel when integrating HiPay Omnichannel.
-
-    # Integration
-
-    For POS payments, the integration is only available via our API.
-
-    In this case, the payment page is hosted on your website, allowing you to have a unified, fully customized workflow.
-    Please refer to our [POST Order API documentation](/doc-api/enterprise/gateway/#/payments/requestNewOrder) below for more information.
-
-    # Managing transactions
-
-    Once a transaction is executed, you may need to perform operations on it (refund or cancel). To do so, please refer to the `maintenance` web service.
-
-    You can also get all the transaction details at any time by leveraging the `transaction` web services.
-
-    Besides, you may need to be automatically informed when a transaction status gets updated. To this end, you need to leverage server-to-server notifications.
-    For more information, please check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#server-to-server-notifications).
-
+    
     # Web service information
 
     ## Gateway API base URLs
