@@ -10,11 +10,11 @@ info:
 
     ## Account creation:
 
-      1) The agent checks the e-mail availability with the [Is-available API.](#/user-account/post_user-account_is-available)
+      1) The agent checks the e-mail availability with the Is-available API.
 
-      2) The agent creates a HiPay account for merchants using the [User-account API.](#/user-account/post_user-account)
+      2) The agent creates a HiPay account for merchants using the User-account API.
 
-      3) The agent sends us the account number and the identification/KYC information using the [Identification API.](#/identification/post_Identification) HiPay validates the identification/KYC information within three days and sends the agent a notification confirming that the merchant is fully operational.
+      3) The agent sends us the account number and the identification/KYC information using the Identification API. HiPay validates the identification/KYC information within three days and sends the agent a notification confirming that the merchant is fully operational.
 
     ## Bank account information submission:
 
@@ -24,7 +24,7 @@ info:
     ## Fund allocation:
 
     HiPay suggests performing fund allocation and withdrawal all at once. All the funds are held in escrow before being deposited on the technical account.
-    The Transfer API is then used to allocate funds from the technical account to the merchants’ accounts. Try now the [Transfer POST API.](#/transfer/post_transfer)
+    The Transfer API is then used to allocate funds from the technical account to the merchants’ accounts. Try now the Transfer POST API.
 
     The Transfer API allows transfer requests to be made on the agent’s behalf or on the behalf of a third party.
     The technical account is therefore a monitoring tool that provides a clear view of fund allocation (fund remittance, refunds, chargebacks).
@@ -38,14 +38,13 @@ info:
 
     When agents want to do a withdrawal, they need to check the merchant’s account balance with the [Balance API.](#/balance/get_user-account)
 
-      - In case of a zero balance, funds can be allocated with the [Transfer API](#/transfer/post_transfer).
+      - In case of a zero balance, funds can be allocated with the Transfer API.
       - If the balance equals the amount of the allocated funds, a fund withdrawal request can be made with the [Withdrawal API](#/withdrawal/post_withdrawal). (The Withdrawal API allows for a withdrawal request to transfer money to the merchant’s bank account and also to the partner’s bank account.)
       - There must be a zero balance in the end.
 
     ## Marketplace live testing:
 
     This documentation describes the Marketplace API parameters and response fields and allows you to test the platform in real time.
-    This page is to be used along with the **[HiPay Marketplace Platform Overview documentation](/getting-started/platform-hipay-marketplace/overview/)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documentations in parallel when integrating HiPay Enterprise.
 
     ## Marketplace API base URLs:
 
