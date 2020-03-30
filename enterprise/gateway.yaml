@@ -8,36 +8,6 @@ info:
     Please note: this documentation describes the Gateway API parameters and response fields and allows you to test the platform in real time.
     This page is to be used alongside the **[HiPay Enterprise Platform Overview documentation](/getting-started/platform-hipay-enterprise/overview/)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documents in parallel when integrating HiPay Enterprise.
 
-    # Integration
-
-    Choose from three types of integration to select the one best adapted to your business:
-
-    ## Hosted integration
-
-    HiPay Enterprise hosts your payment page on a secured site. With this option you can benefit from a single point of contact, adaptable payment pages, and the PCI-DSS standard. You can therefore outsource heavy security requirements that are related to payment acceptance.
-
-    In order to use this integration, please refer to the **Generate Hosted Payment Page (`POST /hpayment`)** API service below.
-
-    ## iFrame integration
-
-    This is a hybrid solution in which the buyer remains on your website to make payment. In order to use this integration you need to generate a hosted payment page (as above) with a special template, allowing you to properly display it in an iFrame.
-
-    For more information, please refer to the **Generate Hosted Payment Page (`POST /hpayment`)** documentation below.
-
-    ## Integration via our API
-
-    In this case, the payment page is hosted on your website, allowing you to have a unified, fully customized workflow. Please refer to the **Request New Order API (`POST Order`)** below for more information.
-
-    Please note that if you want to execute transactions with credit or debit card payment products, you will need to tokenize card numbers beforehand by using the HiPay Enterprise Tokenization API.
-
-    # Managing transactions
-
-    Once a transaction is executed, you may need to perform operations on it, such as a refund, a capture, etc. To do so, please refer to the `maintenance` web service.
-
-    You can also get all transaction details at any time by leveraging the `transaction` web services.
-
-    Besides, you may need to be automatically informed when a transaction status gets updated. To this end, you need to leverage server-to-server notifications. For more information, please check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#server-to-server-notifications).
-
     # Web service information
 
     ## Gateway API base URLs
@@ -2445,7 +2415,6 @@ components:
           x-sort: 235
         card_holder:
           description: |-
-            **This parameter is specific to provider PAYON.**
 
             The customer's card holder.
           type: string
