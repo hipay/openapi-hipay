@@ -3284,6 +3284,36 @@ components:
             - 1
             - 2
             - 3
+           example: 1
+          x-sort: 344
+        sca_preference:
+          description: >-
+            **This parameter is specific to the PSD2.**
+
+
+           To indicate the preference for a frictionless flow during the authentication 
+           request, the merchant may send the sca_preference parameter. Depending on the 
+           merchant's assessment of the risk of fraud, specific values may be sent. This 
+           parameter can only be used by merchants who have a fraud risk assessment mechanism 
+           of their own and who have subscribed to the SCA Preference merchant option. Please 
+           contact your account manager to request it.
+
+            - `1` : No Preference. If you are not sure about the transaction's risk of fraud,
+            use this value. Using this value for all your transactions may result in a high 
+            strong customer authentication rate.
+
+            - `2` : No Challenge. If you think this transaction is safe. This will tell the 
+            acquirer a frictionless flow is preferred.
+
+            - `3` : Challenge Requested. If you think this transaction may be at risk, use 
+            this value. This will tell the acquirer that a strong customer authentication may
+            be required, depending on the PSD2 specific information you sent along with the 
+            transaction.
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
           example: 1
           x-sort: 345
         recurring_info:
