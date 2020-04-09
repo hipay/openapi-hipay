@@ -3343,8 +3343,7 @@ components:
         sca_preference:
           description: >-
             **This parameter is specific to the PSD2.**
-
-           
+            
             To indicate the preference for a frictionless flow during the authentication 
             request, the merchant may send the sca_preference parameter. Depending on the 
             merchant's assessment of the risk of fraud, specific values may be sent. This 
@@ -3352,7 +3351,6 @@ components:
             of their own and who have subscribed to the SCA Preference merchant option. Please 
             contact your account manager to request it.
 
-           
             - `1` : No Preference. If you are not sure about the transaction's risk of fraud,
             use this value. Using this value for all your transactions may result in a high 
             strong customer authentication rate.
