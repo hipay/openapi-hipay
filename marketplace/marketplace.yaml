@@ -1230,6 +1230,10 @@ paths:
                 description: Id of the UBO statement.
                 format: int32
                 type: integer
+              ubo_id:
+               description: Id of this UBO..
+               format: int32
+               type: integer
         '400':
                 description: Validation failed.
         '401':
@@ -1357,6 +1361,10 @@ paths:
                 type: string
               ubo_statement_id:
                 description: Id of the UBO statement.
+                format: int32
+                type: integer
+              ubo_id:
+                description: Id of this UBO..
                 format: int32
                 type: integer
         '400':
