@@ -865,7 +865,12 @@ paths:
                 format: int32
                 type: integer
               identification_status:
-                description: string
+                description: |-
+                     ###  Identification status
+
+                       - `Unidentified`
+                       - `In progress`
+                       - `Identified`
                 type: string
               documents:
                 description: Array of objects (IdentificationDocumentResponse).
@@ -873,14 +878,34 @@ paths:
                   description: Array of objects (IdentificationDocumentResponse).
                   properties:
                     type:
-                      description: integer
+                      description: |-
+                              ### Type
+
+                                - `-1`: Missing document
+                                - `1`: Identity card
+                                - `2`: Proof of address
+                                - `4`: Company Registration
+                                - `5`: Distribution of power
+                                - `6`: Bank
+                                - `9`: Tax status
+                                - `11`: President of the association
+                                - `12`: Official journal
+                                - `13`: Association status
+                                - `14`: Licence
                       format: int32
                       type: integer
                     label:
                       description: string
                       type: string
                     status_code:
-                      description: integer
+                      description: |-
+                            ###  Status
+
+                              - `0`: new
+                              - `1`: waiting
+                              - `2`: validated
+                              - `3`: refused
+                              - `4`: deleted
                       format: int32
                       type: integer
                     status_label:
@@ -1004,7 +1029,19 @@ paths:
                 format: int32
                 type: integer
               type:
-                description: integer
+                description: |-
+                           ### Type
+                              - `-1` : Missing document
+                              - `1` : Identity card
+                              - `2` : Proof of address
+                              - `4`: Company Registration
+                              - `5` : Distribution of power
+                              - `6` : Bank
+                              - `9` : Tax status
+                              - `11` : President of the association
+                              - `12` : Official journal
+                              - `13` : Association status
+                              - `14` : Licence
                 format: int32
                 type: integer
               validity_date:
@@ -1706,10 +1743,10 @@ paths:
                 description: City of the bank.
                 type: string
               iban:
-                description: IBAN.
+                description: 'IBAN eg: GR9608100010000001234567890.'
                 type: string
               swift:
-                description: SWIFT/BIC
+                description: 'SWIFT/BIC eg: AGRIFRPP836.'
                 type: string
               aba_num:
                 description: ABA number.
@@ -1796,10 +1833,10 @@ paths:
                 description: City of the bank.
                 type: string
               iban:
-                description: IBAN.
+                description: 'IBAN eg: GR9608100010000001234567890.'
                 type: string
               swift:
-                description: SWIFT/BIC
+                description: 'SWIFT/BIC eg: AGRIFRPP836.'
                 type: string
               aba_num:
                 description: ABA number.
@@ -1885,7 +1922,12 @@ paths:
                       format: int32
                       type: integer
                     user_account_type:
-                      description: Account type.
+                      description:  |-
+                             ### Account type
+
+                                - `1`: Main account
+                                - `2`: secondary account
+                                - `3`: original account
                       type: string
                     balance:
                       description: Account balance.
@@ -2311,7 +2353,26 @@ paths:
                 description: Transaction creation date.
               transaction_status:
                 type: string
-                description: Actual status of the transaction.
+                description: |-
+                      ### Actual status of the transaction
+                      Transaction type
+
+                        - `1`: feeding
+                        - `2`: external transfer
+                        - `3`: simple payment
+                        - `4`: direct payment
+                        - `5`: european withdrawal
+                        - `6`: other
+                        - `7`: international transfer
+                        - `8`: international withdrawal
+                        - `10`: affiliation transfer
+                        - `11`: tax transfer
+                        - `12`: identification transfer
+                        - `13`: direct donation
+                        - `14`: simple donation
+                        - `15`: payable reference payment
+                        - `16`: business contributor transfer
+                        - `17`: injection payment
               transaction_label:
                 type: string
                 description: Transaction label.
