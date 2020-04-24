@@ -1126,9 +1126,7 @@ components:
           description: |-
             The template name. Possible values:
             - `basic-js` : Template with customizable CSS
-            - `basic` [Deprecated] : Template with customizable CSS
             - `iframe-js` : Template with hosted iFrame integration
-            - `iframe` [Deprecated] : Template with hosted iFrame integration
             - `autodetection` : Automatic detection of the brand of the card, if the merchant has the option
           type: string
           enum:
@@ -2175,56 +2173,6 @@ components:
           example: '{"internal_reference":"ORD_987465","customer_first_order":true,"other_sample_parameter":"Other
             sample value"}'
           x-sort: 155
-        cdata1:
-          description: Custom data 1. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata2:
-          description: Custom data 2. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata3:
-          description: Custom data 3. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata4:
-          description: Custom data 4. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata5:
-          description: Custom data 5. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata6:
-          description: Custom data 6. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata7:
-          description: Custom data 7. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata8:
-          description: Custom data 8. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata9:
-          description: Custom data 9. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 156
-        cdata10:
-          description: Custom data 10. Deprecated, please use *custom_data* parameter.
-          type: string
-          deprecated: true
-          x-sort: 157
         eci:
           description: |2-
 
