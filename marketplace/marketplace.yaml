@@ -1194,11 +1194,11 @@ paths:
                 format: int32
                 type: integer
               ubo_id:
-               description: Id of this UBO..
-               format: int32
-               type: integer
+                description: Id of this UBO..
+                format: int32
+                type: integer
         '400':
-                description: Validation failed.
+          description: Validation failed.
         '401':
           description: Authentication failed.
         '403':
