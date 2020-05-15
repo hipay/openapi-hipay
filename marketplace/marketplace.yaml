@@ -1194,7 +1194,7 @@ paths:
                 format: int32
                 type: integer
               ubo_id:
-                description: Id of this UBO..
+                description: Id of this UBO.
                 format: int32
                 type: integer
         '400':
@@ -1327,7 +1327,7 @@ paths:
                 format: int32
                 type: integer
               ubo_id:
-                description: Id of this UBO..
+                description: Id of this UBO.
                 format: int32
                 type: integer
         '400':
