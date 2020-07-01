@@ -2759,6 +2759,18 @@ components:
             </div>
             </div>
             <div class="parameter__description__object">
+            <div class="parameter__name">pre_order_date</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
+
+            For a pre-ordered purchase, the expected date that the merchandise will be available.
+
+            - example : 20190925
+
+            </div>
+            </div>
+            <div class="parameter__description__object">
             <div class="parameter__name">reorder_indicator</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
