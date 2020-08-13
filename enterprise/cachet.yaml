@@ -1,0 +1,653 @@
+swagger: '2.0'
+info:
+  title: Hipay status Page API
+  description: Hipay status Page API
+  version: "1.0.0"
+schemes:
+  - https
+host: "status.hipay.com"
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  /ping:
+    get:
+      operationId: ping
+      summary: Test that the API is responding to your requests.
+      tags:
+        - General
+      responses:
+        200:
+          description: Ping response
+          schema:
+            $ref: '#/definitions/Ping'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /version:
+    get:
+      operationId: version
+      summary: Get the Status API version.
+      tags:
+        - General
+      responses:
+        200:
+          description: Version response
+          schema:
+            $ref: '#/definitions/Version'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /components:
+    get:
+      operationId: getComponents
+      summary: Get all components.
+      parameters:
+        - name: sort
+          in: query
+          description: Object property to filter on.
+          required: false
+          type: string
+          default: id
+        - name: order
+          in: query
+          description: Ordering parameter with options of asc or desc.
+          required: false
+          type: string
+          enum: [ "asc", "desc" ]
+          default: asc
+        - name: per_page
+          in: query
+          type: number
+          format: int32
+          description: Results per page.
+        - name: page
+          in: query
+          type: number
+          format: int32
+        - name: id
+          in: query
+          type: number
+          format: int32
+          description: Unique identifier representing a specific component.
+        - name: name
+          in: query
+          type: string
+          description: Full name or partial name to search for a component.
+        - name: status
+          in: query
+          type: number
+          format: int32
+          description: Unique status identifier representing a specific component status.
+        - name: group_id
+          in: query
+          type: number
+          format: int32
+          description: Unique group identifier representing a specific component group.
+        - name: enabled
+          in: query
+          type: boolean
+          format: int
+
+      responses:
+        200:
+          description: Components response
+          schema:
+            type: object
+            properties:
+              meta:
+                type: object
+                properties:
+                  pagination:
+                    $ref: '#/definitions/Pagination'
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/ComponentResponse'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /components/{component}:
+    get:
+      operationId: getComponentById
+      summary: Get a component.
+      parameters:
+        - name: component
+          in: path
+          required: true
+          description: Unique component identifier.
+          type: number
+          format: int32
+
+      responses:
+        200:
+          description: Component response
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentResponse'
+  /components/5:
+    get:
+      operationId: getComponentById
+      summary: Get Stage Network component.
+
+      responses:
+        200:
+          description: Component response
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentResponse'
+  /components/3:
+    get:
+      operationId: getComponentById
+      summary: Get Production Payment Processing component.
+
+      responses:
+        200:
+          description: Component response
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentResponse'
+  /components/7:
+    get:
+      operationId: getComponentById
+      summary: Get Stage Payment Processing component.
+
+      responses:
+        200:
+          description: Component response
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentResponse'
+  /components/4:
+    get:
+      operationId: getComponentById
+      summary: Get Production Backoffice component.
+
+      responses:
+        200:
+          description: Component response
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentResponse'      
+  /components/8:
+    get:
+      operationId: getComponentById
+      summary: Get Stage Network component.
+
+      responses:
+        200:
+          description: Component response
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentResponse'        
+  /components/groups:
+    get:
+      operationId: getComponentGroups
+      summary: Get all Component Groups.
+      parameters:
+        - name: id
+          in: query
+          required: false
+          description: Unique component group id
+          type: number
+          format: int32
+        - name: name
+          in: query
+          required: false
+          description: Full or partial component group name
+          type: string
+        - name: collapsed
+          in: query
+          description: Group collapsed or not.
+          required: false
+          type: number
+          format: boolean
+        - name: sort
+          in: query
+          description: Object property to filter on.
+          required: false
+          type: string
+          default: id
+        - name: order
+          in: query
+          description: Ordering parameter with options of asc or desc.
+          required: false
+          type: string
+          enum: [ "asc", "desc" ]
+          default: asc
+        - name: per_page
+          in: query
+          type: number
+          format: int32
+          description: Results per page.
+        - name: page
+          in: query
+          type: number
+          format: int32
+      tags:
+        - Component Groups
+      responses:
+        200:
+          description: Get component groups response
+          schema:
+            type: object
+            properties:
+              meta:
+                type: object
+                properties:
+                  pagination:
+                    $ref: '#/definitions/Pagination'
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/ComponentGroupResponse'
+  /components/groups/{group}:
+    get:
+      operationId: getComponentGroupById
+      summary: Get a Component Group.
+      parameters:
+        - name: group
+          in: path
+          required: true
+          description: Unique component group id
+          type: number
+          format: int32
+      tags:
+        - Component Groups
+      responses:
+        200:
+          description: Get a component group
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentGroupResponse'
+  /components/groups/1:
+    get:
+      operationId: getComponentGroupById
+      summary: Get Prod Component Group.
+      tags:
+        - Component Groups
+      responses:
+        200:
+          description: Get a component group
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentGroupResponse'
+  /components/groups/2:
+    get:
+      operationId: getComponentGroupById
+      summary: Get Stage Component Group.
+      tags:
+        - Component Groups
+      responses:
+        200:
+          description: Get a component group
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/ComponentGroupResponse'
+definitions:
+  ComponentResponse:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      link:
+        type: string
+      status:
+        type: number
+        format: int32
+      order:
+        type: number
+        format: int32
+      group_id:
+        type: number
+        format: int32
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      deleted_at:
+        type: string
+        format: date-time
+      status_name:
+        type: string
+      tags:
+        $ref: '#/definitions/Tag'
+  Component:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      link:
+        type: string
+      status:
+        type: number
+        format: int32
+      order:
+        type: number
+        format: int32
+      group_id:
+        type: number
+        format: int32
+      enabled:
+        type: boolean
+  ComponentGroup:
+    type: object
+    properties:
+      name:
+        type: string
+      order:
+        type: number
+        format: int32
+      collapsed:
+        type: number
+        format: int32
+  ComponentGroupResponse:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      name:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      order:
+        type: number
+        format: int32
+      collapsed:
+        type: number
+        format: boolean
+      visible:
+        type: number
+        format: boolean
+      enabled_components:
+        type: array
+        items:
+          $ref: '#/definitions/ComponentResponse'
+      enabled_components_lowest:
+        type: array
+        items:
+          $ref: '#/definitions/ComponentResponse'
+  Incident:
+    type: object
+    properties:
+      name:
+        type: string
+      message:
+        type: string
+      status:
+        type: number
+        format: int32
+      visible:
+        type: number
+        format: int32
+      component_id:
+        type: number
+        format: int32
+      component_status:
+        type: number
+        format: int32
+      notify:
+        type: number
+        format: boolean
+      created_at:
+        type: string
+        format: date-time
+      template:
+        type: string
+      vars:
+        type: object
+  IncidentUpdateResponse:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      incident_id:
+        type: number
+        format: int32
+      status:
+        type: number
+        format: int32
+      message:
+        type: string
+      user_id:
+        type: number
+        format: int32
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      human_status:
+        type: string
+      permalink:
+        type: string
+        format: url
+  IncidentResponse:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      component_id:
+        type: number
+        format: int32
+      name:
+        type: string
+      status:
+        type: number
+        format: int32
+      visible:
+        type: number
+        format: int32
+      message:
+        type: string
+      scheduled_at:
+        type: string
+        format: date-time
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      deleted_at:
+        type: string
+        format: date-time
+      human_status:
+        type: string
+  IncidentUpdate:
+    type: object
+    properties:
+      status:
+        type: number
+        format: int32
+      message:
+        type: string
+  Metric:
+    type: object
+    properties:
+      name:
+        type: string
+      suffix:
+        type: string
+      description:
+        type: string
+      default_value:
+        type: number
+        format: int32
+      display_chart:
+        type: number
+        format: int32
+  MetricPoint:
+    type: object
+    properties:
+      value:
+        type: number
+      timestamp:
+        type: string
+        format: date-time
+  MetricPointsResponse:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      metric_id:
+        type: number
+        format: int32
+      value:
+        type: number
+      counter:
+        type: number
+        format: int32
+      calculated_value:
+        type: number
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  MetricsResponse:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int32
+      name:
+        type: string
+      suffix:
+        type: string
+      description:
+        type: string
+      default_value:
+        type: number
+        format: float
+      calc_type:
+        type: number
+        format: int32
+      display_chart:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      places:
+        type: number
+        format: int32
+      default_view:
+        type: number
+        format: int32
+      threshold:
+        type: number
+        format: int32
+      order:
+        type: number
+        format: int32
+      visible:
+        type: number
+        format: int32
+      default_view_name:
+        type: string
+  Ping:
+    type: object
+    properties:
+      data:
+        type: string
+  Pagination:
+    type: object
+    properties:
+      total:
+        type: number
+        format: int32
+      count:
+        type: number
+        format: int32
+      per_page:
+        type: number
+        format: int32
+      current_page:
+        type: number
+        format: int32
+      total_pages:
+        type: number
+        format: int32
+      links:
+        type: object
+        properties:
+          next_page:
+            type: string
+          previous_page:
+            type: string
+  Tag:
+    description: Key-value pairs of tags where the key is the slug and the value is the name.
+    type: object
+    additionalProperties: true
+  Version:
+    type: object
+    properties:
+      meta:
+        type: object
+        properties:
+          on_latest:
+            type: boolean
+          latest:
+            type: object
+            properties:
+              tag_name:
+                type: string
+              prelease:
+                type: boolean
+              draft:
+                type: boolean
+      data:
+        type: string
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
