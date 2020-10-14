@@ -25,6 +25,8 @@ info:
 servers:
 - url: https://stage-secure-gateway.hipay-tpp.com/rest
   description: Stage
+- url: https://stage-api.hipay.com
+  description: Stage V2 
 - url: https://secure-gateway.hipay-tpp.com/rest
   description: Production
 paths:
