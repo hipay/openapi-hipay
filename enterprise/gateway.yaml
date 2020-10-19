@@ -3145,7 +3145,9 @@ components:
               type: object
               properties:
                 account_possession:
-                  description: Length of time the customer has had their account on the merchant's website.
+                  description: >-
+                    Account's type of seniority, based on when the customer
+                    created their account on the merchant's website.
                   type: integer
                   example: 1
                 account_change:
