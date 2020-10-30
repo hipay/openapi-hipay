@@ -2935,6 +2935,27 @@ components:
 
             <hr>
             <div class="parameter__description__object">
+            <div class="parameter__name">account_possession</div>
+            <div class="parameter__type">integer</div>
+            <div class="parameter__description">
+
+
+            Account's type of seniority, based on when the customer
+            created their account on the merchant's website.
+
+            - `1` : Guest
+
+            - `2` : Created during this transaction
+
+            - `3` : Less than 30 days
+
+            - `4` : 30 - 60 days
+
+            - `5` : More than 60 days
+
+            </div>
+            </div>
+            <div class="parameter__description__object">
             <div class="parameter__name">account_change</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
@@ -3125,6 +3146,12 @@ components:
               description: Customer's account information
               type: object
               properties:
+                account_possession:
+                  description: >-
+                    Account's type of seniority, based on when the customer
+                    created their account on the merchant's website.
+                  type: integer
+                  example: 1
                 account_change:
                   description: Customer's last change on his account. (YYYYMMDD)
                   type: integer
