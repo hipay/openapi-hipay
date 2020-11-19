@@ -4,43 +4,44 @@ info:
   version: 1.0.0
   title: Unattended ECR Connector
 
-host: stage-secure-gateway.hipay-tpp.com
-basePath: /rest/
+host: localhost:8080
+
 schemes:
- - http
-  
+  - http
+
 securityDefinitions:
   basicAuth:
     type: basic
 # To apply Basic auth to the whole API:
 security:
   - basicAuth: []
-  
+
 # tags are used for organizing operations
 tags:
-- name: merchants
-  description: Operations available to merchant
-- name: maintenance
-  description: Maintenance calls
+  - name: merchants
+    description: Operations available to merchant
+  - name: maintenance
+    description: Maintenance calls
 paths:
   /order:
     post:
+      x-disableTryItOut: true
       tags:
-      - merchants
+        - merchants
       summary: Creates an order for unattended terminal
       operationId: orderUnattendedTerminal
       description: |
         Initiate a payment on the unattended terminal. On case of success, create on order based on payment details and parameters send on the query.
       consumes:
-      - application/x-www-form-urlencoded
+        - application/x-www-form-urlencoded
       produces:
-      - application/json
+        - application/json
       parameters:
-      - in: body
-        name: inventoryItem
-        description: Inventory item to add
-        schema:
-          $ref: '#/definitions/OrderQuery'
+        - in: body
+          name: inventoryItem
+          description: Inventory item to add
+          schema:
+            $ref: '#/definitions/OrderQuery'
       responses:
         200:
           description: OK
@@ -60,11 +61,12 @@ paths:
             type: array
             items:
               $ref: '#/definitions/ErrorResponse'
-  
+
   /stop:
     get:
+      x-disableTryItOut: true
       tags:
-      - maintenance
+        - maintenance
       summary: Stop terminal manager server
       operationId: stopTerminalManager
       description: Ask terminal manager server to stop properly as soon as possible
@@ -81,8 +83,9 @@ paths:
               $ref: '#/definitions/ErrorResponse'
   /cancel:
     get:
+      x-disableTryItOut: true
       tags:
-      - maintenance
+        - maintenance
       summary: Cancel current transaction
       operationId: cancelTransaction
       description: Ask terminal to cancel current transaction
@@ -99,8 +102,9 @@ paths:
               $ref: '#/definitions/ErrorResponse'
   /reset:
     get:
+      x-disableTryItOut: true
       tags:
-      - maintenance
+        - maintenance
       summary: Reset hardware terminal
       operationId: resetTerminal
       description: Ask terminal to make a reboot
@@ -117,8 +121,9 @@ paths:
               $ref: '#/definitions/ErrorResponse'
   /version:
     get:
+      x-disableTryItOut: true
       tags:
-      - maintenance
+        - maintenance
       summary: Get current version of terminal manager application
       operationId: versionTerminalManager
       description: Ask terminal manager to give the current application version running
@@ -139,8 +144,9 @@ paths:
               $ref: '#/definitions/ErrorResponse'
   /config:
     get:
+      x-disableTryItOut: true
       tags:
-      - maintenance
+        - maintenance
       summary: Get serial number of hardware terminal
       operationId: configTerminal
       description: Ask hardware terminal to return the serial number
@@ -161,8 +167,9 @@ paths:
               $ref: '#/definitions/ErrorResponse'
   /tlc:
     get:
+      x-disableTryItOut: true
       tags:
-      - maintenance
+        - maintenance
       summary: Data capture request (Telecollection)
       operationId: doTlc
       description: Transmit all transactions to acquire for all applications on the hardware terminal
@@ -183,8 +190,9 @@ paths:
               $ref: '#/definitions/ErrorResponse'
   /check:
     get:
+      x-disableTryItOut: true
       tags:
-      - maintenance
+        - maintenance
       summary: Check hardware terminal status
       operationId: checkStatus
       description: Get current status on the hardware terminal
@@ -207,8 +215,8 @@ definitions:
   OrderQuery:
     type: object
     required:
-    - amount
-    - orderId
+      - amount
+      - orderId
     properties:
       amount:
         type: integer
@@ -222,7 +230,7 @@ definitions:
         type: string
         description: ISO 4217 alpha currency code.
         default: EUR
-        example : EUR
+        example: EUR
       basket:
         $ref: '#/definitions/Basket'
       customer:
@@ -232,13 +240,13 @@ definitions:
   Basket:
     description: Shopping cart details.
     required:
-    - product_reference
-    - type
-    - quantity
-    - name
-    - unit_price
-    - tax_rate
-    - total_amount
+      - product_reference
+      - type
+      - quantity
+      - name
+      - unit_price
+      - tax_rate
+      - total_amount
     properties:
       european_article_numbering:
         type: string
@@ -300,17 +308,18 @@ definitions:
     description: In the custom data parameter, you can set all the values of you want to retrieve in HiPay’s backoffice.
     type: object
     additionalProperties: true
-    example: {"shop":"Opera","vendor":"Mario","newCustomer":true,"event":42}
+    example:
+      { 'shop': 'Opera', 'vendor': 'Mario', 'newCustomer': true, 'event': 42 }
   OrderResponse:
     type: object
     required:
-    - status 
-    - amount
-    - currency
-    - orderId
-    - basket
-    - customer
-    - customData
+      - status
+      - amount
+      - currency
+      - orderId
+      - basket
+      - customer
+      - customData
     properties:
       status:
         type: string
@@ -319,7 +328,7 @@ definitions:
       error:
         type: string
         description: Error description.
-        example: 
+        example:
       receipt:
         $ref: '#/definitions/Receipt'
       ticket:
@@ -334,7 +343,7 @@ definitions:
         type: string
         description: ISO 4217 alpha currency code.
         default: EUR
-        example : EUR
+        example: EUR
       orderId:
         type: string
         description: Order number of your request payment.
@@ -355,150 +364,150 @@ definitions:
       ticketHeader:
         type: string
         description: Ticket Header of the transaction.
-        example: "                    "
+        example: '                    '
       localDate:
         type: string
         description: Local date of the transaction.
-        example: "030420"
+        example: '030420'
       localTime:
         type: string
         description: Local time of the transaction.
-        example: "083011"
+        example: '083011'
       acceptor:
         type: string
         description: Acceptor name and location.
-        example: "HIPAY                                 92HIPAY             "
+        example: 'HIPAY                                 92HIPAY             '
       transactionType:
         type: string
         description: Transaction type.
-        example: "01"
+        example: '01'
       contractNumber:
         type: string
         description: merchant id (MID). Unique identifier assigned to the merchant.
-        example: "123456"
+        example: '123456'
       SIRET:
         type: string
         description: SIRET number.
-        example: "12345678901234"
+        example: '12345678901234'
       activity:
         type: string
         description: Merchant Category Code (MCC).
-        example: "5039"
+        example: '5039'
       paymentType:
         type: string
         description: Payment type of the transaction.
-        example: "46"
+        example: '46'
       siteType:
         type: string
         description: Site type.
-        example: "        "
+        example: '        '
       primaryAccountNumber:
         type: string
         description: Masked Primary Account Number.
-        example: "123456XXXXXX7890"
+        example: '123456XXXXXX7890'
       TASA:
         type: string
         description: Acceptor System Application Type (TASA).
-        example: "2046"
+        example: '2046'
       cardAppExpiry:
         type: string
         description: Expiry date of card application.
-        example: "221031"
+        example: '221031'
       serviceCode:
         type: string
         description: Service code.
-        example: "   "
+        example: '   '
       crypto:
         type: string
         description: Cryptogram.
-        example: "1234567898765434"
+        example: '1234567898765434'
       currencyNumCode:
         type: string
         description: Numerical currency code of the transaction.
-        example: "978"
+        example: '978'
       acceptationSystemNum:
         type: string
         description: Acceptation system number (rank of the terminal).
-        example: "001"
+        example: '001'
       transactionNumber:
         type: string
         description: Transaction number generated by the acceptor system.
-        example: "000001"
+        example: '000001'
       transactionFileNumber:
         type: string
         description: Transaction file number generated by the acceptor system.
-        example: "000006"
+        example: '000006'
       readingMode:
         type: string
         description: Reading mode of Primary account number.
-        example: "C"
+        example: 'C'
       authorizationNumber:
         type: string
         description: Authorization number of the transaction generated by the acquiror.
-        example: "136967"
+        example: '136967'
       forceCode:
         type: string
         description: Force code.
-        example: " "
+        example: ' '
       amount:
         type: string
         description: Amount of the transaction expressed in the smallest unit of the currency and padded with zero
-        example: "00000899"
+        example: '00000899'
       currencyAlphaCode:
         type: string
         description: ISO 4217 alpha currency code.
-        example: "EUR"
+        example: 'EUR'
       currencyFractionPart:
         type: string
         description: Fractional part of the currency.
-        example: "2"
+        example: '2'
       counterValueAmount:
         type: string
         description: Amount of a transaction in counter value.
-        example: "00005897"
+        example: '00005897'
       counterValueCurrencyAlphaCode:
         type: string
         description: Currency code of the counter value.
-        example: "FRF"
+        example: 'FRF'
       counterValueCurrencyFractionPart:
         type: string
         description: Fractional part of the counter value.
-        example: "2"
+        example: '2'
       inclusiveAmount:
         type: string
         description: Inclusive amount.
-        example: "00000899"
+        example: '00000899'
       ticketFooter:
         type: string
         description: Ticket footer of the transaction.
-        example: "                                       "
+        example: '                                       '
       AID:
         type: string
         description: Application Identifier.
-        example: "A0000000041010  "
+        example: 'A0000000041010  '
       label:
         type: string
         description: Application Identifier name (card brand).
-        example: "Mastercard      "
+        example: 'Mastercard      '
   VersionResponse:
     type: object
     required:
-    - version
-    - type
-    - os
+      - version
+      - type
+      - os
     properties:
       version:
         type: string
         description: Terminal manager application version
-        example: "0.0.0-tpa-winserver2003_64"
+        example: '0.0.0-tpa-winserver2003_64'
       type:
         type: string
-        enum: [tpa,tpe]
+        enum: [tpa, tpe]
         example: tpa
         description: >
-            Type of terminal manager application :
-             * "tpa" - Unattended terminal (iSelf)
-             * "tpe" - Attented terminal (Ingenico Move or Desk 5000, Verifone v420m, ...)
+          Type of terminal manager application :
+           * "tpa" - Unattended terminal (iSelf)
+           * "tpe" - Attented terminal (Ingenico Move or Desk 5000, Verifone v420m, ...)
       os:
         type: string
         description: Operating system where terminal manager application is running
@@ -506,22 +515,22 @@ definitions:
   ConfigResponse:
     type: object
     required:
-    - deviceId
+      - deviceId
     properties:
       deviceId:
         type: string
-        description: Hardware device serial number 
-        example: "00000012345678"
+        description: Hardware device serial number
+        example: '00000012345678'
   TlcResponse:
     type: object
     required:
-    - NbApp
-    - App
+      - NbApp
+      - App
     properties:
       NbApp:
         type: string
         description: Number of payment applications present on hardware terminal
-        example: "1"
+        example: '1'
       App:
         type: array
         items:
@@ -529,84 +538,83 @@ definitions:
   AppTlcStatus:
     type: object
     required:
-    - Name
-    - Status
+      - Name
+      - Status
     properties:
       Name:
         type: string
         description: Payment application name
-        example: "CB EMV"
+        example: 'CB EMV'
       Status:
         type: string
-        example: "0"
-        enum: ["0", "1", "2", "3"]
+        example: '0'
+        enum: ['0', '1', '2', '3']
         description: >
-            Payment application status :
-             * "0" - data capture OK
-             * "1" - data capture incomplete
-             * "2" - Call error
-             * "3" - No call
+          Payment application status :
+           * "0" - data capture OK
+           * "1" - data capture incomplete
+           * "2" - Call error
+           * "3" - No call
   CheckResponse:
     type: object
     required:
-    - cr
-    - card
-    - call
-    - periph
+      - cr
+      - card
+      - call
+      - periph
     properties:
       cr:
         type: string
-        example: "0"
-        enum: ["0", "1", "2", "3"]
+        example: '0'
+        enum: ['0', '1', '2', '3']
         description: >
-            Hardware terminal report status :
-             * "0" - OK, terminal available
-             * "1" - NO OK, terminal not available (busy)
-             * "2" - Terminal in maintenance mode
-             * "3" - Terminal not connected
+          Hardware terminal report status :
+           * "0" - OK, terminal available
+           * "1" - NO OK, terminal not available (busy)
+           * "2" - Terminal in maintenance mode
+           * "3" - Terminal not connected
       card:
-          type: string
-          example: "0"
-          enum: ["0", "1"]
-          description: >
-              Card presence in contact reader :
-               * "0" - No card
-               * "1" - Card present
+        type: string
+        example: '0'
+        enum: ['0', '1']
+        description: >
+          Card presence in contact reader :
+           * "0" - No card
+           * "1" - Card present
       call:
-          type: string
-          example: "0"
-          enum: ["0", "1", "2"]
-          description: >
-              Call status :
-               * "0" - Neither data capture nor parameters downloading in progress
-               * "1" - Data capture in progress
-               * "2" - Parameters downloading in progress
+        type: string
+        example: '0'
+        enum: ['0', '1', '2']
+        description: >
+          Call status :
+           * "0" - Neither data capture nor parameters downloading in progress
+           * "1" - Data capture in progress
+           * "2" - Parameters downloading in progress
       periph:
-          type: string
-          example: "0"
-          enum: ["0", "1", "2", "3"]
-          description: >
-            Hardware terminal periphal status :
-             * "0" - OK
-             * "1" - Pin-pad out of service, security activated
-             * "2" - Reader out of service
-             * "3" - Pin-pad and reader out of service
+        type: string
+        example: '0'
+        enum: ['0', '1', '2', '3']
+        description: >
+          Hardware terminal periphal status :
+           * "0" - OK
+           * "1" - Pin-pad out of service, security activated
+           * "2" - Reader out of service
+           * "3" - Pin-pad and reader out of service
   ErrorResponse:
     type: object
     required:
-    - error
+      - error
     properties:
       error:
         type: string
         description: Error description
-        example: "Connection time out"
+        example: 'Connection time out'
   AuthentificationErrorResponse:
     type: object
     required:
-    - error
+      - error
     properties:
       error:
         type: string
         description: Error description
-        example: "Public HiPay API credential error"
-        
+        example: 'Public HiPay API credential error'
