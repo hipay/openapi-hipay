@@ -1137,6 +1137,7 @@ components:
           - autodetection
           - basic
           - iframe
+          - default
           example: basic-js
           x-sort: 35
         merchant_display_name:
