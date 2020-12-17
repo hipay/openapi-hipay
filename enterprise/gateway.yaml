@@ -2484,7 +2484,7 @@ components:
           x-sort: 146
         issuer_bank_id:
           description: |-
-            **This parameter is specific to the iDEAL and the SEPA Direct Debit payment products.**
+            **This parameter is specific to the iDEAL, GiroPay and the SEPA Direct Debit payment products.**
 
             This is the Business Identifier Code (BIC) of the customer's issuer bank.
           type: string
