@@ -2405,22 +2405,23 @@ components:
           type: string
           x-sort: 260
         zipcode:
-          description: The zip or postal code of the customer.
+          description: Zip or postal code of the customer.
           type: string
           example: '75001'
           x-sort: 265
         country:
-          description: The zip or postal code of the customer.
+          description: Country code of the customer. This two-letter
+            country code complies with ISO 3166-1 (alpha 2).
           type: string
           example: FR
           x-sort: 270
         shipto_firstname:
-          description: The first name of the order recipient.
+          description: First name of the order recipient.
           type: string
           example: Cathy
           x-sort: 285
         shipto_lastname:
-          description: The last name of the order recipient.
+          description: Last name of the order recipient.
           type: string
           example: Doe
           x-sort: 290
