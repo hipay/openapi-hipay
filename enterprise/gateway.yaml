@@ -25,17 +25,74 @@ info:
 servers:
 - url: https://stage-secure-gateway.hipay-tpp.com/rest
   description: Stage
-- url: https://stage-api.hipay.com
-  description: Stage V2 
 - url: https://secure-gateway.hipay-tpp.com/rest
   description: Production
 paths:
+  /v1/order:
+    post:
+      tags:
+      - payments
+      summary: Creates an order and a transaction based on payment details
+      description: |2-
+
+        This service allows you to execute transactions through API with no need
+        to redirect your customer to the payment page hosted by HiPay. This
+        service supports payments with credit or debit cards as well as
+        alternative payment methods.
+
+        In **order** to make a payment with a credit or debit card, a token must
+        have been generated beforehand. In fact, this service cannot receive
+        credit or debit card numbers in clear. Instead, you must provide this
+        service with a token associated to a card number. Use the HiPay
+        Enterprise SDK for JavaScript in order to generate tokens.
+
+        If you need to make payments with alternative payment methods, you can
+        use this service directly. Note that the use of some alternative payment
+        products implies that you redirect your user to an external URL. In such
+        a case, the `forwardUrl` parameter will be set with the appropriate URL.
+        Moreover, the activation of *3-D Secure* also implies a redirection of
+        your customer.
+      operationId: requestNewOrder
+      requestBody:
+        description: Order information
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InputOrder'
+      responses:
+        '200':
+          description: Order successfully created and transaction executed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: The request was rejected due to a validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: An authentication error occurred/invalid credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Access to this resource is fordidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: [
+          ]
   /v1/hpayment:
     post:
       tags:
       - payments
-      summary: Creates a secure payment page which you can redirect your customer
-        to, in order to proceed checkout
+      summary: Hosted Page v1, we recommend using the new Hosted Page v2.
       description: |2-
 
          This service allows you to **redirect your customer to a payment page
@@ -141,66 +198,6 @@ paths:
                 $ref: '#/components/schemas/Error'
         '404':
           description: Transaction was not found.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      security:
-      - basicAuth: [
-          ]
-  /v1/order:
-    post:
-      tags:
-      - payments
-      summary: Creates an order and a transaction based on payment details
-      description: |2-
-
-        This service allows you to execute transactions through API with no need
-        to redirect your customer to the payment page hosted by HiPay. This
-        service supports payments with credit or debit cards as well as
-        alternative payment methods.
-
-        In **order** to make a payment with a credit or debit card, a token must
-        have been generated beforehand. In fact, this service cannot receive
-        credit or debit card numbers in clear. Instead, you must provide this
-        service with a token associated to a card number. Use the HiPay
-        Enterprise SDK for JavaScript in order to generate tokens.
-
-        If you need to make payments with alternative payment methods, you can
-        use this service directly. Note that the use of some alternative payment
-        products implies that you redirect your user to an external URL. In such
-        a case, the `forwardUrl` parameter will be set with the appropriate URL.
-        Moreover, the activation of *3-D Secure* also implies a redirection of
-        your customer.
-      operationId: requestNewOrder
-      requestBody:
-        description: Order information
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/InputOrder'
-      responses:
-        '200':
-          description: Order successfully created and transaction executed.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Transaction'
-        '400':
-          description: The request was rejected due to a validation error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: An authentication error occurred/invalid credentials.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Access to this resource is fordidden.
           content:
             application/json:
               schema:
