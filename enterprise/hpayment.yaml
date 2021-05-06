@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: HiPay Enterprise Gateway API
+  title: HiPay HPayment API
   description: |2-
 
     The HPayment API allows you to generate a Hosted Page link where you can redirect the customer to pay securely.
@@ -37,7 +37,7 @@ paths:
          This service allows you to **redirect your customer to a payment page
         (hosted by HiPay)** in order to proceed checkout. This service creates
         an order and returns a forward URL. This forward URL is dedicated to
-        display a payment page with your CSS and validated payment products.
+        display a payment page.
         After payment form validation, the checkout is processed and the customer is
         being returned to your website.
 
@@ -134,12 +134,6 @@ components:
           - iframe-js
           example: basic-js
           x-sort: 35
-        merchant_display_name:
-          description: The merchant name displayed on payment page, otherwise the
-            name is retrieved from order.
-          type: string
-          example: ACME Consolidated
-          x-sort: 40
         time_limit_to_pay:
           description: 'The time limit to pay allows you to specify the validity period
             of a payment page in seconds starting from the moment the payment link
