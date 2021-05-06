@@ -990,9 +990,9 @@ components:
           example: ''
           x-sort: 205
         soft_descriptor:
-          description: Billing descriptor for machine learning.
+          description: Name that will be displayed for the transaction on the customer's bank account.
           type: string
-          example: Dell Inspiron 15 3583 (i3583-3112BLK-PFR)
+          example: Company Name SAS
           x-sort: 205
         cardtoken:
           description: |2-
