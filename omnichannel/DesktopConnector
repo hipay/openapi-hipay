@@ -1,0 +1,287 @@
+openapi: 3.0.0
+info:
+  description: |
+    ECR-Connector TPE
+  title: ECR-Connector TPE
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+paths:
+  /order:
+    post:
+      tags:
+        - Merchants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  description: Total order amount, calculated as the sum of purchased items, plus shipping fees (if present), plus tax fees (if present).
+                  type: number
+                  example: 10,23
+                currency:
+                  description: Currency of the transaction
+                  type: string
+                  default: EUR
+                order_id:
+                  description: Order number of your request payment.
+                  type: string
+                  example: Order_12345
+                transation_type:
+                  description: Type of transaction.
+                  type: string
+                  default: "Debit"
+                  enum: [
+                    "Debit",
+                    "Credit"
+                  ]
+                force_authorization:
+                  description: Force authorization
+                  type: boolean
+                  default: false
+                cart:
+                  $ref: '#/components/schemas/Cart'
+                customer:
+                  $ref: '#/components/schemas/Customer'
+                custom_data:
+                  $ref: '#/components/schemas/CustomData'
+              required:
+                - amount
+      responses:
+        '200':
+          description: OK - The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /version:
+    get:
+      tags:
+        - maintenance
+      summary: Get current version of terminal manager application
+      description: Ask terminal manager to give the current application version running
+      responses:
+        '200':
+          description: OK - The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionResponse'
+  /config:
+    get:
+      tags:
+        - maintenance
+      summary: Get serial number of hardware terminal
+      description: Ask hardware terminal to return the serial number
+      responses:
+        '200':
+          description: OK - The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+  /stop:
+    get:
+      tags:
+        - maintenance
+      summary: Stop terminal manager server
+      operationId: stopTerminalManager
+      description: Ask terminal manager server to stop properly as soon as possible
+      responses:
+        '200':
+          description: OK - The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopResponse'
+components:
+  schemas:
+    Cart:
+      description: Shopping cart details.
+      required:
+        - product_reference
+        - type
+        - quantity
+        - name
+        - unit_price
+        - tax_rate
+        - total_amount
+      properties:
+        european_article_numbering:
+          type: string
+          description: European article numbering.
+          example: 4711892728946
+        product_reference:
+          type: string
+          description: Unique product reference.
+          example: NF-a1690
+        type:
+          type: string
+          description: Type of product.
+          enum: [good, discount, fee]
+          example: good
+        quantity:
+          type: integer
+          description: Product quantity.
+          example: 1
+        name:
+          type: string
+          description: Product description.
+          example: My first product
+        unit_price:
+          type: number
+          description: Unit price including taxes in order currency.
+          example: 8.99
+        tax_rate:
+          type: number
+          description: Tax rate in percentage.
+          example: 0
+        discount:
+          type: number
+          description: Discount amount, always 0 or negative.
+          example: 0
+        total_amount:
+          type: number
+          description: Unit price X quantity – discount. The sum of every “total_amount” must be equal to the “amount” sent in the call.
+          example: 8.99
+    Customer:
+      description: Customer’s information object.
+      properties:
+        id:
+          type: string
+          description: Merchant's customer id.
+          example: 283749291
+        firstname:
+          type: string
+          description: The customer's first name.
+          example: John
+        lastname:
+          type: string
+          description: The customer's last name.
+          example: Doe
+        email:
+          type: string
+          description: The customer's e-mail address.
+          example: johnDoe@test.com
+    CustomData:
+      description: In the custom data parameter, you can set all the values of you want to retrieve in HiPay’s backoffice.
+      type: object
+      additionalProperties: true
+      example:
+        { 'shop': 'Opera', 'vendor': 'Mario', 'newCustomer': true, 'event': 42 }
+    OrderResponse:
+      type: object
+      properties:
+        paymentStatus:
+          description: Status of the payment
+          type: string
+          example: "SUCCESS"
+        notificationHipaySent:
+          description:  The notification has been sent to Hipay
+          type: boolean
+          example : true
+        numberOfNotificationSent:
+          description: Number of notification sent (In case of multi configuration)
+          type: integer
+          example: 1
+        amount:
+          description: Total order amount, calculated as the sum of purchased items, plus shipping fees (if present), plus tax fees (if present).
+          type: number
+          example: 10,23
+        currency:
+          description: Currency of the transaction
+          type: string
+          default: EUR
+        orderId:
+          description: Order number of your request payment.
+          type: string
+          example: Order_12345
+        transationType:
+          description: Type of transaction.
+          type: string
+          default: "Debit"
+          enum: [
+            "Debit",
+            "Credit"
+          ]
+        forceAuthorization:
+          description: Force authorization
+          type: boolean
+          default: false
+        cart:
+          description: Shopping cart details.
+          type: object
+        customer:
+          description: Customer’s information object.
+          type: object
+        customData:
+          description: In the custom data parameter, you can set all the values of you want to retrieve in HiPay’s backoffice.
+          type: object
+    VersionResponse:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Terminal manager application version
+          example: '0.0.0-concertv2-winserver2003_64'
+    ConfigResponse:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          description: Hardware device serial number
+          example: '00000012345678'
+    StopResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message
+          example: 'TP-Manager stopped'
+          enum: [
+            "TP-Manager stopped",
+            "TP-Manager is busy, will stop when possible"
+          ]
+        stopped:
+          description: False if the terminal manager communicates with the payment terminal
+          type: boolean
+          example: false
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            paymentStatus:
+              type: string
+            errorCode:
+              type: string
+            errorDescription:
+              type: string
+​
