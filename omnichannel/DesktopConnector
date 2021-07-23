@@ -282,4 +282,3 @@ components:
               type: string
             errorDescription:
               type: string
-​
