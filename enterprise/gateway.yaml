@@ -2664,11 +2664,6 @@ components:
           - '3'
           example: ''
           x-sort: 205
-        soft_descriptor:
-          description: Billing descriptor for machine learning.
-          type: string
-          example: Dell Inspiron 15 3583 (i3583-3112BLK-PFR)
-          x-sort: 205
         cardtoken:
           description: |2-
 
@@ -3317,14 +3312,6 @@ components:
               type: integer
               example: 31
           x-sort: 350
-        exemption:
-          description: >-
-            **This parameter is specific to the PSD2.**
-
-
-            If you have further questions on exemption, please contact Hipay.
-          type: object
-          x-sort: 355
       type: object
     OrderResponse:
       title: Order Response
