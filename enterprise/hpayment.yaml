@@ -994,31 +994,6 @@ components:
           type: integer
           example: '2078323'
           x-sort: 161
-        previous_auth_info:
-          description: >-
-            **This parameter is specific to the PSD2.**
-
-
-            Information about the previous authentication transaction on the
-            merchant's side.
-
-            <hr>
-            <div class="parameter__description__object">
-            <div class="parameter__name">transaction_reference</div>
-            <div class="parameter__type">string</div>
-            <div class="parameter__description">
-
-            PSP reference about the previous authenticated transaction.
-
-            </div>
-            </div>
-          type: object
-          properties:
-            transaction_reference:
-              description: PSP reference about the previous authenticated transaction.
-              type: string
-              example: '800000987283'
-          x-sort: 330
         merchant_risk_statement:
           description: >-
             **This parameter is specific to the PSD2.**
