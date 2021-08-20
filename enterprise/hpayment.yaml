@@ -411,21 +411,22 @@ components:
         accept_url:
           description: |2-
 
-            The URL to return your customer to once the payment process is
-            completed successfully.
+            The URL to return your customer to once the payment process is successfully completed.
 
-            For more information about the user
-            redirection workflow, check the [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check
+            [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
-          example: https://developer.hipay.com/simulator/success/
+          example: https://developer.hipay.com/api-explorer/result
           x-sort: 105
         decline_url:
-          description: "\nThe URL to return your customer to after the acquirer declines\
-            \ the\npayment.\n\nFor more information about the user redirection\nworkflow,\
-            \ check the [HiPay Enterprise\nOverview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages). "
+          description: |2-
+
+            The URL to return your customer to after the acquirer declines the payment.
+
+            For more information about the user redirection workflow, check
+            [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
-          example: https://developer.hipay.com/simulator/decline/
+          example: https://developer.hipay.com/api-explorer/result
           x-sort: 110
         pending_url:
           description: |2-
@@ -433,33 +434,30 @@ components:
             The URL to return your customer to when the payment request was
             submitted to the acquirer but response is not yet available.
 
-            For more information about the user redirection workflow, check the
-            [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check
+            [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
-          example: https://developer.hipay.com/simulator/pending/
+          example: https://developer.hipay.com/api-explorer/result
           x-sort: 115
         exception_url:
           description: |2-
 
             The URL to return your customer to after a system failure.
 
-            For more information about the user redirection workflow, check the
-            [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check
+            [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
-          example: https://developer.hipay.com/simulator/exception/
+          example: https://developer.hipay.com/api-explorer/result
           x-sort: 120
         cancel_url:
           description: |2-
 
             The URL to return your customer to after a system failure.
 
-            For more information about the user redirection workflow, check the
-            [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            For more information about the user redirection workflow, check
+            [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
-          example: https://developer.hipay.com/simulator/cancel/
+          example: https://developer.hipay.com/api-explorer/result
           x-sort: 125
         notify_url:
           description: This field allows you to override the notification URL, available
