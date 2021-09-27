@@ -4,11 +4,11 @@ info:
     Connector API
     
      ## Base URLs
-     *
+
     | Environment | Base URL |
     | --- | --- |
-    | Stage | [https://cloudrun-api-yugcnet4yq-ew.a.run.app/v1/pos/order) |
-    | Production | [https://cloudrun-api-n3l7nqotca-ew.a.run.app/v1/pos/order) |
+    | Stage | https://cloudrun-api-yugcnet4yq-ew.a.run.app |
+    | Production | https://cloudrun-api-n3l7nqotca-ew.a.run.app |
   title: Connector API
   version: 1.0.0
 servers:
