@@ -52,13 +52,6 @@ paths:
       summary: Handle an Order API call from merchant to TPE
       tags:
         - Order
-  /v1/pos/healthcheck:
-    get:
-      description: 'Health check'
-      responses:
-        '200':
-          description: 'Health check OK'
-      operationId : healthcheck
 components:
   schemas:
     BasketItem:
