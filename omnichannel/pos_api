@@ -482,10 +482,6 @@ components:
           description: Additional order description.
           type: string
           example: A super long description here...
-        soft_descriptor:
-          description: Billing descriptor for machine learning.
-          type: string
-          example: Dell Inspiron 15 3583 (i3583-3112BLK-PFR)
         custom_data:
           description: Custom data. You can use these parameters to submit custom values you wish to show in HiPay back office transaction details, receive back in the API response messages, in the notifications or to activate specific FPS rules.
           type: object
