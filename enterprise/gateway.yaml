@@ -3229,8 +3229,6 @@ components:
             Channel through which the transaction is being processed. By default
             this value is set to 2.
 
-            - `1` : App-based (APP)
-
             - `2` : Browser (BRW)"
 
             - `3` : 3DS Requestor Initiated (3RI)
