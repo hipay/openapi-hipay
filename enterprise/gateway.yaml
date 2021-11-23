@@ -1194,176 +1194,6 @@ components:
           - denyChallenge
           - finalize
           example: capture
-        currency:
-          description: Base currency for this order. This three-character currency
-            code complies with ISO 4217.
-          type: string
-          enum:
-          - FRF
-          - SKK
-          - EEK
-          - TMT
-          - AED
-          - AFN
-          - ALL
-          - AMD
-          - ANG
-          - AOA
-          - ARS
-          - AUD
-          - AWG
-          - AZN
-          - BAM
-          - BBD
-          - BDT
-          - BGN
-          - BHD
-          - BIF
-          - BMD
-          - BND
-          - BOB
-          - BRL
-          - BSD
-          - BTN
-          - BWP
-          - BYR
-          - BZD
-          - CAD
-          - CDF
-          - CHF
-          - CLP
-          - CNY
-          - COP
-          - CRC
-          - CUC
-          - CUP
-          - CVE
-          - CZK
-          - DJF
-          - DKK
-          - DOP
-          - DZD
-          - EGP
-          - ERN
-          - ETB
-          - EUR
-          - FJD
-          - FKP
-          - GBP
-          - GEL
-          - GHS
-          - GIP
-          - GMD
-          - GNF
-          - GTQ
-          - GYD
-          - HKD
-          - HNL
-          - HRK
-          - HTG
-          - HUF
-          - IDR
-          - ILS
-          - INR
-          - IQD
-          - IRR
-          - ISK
-          - JMD
-          - JOD
-          - JPY
-          - KES
-          - KGS
-          - KHR
-          - KMF
-          - KPW
-          - KRW
-          - KWD
-          - KYD
-          - KZT
-          - LAK
-          - LBP
-          - LKR
-          - LRD
-          - LSL
-          - LTL
-          - LVL
-          - LYD
-          - MAD
-          - MDL
-          - MGA
-          - MKD
-          - MMK
-          - MNT
-          - MOP
-          - MRO
-          - MUR
-          - MVR
-          - MWK
-          - MXN
-          - MYR
-          - MZN
-          - NAD
-          - NGN
-          - NIO
-          - NOK
-          - NPR
-          - NZD
-          - OMR
-          - PAB
-          - PEN
-          - PGK
-          - PHP
-          - PKR
-          - PLN
-          - PYG
-          - QAR
-          - RON
-          - RSD
-          - RUB
-          - RWF
-          - SAR
-          - SBD
-          - SCR
-          - SDG
-          - SEK
-          - SGD
-          - SHP
-          - SLL
-          - SOS
-          - SRD
-          - STD
-          - SVC
-          - SYP
-          - SZL
-          - THB
-          - TJS
-          - TND
-          - TOP
-          - TRY
-          - TTD
-          - TWD
-          - TZS
-          - UAH
-          - UGX
-          - USD
-          - UYU
-          - UZS
-          - VEF
-          - VND
-          - VUV
-          - TMM
-          - WST
-          - XAF
-          - XCD
-          - XOF
-          - XPF
-          - YER
-          - ZAR
-          - ZMK
-          - ZWL
-          example: EUR
-          additionalProperties:
-            default: EUR
         amount:
           description: Amount is required for partial maintenances. Do not specify
             amount for full captures or refunds.
@@ -1374,9 +1204,14 @@ components:
             with the notifications related to this operation.
           type: string
           example: 204OJ23LKJ234
+        payment_product_parameters:
+          description: This parameter is mandatory only to refund Bancontact or SEPA Direct Debit transaction. 
+          If an IBAN refund is needed, IBAN information must be sent here.
+          type: json
+          example:  { "iban":"FR142004XXXX....", "issuerName":"client name" }
         basket:
           description: |-
-            Shopping cart details. **You must send only items that must be captured or refunded.**
+            Shopping cart details. **You must send only items that must be captured or refunded, and it is only mandatory for Oney.**
 
             Please refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation.
           type: string
@@ -1384,12 +1219,6 @@ components:
           description: Number of the subtransaction to be refunded.
           type: string
           example: '134470136955'
-        source:
-          description: "To identify the origin of the transaction. Here are the authorized\
-            \ values for source property: \n\n- `AUTO`, `SAPI`, `CONS`, `PAGE`, `TPE`,\
-            \ `RTRY`, `MANU`, `PREF`, `REVI`, `CMS`, `SSDK`, `CSDK`"
-          type: string
-          example: '{"integration_version":"1.9.0","brand":"DEVPORTAL","source":"CSDK","brand_version":"12.2.0"}'
       type: object
     Operation:
       title: Operation
