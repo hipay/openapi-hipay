@@ -1216,7 +1216,8 @@ components:
             Please refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation.
           type: string
         sub_transaction_reference:
-          description: Number of the subtransaction to be refunded.
+          description: Number of the subtransaction to be refunded. 
+          This parameter is only useful when the transaction has been created using a mix paiement (gift card + other payment mean).
           type: string
           example: '134470136955'
       type: object
