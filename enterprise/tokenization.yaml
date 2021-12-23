@@ -304,6 +304,15 @@ paths:
           x-is-map: false
           type: string
           value: Cathy Doe
+        - name: cvc
+          description: The 3 or 4 digit security code (called CVV2 or CID depending on the card brand) that appears on the credit card.
+          in: formData
+          required: false
+          x-is-map: false
+          type: string
+          value: '514'
+          pattern: |
+            (\d{3})|(\d{4})
       responses:
         '200':
           description: Token successfully updated.
