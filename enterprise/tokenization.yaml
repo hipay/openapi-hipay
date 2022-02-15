@@ -7,11 +7,11 @@ info:
 
     The Tokenization (Secure Vault) API allows merchants to retrieve and update data associated with their customers' payment information stored in the HiPay Enterprise Secure Vault. Using Tokenization API, merchants eliminate the risk, liability and cost of storing sensitive data on their local servers and storage devices.
 
-    The Tokenization API aims to be used **alongside the HiPay Enterprise Gateway API**. In particular, with the Request New Order (`POST /order`) service of the Gateway API. In fact, when you need to make payments with credit or debit cards using the Gateway API, you first need to tokenize card numbers thanks to the Tokenization API.  
+    The Tokenization API aims to be used **alongside the HiPay Enterprise Gateway API**. In particular, with the Request New Order (`POST /order`) service of the Gateway API. In fact, when you need to make payments with credit or debit cards using the Gateway API, you first need to tokenize card numbers thanks to the Tokenization API.
 
     This API integrates a BIN lookup tool. Every submitted card number is automatically searched in the BIN database to determine its issuing bank. When the BIN lookup succeeds, the response includes the card brand, the 2-letter country code where card was issued and when applicable the issuing bank name.
 
-    Note: this documentation describes the Tokenization API parameters and response fields and allows you to test the platform in real time.  
+    Note: this documentation describes the Tokenization API parameters and response fields and allows you to test the platform in real time.
 
     ## Tokenization API base URLs
 
@@ -57,35 +57,35 @@ paths:
           required: true
           x-is-map: false
           type: string
-          value: '4000000000000002'
+          default: '4000000000000002'
         - name: card_expiry_month
           description: The card expiry month.
           in: formData
           required: true
           x-is-map: false
           type: integer
-          value: 12
+          default: 12
         - name: card_expiry_year
           description: The card expiry year.
           in: formData
           required: true
           x-is-map: false
           type: integer
-          value: 2025
+          default: 2025
         - name: card_holder
           description: The cardholder name as it appears on the card.
           in: formData
           required: true
           x-is-map: false
           type: string
-          value: Cathy Doe
+          default: Cathy Doe
         - name: cvc
           description: The 3 or 4 digit security code (called CVV2 or CID depending on the card brand) that appears on the credit card.
           in: formData
           required: false
           x-is-map: false
           type: string
-          value: '514'
+          default: '514'
           pattern: |
             (\d{3})|(\d{4})
         - name: multi_use
@@ -100,8 +100,7 @@ paths:
           required: false
           x-is-map: false
           type: integer
-          schema:
-            default: 0
+          default: 0
           enum:
             - 0
             - 1
@@ -111,8 +110,7 @@ paths:
           required: false
           x-is-map: false
           type: integer
-          schema:
-            default: 0
+          default: 0
           enum:
             - 0
             - 1
@@ -172,8 +170,8 @@ paths:
     get:
       tags:
         - tokenization
-      summary: Gets the details of a credit card that you have previsouly tokenized
-      description: Gets the details of a credit card that you have previsouly tokenized.
+      summary: Gets the details of a credit card that you have previously tokenized
+      description: Gets the details of a credit card that you have previously tokenized.
       operationId: lookupToken
       produces:
         - application/json
@@ -184,14 +182,14 @@ paths:
           required: true
           x-is-map: false
           type: string
-          value: 85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388
+          default: 85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388
         - name: request_id
           description: The request ID linked to the card token.
           in: query
           required: true
           x-is-map: false
           type: string
-          value: '0'
+          default: '0'
       responses:
         '200':
           description: Token successfully retrieved.
@@ -259,6 +257,92 @@ paths:
                 type: string
       security:
         - basicAuth: []
+    delete:
+      tags:
+        - tokenization
+      summary: Delete a previously created token
+      description: Delete a previously created token
+      operationId: deleteToken
+      parameters:
+        - name: token
+          in: path
+          type: string
+          description: The token to be deleted.
+          required: true
+          x-is-map: false
+      responses:
+        '204':
+          description: Token successfully deleted.
+        '400':
+          description: Invalid card token
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Invalid cardToken
+              description:
+                type: object
+                example: {'code': 400, 'message': 'Invalid cardToken'}
+        '401':
+          description: Incorrect Credentials _ Username and / or password is incorrect
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+                example: 1000001
+              message:
+                type: string
+                example: Incorrect Credentials _ Username and / or password is incorrect
+              description:
+                type: object
+                example: {'code': 1000001, 'message': 'Incorrect Credentials _ Username and / or password is incorrect'}
+        '403':
+          description: Forbidden
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: integer
+                example: 403
+              message:
+                type: string
+                example: Forbidden
+        '404':
+          description: Card token not found
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - description
+            properties:
+              code:
+                type: integer
+                example: 404
+              message:
+                type: string
+                example: Card token not found
+              description:
+                type: object
+                example: {'code': 404, 'message': 'Card token not found'}
+      security:
+        - basicAuth: []
   /update:
     post:
       tags:
@@ -275,42 +359,42 @@ paths:
           required: true
           x-is-map: false
           type: string
-          value: 85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388
+          default: 85a934ff3621385cd1ee8fe4c29c15da9c0a9eede1ed5f3511329844d9bf1388
         - name: request_id
           in: formData
           description: The request ID linked to the card token.
           required: true
           x-is-map: false
           type: string
-          value: '0'
+          default: '0'
         - name: card_expiry_month
           description: The card expiry month.
           in: formData
           required: true
           x-is-map: false
           type: integer
-          value: 12
+          default: 12
         - name: card_expiry_year
           description: The card expiry year.
           in: formData
           required: true
           x-is-map: false
           type: integer
-          value: 2025
+          default: 2025
         - name: card_holder
           description: The cardholder name as it appears on the card.
           in: formData
           required: true
           x-is-map: false
           type: string
-          value: Cathy Doe
+          default: Cathy Doe
         - name: cvc
           description: The 3 or 4 digit security code (called CVV2 or CID depending on the card brand) that appears on the credit card.
           in: formData
           required: false
           x-is-map: false
           type: string
-          value: '514'
+          default: '514'
           pattern: |
             (\d{3})|(\d{4})
       responses:
