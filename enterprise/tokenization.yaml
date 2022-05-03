@@ -257,6 +257,7 @@ paths:
                 type: string
       security:
         - basicAuth: []
+  /:
     delete:
       tags:
         - tokenization
@@ -264,8 +265,8 @@ paths:
       description: Delete a previously created token
       operationId: deleteToken
       parameters:
-        - name: token
-          in: path
+        - name: card_token
+          in: formData
           type: string
           description: The token to be deleted.
           required: true
