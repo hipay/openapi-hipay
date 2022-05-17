@@ -12,7 +12,7 @@ info:
     ## Authentication
     All requests to the HiPay POS API require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. 
     Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.
-    `Authorization: Basic base64('API login>:<API password>')`
+    `Authorization: Basic base64('<API login>:<API password>')`
   title: POS API
   version: 1.1.0
 servers:
@@ -170,7 +170,7 @@ components:
             - code
           properties:
             status:
-              type: string
+              type: integer
             code:
               type: string
             message:
@@ -185,18 +185,22 @@ components:
     OrderResponse:
       type: object
       properties:
+        paymentStatus:
+          type: string
+          description: Status received from the TPE regarding the payment.
+          enum:
+            - Success
+            - Failure
+          example: success
+        receipt:
+          type: string
+          description: Receipt encoded in Base64
+          example: UkVDRUlQVCA5OSBFVVI==  
         error:
           type: object
           required:
-            - code
+            - errorCode
           properties:
-            paymentStatus:
-              type: string
-              description: Status received from the TPE regarding the payment.
-              enum:
-                - Success
-                - Failure
-              example: success
             errorCode:
               type: string
               description: Error code
@@ -205,18 +209,14 @@ components:
               type: string
               description: Error description
               example: The network is unavailable
-            receipt:
-              type: string
-              description: Receipt encoded in Base64
-              example: UkVDRUlQVCA5OSBFVVI==
-            order:
-              $ref: '#/components/schemas/Order'
-            customer:
-              $ref: '#/components/schemas/Customer'
-            shipping:
-              $ref: '#/components/schemas/Shipping'
-            pos_technical_info:
-              $ref: '#/components/schemas/TechnicalInformation'
+        order:
+          $ref: '#/components/schemas/Order'
+        customer:
+          $ref: '#/components/schemas/Customer'
+        shipping:
+          $ref: '#/components/schemas/Shipping'
+        pos_technical_info:
+          $ref: '#/components/schemas/TechnicalInformation'
     Address:
       type: object
       description: Address format
@@ -274,7 +274,6 @@ components:
       required:
         - order_id
         - price
-        - description
       properties:
         order_id:
           description: Unique order ID.
