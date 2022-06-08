@@ -8,12 +8,20 @@ info:
     ## API POS POC PAX base URLs
     | Environment | Base URL |
     | --- | --- |
-    | Stage | [https://cloudrun-api-2okn563j3a-ew.a.run.app/](https://cloudrun-api-2okn563j3a-ew.a.run.app/) |
+    | Stage | [https://cloudrun-api-wdrkiwkw4q-ew.a.run.app/](https://cloudrun-api-wdrkiwkw4q-ew.a.run.app/) |
     | Production | [https://cloudrun-api-master-2okn563j3a-ew.a.run.app/](https://cloudrun-api-master-2okn563j3a-ew.a.run.app/) |
     ## Authentication
-    All requests to the HiPay API POS POC PAX require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. 
+    All requests to the HiPay API POS POC PAX require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. Please notice you need to use private credentials. 
     Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.
     `Authorization: Basic base64('<API login>:<API password>')`
+    ## Security
+    For security reasons, it is highly recommended to filter access to your electronic point-of-sale terminals, based on the request origins.
+    To make sure only requests coming from HiPay will be able to join your terminals, you can set up an IP packet filtering rule on your firewall based on the following IP 
+    | Environment | IP |
+    | --- | --- |
+    | Stage | 35.241.177.31 |
+    | Production | 35.205.91.234 |
+    
   title: API POS POC PAX
   version: 1.1.0
 servers:
