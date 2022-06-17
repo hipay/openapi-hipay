@@ -2,23 +2,16 @@ openapi: 3.0.0
 info:
   title: HiPay HPayment API
   description: |2-
-
     The HPayment API allows you to generate a Hosted Page link where you can redirect the customer to pay securely.
-
     Please note: this documentation describes the Hpayment API parameters and response fields and allows you to test the platform in real time.
-
     ## Hpayment API base URLs
-
     | Environment | Base URL |
     | --- | --- |
     | Stage | [https://stage-api.hipay.com/](https://stage-api.hipay.com/) |
     | Production | [https://api.hipay.com/](https://api.hipay.com/) |
-
     ## Authentication
-
     All requests to the HiPay Enterprise API require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. 
     Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.
-
     `Authorization: Basic base64('API login>:<API password>')`
   contact:
     email: pi-commerce@hipay.com
@@ -33,24 +26,17 @@ paths:
       - Hosted Page
       summary: Creates a secure Hosted Page link.
       description: |2-
-
          This service allows you to **redirect your customer to a payment page
         (hosted by HiPay)** in order to proceed checkout. This service creates
         an order and returns a forward URL. This forward URL is dedicated to
         display a payment page.
         After payment form validation, the checkout is processed and the customer is
         being returned to your website.
-
         According to transaction state and `authentication_indicator` parameter (see below), the customer will be redirected either to the accept or the decline page.
-
         There are two strategies for implementing this service:
-
         ### Hosted: Full redirection mode
-
         Once the payment page is created, you redirect your customer to it. Your customer is redirected back to your website once the transaction si executed.
-
         ### iFrame mode
-
         You may also display the payment page in an iFrame, in order to have a unified checkout workflow. To do so, you have to provide the `template` parameter with the value `iframe-js` (see below).
       operationId: generateHostedPaymentPage
       requestBody:
@@ -116,9 +102,7 @@ components:
       properties:
         payment_product_list:
           description: |2-
-
              The list of payment products to display on the payment page.
-
             - `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `klarnainvoice`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`, `itau`, `payshop`, `ukash`, `webmoney-transfer`, `elo-card`, `carte-cadeau`, `safetypay`, `skrill`, `bnpp-4xcb`, `bnpp-3xcb`, `discover`, `banco-do-brasil`, `bradesco`, `caixa`, `multibanco`, `cofinoga`, `hipercard`, `santander-home-banking`, `santander-cash`, `banamex`, `bbva-bancomer`, `credit-long`, `carte-titre-restaurant`, `alipay-ecommerce`, `divido`, `bacs`, `wechatpay`, `klarnacheckout`, `cup`, `bancontactqrcode`
           type: string
           example: mastercard,visa,american-express
@@ -142,6 +126,11 @@ components:
           type: string
           example: '1800'
           x-sort: 55
+        theme_code :
+          description: Integrate the code of your hosted page V2 for the feature Multi Theme. If empty, the default theme will be display.
+          type: string
+          example: ALAHAeYNmHbB9qebLDjy
+          x-sort: 85
       type: object
       allOf:
       - $ref: '#/components/schemas/Common'
@@ -186,7 +175,6 @@ components:
         basket:
           description: |-
             Shopping cart details.
-
             Please refer to [HiPay Enterprise - Payment Gateway - Shopping cart managment](https://support.hipay.com/hc/fr/articles/115001660469-Payment-Gateway-Shopping-cart-management) technical documentation.
           type: string
           example: '[{"european_article_numbering":"4711892728946","product_reference":"NF-a1690","name":"My
@@ -410,9 +398,7 @@ components:
           x-sort: 100
         accept_url:
           description: |2-
-
             The URL to return your customer to once the payment process is successfully completed.
-
             For more information about the user redirection workflow, check
             [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
@@ -420,9 +406,7 @@ components:
           x-sort: 105
         decline_url:
           description: |2-
-
             The URL to return your customer to after the acquirer declines the payment.
-
             For more information about the user redirection workflow, check
             [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
@@ -430,10 +414,8 @@ components:
           x-sort: 110
         pending_url:
           description: |2-
-
             The URL to return your customer to when the payment request was
             submitted to the acquirer but response is not yet available.
-
             For more information about the user redirection workflow, check
             [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
@@ -441,9 +423,7 @@ components:
           x-sort: 115
         exception_url:
           description: |2-
-
             The URL to return your customer to after a system failure.
-
             For more information about the user redirection workflow, check
             [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
@@ -451,9 +431,7 @@ components:
           x-sort: 120
         cancel_url:
           description: |2-
-
             The URL to return your customer to after a system failure.
-
             For more information about the user redirection workflow, check
             [this documentation](https://developer.hipay.com/payment-fundamentals/requirements/redirect-pages).
           type: string
@@ -497,28 +475,19 @@ components:
           x-sort: 155
         eci:
           description: |2-
-
              **This parameter is specific to SEPA Direct Debit as well as credit
             or debit card payment products.**
-
             Electronic Commerce Indicator (ECI).
-
             The ECI indicates the security level at which the payment information is processed between the cardholder and merchant.
-
             ### Credit or debit card
-
             If the payment product is a credit or debit card:
-
             - `1`: MO/TO (Mail Order/Telephone Order)
             - `2`: MO/TO – Recurring
             - `7`: E-commerce with SSL/TLS Encryption
             - `9`: Recurring E-commerce
             - `10`: TPE payment
-
             A default ECI value can be set in the preferences page. An ECI value sent along in the transaction will overwrite the default ECI value.
-
             ### SEPA Direct Debit
-
             If the payment product is SEPA Direct Debit:
             - `7`: First transaction/one-shot transaction
             - `9`: Recurring transaction
@@ -535,29 +504,17 @@ components:
           x-sort: 10
         authentication_indicator:
           description: |2-
-
             **This parameter is specific to SEPA Direct Debit as well as credit or debit card payment products.**
-
             ### Credit or debit card
-
             If the payment product is a credit or debit card, this parameter indicates if the 3-D Secure authentication should be performed for this transaction.
-
             - `0`: Bypass 3-D Secure authentication.
-
             - `1`: 3-D Secure authentication if available.
-
             - `2`: 3-D Secure authentication mandatory.
-
             For more information about the 3-D Secure workflow, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#3-d-secure-integration).
-
             ### SEPA Direct Debit
-
             If the payment product is SEPA Direct Debit, this parameter indicates if the debit agreement (mandate) must be electronically signed or not.
-
             - `0`: Bypass electronic signature.
-
             - `1`: Ask for electronic signature.
-
             For more information about the SEPA Direct Debit integration (including examples), check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#sepa-direct-debit-sdd).
           type: string
           enum:
@@ -571,7 +528,6 @@ components:
         expiration_limit:
           description: |-
             **This parameter is specific to provider COMPRAFACIL.**
-
             Validity period of the payment code in days.
           type: integer
           example: '3'
@@ -579,7 +535,6 @@ components:
         payment_connectivity:
           description: |-
             **This parameter is specific to providers QIWIWALLET and DIMOCO.**
-
             Origin of payment.
           type: string
           example: web
@@ -587,7 +542,6 @@ components:
         phone_operator:
           description: |-
             **This parameter is specific to providers DIMOCO and SINGTEL.**
-
             Name of the mobile operator.
           type: string
           example: FASTWEB
@@ -595,21 +549,18 @@ components:
         prepaid_card_number:
           description: |-
             **This parameter is specific to provider ONEY (Gift Card).**
-
             Gift Card number.
           type: string
           x-sort: 206
         prepaid_card_security_code:
           description: |-
             **This parameter is specific to provider ONEY (Gift Card).**
-
             Gift Card CVC.
           type: string
           x-sort: 206
         website_id:
           description: |-
             **This parameter is specific to providers PAGOSMOVISTAR and MOBILEPAY, only into the discover.**
-
             Website identifier.
           type: string
           example: STWAK4897048
@@ -626,9 +577,7 @@ components:
           x-sort: 210
         national_identification_number:
           description: |2-
-
             **This parameter is specific to Astropay payment methods.**
-
             Customer’s personal identification number.
           type: string
           example: AA 01 23 44 B
@@ -640,9 +589,7 @@ components:
           x-sort: 215
         msisdn:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-
             The customer's ship-to mobile phone number.
           type: string
           example: '33612345678'
@@ -656,7 +603,6 @@ components:
         gender:
           description: |-
             Gender of the customer:
-
             - `M`: male
             - `F`: female
             - `U`: unknown
@@ -681,7 +627,6 @@ components:
           x-sort: 235
         card_holder:
           description: |-
-
             The customer's card holder.
           type: string
           example: Cathy Doe
@@ -791,7 +736,6 @@ components:
         device_fingerprint:
           description: |-
             This element should contain the value of the 'ioBB' hidden field.
-
             For more information about the device fingerprint integration, check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration).
           type: string
           example: 042q0aAXOogFCkNMNf94lis1ztsdwpJAn3AFS6wesUIr2q
@@ -806,27 +750,21 @@ components:
         issuer_bank_id:
           description: |-
             **This parameter is specific to the iDEAL, GiroPay and the SEPA Direct Debit payment products.**
-
             This is the Business Identifier Code (BIC) of the customer's issuer bank.
           type: string
           example: BNPAFRPPXXX
           x-sort: 165
         qiwiuser:
           description: |2-
-
             **This parameter is specific to the Qiwi Wallet payment product.**
-
             The Qiwi user's ID, whom the invoice is issued to. It is the user's phone number, in international format.
           type: string
           example: '33670985712'
           x-sort: 170
         shipto_gender:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-
             Gender of the recipient:
-
             - `M`: male
             - `F`: female
             - `U`: unknown
@@ -835,31 +773,23 @@ components:
           x-sort: 280
         shipto_phone:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-
             The recipient's ship-to phone number.
           type: string
           example: '33112345678'
           x-sort: 275
         shipto_msisdn:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-
             The recipient's ship-to mobile phone number.
           type: string
           example: '3362345678'
           x-sort: 276
         order_category_code:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-
             The order category code.
-
             Please refer to the following list:
-
             | Code | Description |
             | --- | --- |
             | 5499 | Alimentation & gastronomie
@@ -900,18 +830,14 @@ components:
           x-sort: 175
         delivery_date:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-
             Estimated delivery date. Format is YYYY-MM-DD.
           type: string
           example: '2022-12-20'
           x-sort: 180
         delivery_method:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**`
-
             The delivery method.
           type: string
           enum:
@@ -927,22 +853,16 @@ components:
           x-sort: 185
         carrier_description:
           description: |2-
-
             **This parameter is specific to the 3x and 4x Carte Bancaire payment products.**
-
             Carrier description.
           type: string
           example: La Poste, 27 Rue des Francs Bourgeois
           x-sort: 190
         recurring_payment:
           description: |2-
-
             **This parameter is specific to the SEPA Direct Debit payment product.**
-
             Indicates if the debit agreement will be created for a single-use or a multi-use.
-
             Possible values:
-
             - `0`: Generate a single-use agreement id.
             - `1`: Generate a multi-use agreement id.
           type: string
@@ -955,18 +875,14 @@ components:
           x-sort: 195
         iban:
           description: |2-
-
             **This parameter is specific to the SEPA Direct Debit payment product.**
-
             International Bank Account Number (IBAN).
           type: string
           example: FR1420041010050500013M02606
           x-sort: 200
         bank_name:
           description: |2-
-
             **This parameter is specific to the SEPA Direct Debit payment product.**
-
             Issuer Bank Name.
           type: string
           example: BNP
@@ -974,7 +890,6 @@ components:
         sales_channel:
           description: |-
             Sales channel :
-
             - `0`: Default.
             - `1`: Ecommerce API.
             - `2`: Hosted Payment Page.
@@ -995,138 +910,90 @@ components:
         merchant_risk_statement:
           description: >-
             **This parameter is specific to the PSD2.**
-
-
             Merchant's statement about the transaction he wants to proceed.
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">email_delivery_address</div>
             <div class="parameter__type">string</div>
             <div class="parameter__description">
-
-
             Email address to which the goods needs to be sent to.
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">delivery_time_frame</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Indicates when the goods are willing to be received by the customer.
-
             - `1` : ELECTRONIC DELIVERY
-
             - `2` : SAME DAY SHIPPING
-
             - `3` : OVERNIGHT SHIPPING
-
             - `4` : TWO DAY OR MORE SHIPPING
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">purchase_indicator</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Availabilty of the goods.
-
             - `1` : MERCHANDISE AVAILABLE
-
             - `2` : FUTURE AVAILABILITY
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">pre_order_date</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             For a pre-ordered purchase, the expected date that the merchandise will be available.
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">reorder_indicator</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Unicity of the order for the customer.
-
             - `1` : FIRST TIME ORDERED
-
             - `2` : REORDERED
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">shipping_indicator</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Address to whom the goods are to be sent.
-
             - `1` : SHIP TO CARDHOLDER'S BILLING ADDRESS
-
             - `2` : SHIP TO ANOTHER VERIFIED ADDRESS ON FILE WITH MERCHANT
-
             - `3` : SHIP TO ADDRESS THAT IS DIFFERENT THAN THE CARDHOLDER'S BILLING ADDRESS
-
             - `4` : SHIP TO STORE / PICK UP AT LOCAL STORE
-
             - `5` : DIGITAL GOODS
-
             - `6` : TRAVEL AND EVENT TICKETS, NOT SHIPPED
-
             - `7` : OTHER (Gaming, digital services not shipped, emedia subscriptions
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">gift_card</div>
             <div class="parameter__type">object</div>
             <div class="parameter__description">
-
-
             Information on order making throught a gift card.
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">amount</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Amount of the gift card.
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">count</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Total count of individual gift cards purchased.
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">currency</div>
             <div class="parameter__type">string</div>
             <div class="parameter__description">
-
-
             Currency of the gift card.
-
             </div>
             </div>
             </div>
@@ -1202,71 +1069,48 @@ components:
         account_info:
           description: >-
             **This parameter is specific to the PSD2.**
-
-
             Information about the customer's account on the merchant's website.
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">customer</div>
             <div class="parameter__type">object</div>
             <div class="parameter__description">
-
-
             Customer's account information
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">account_possession</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Account's type of seniority, based on when the customer
             created their account on the merchant's website.
-
             - `1` : Guest
-
             - `2` : Created during this transaction
-
             - `3` : Less than 30 days
-
             - `4` : 30 - 60 days
-
             - `5` : More than 60 days
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">account_change</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Customer's last change on his account. (YYYYMMDD)
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">opening_account_date</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Date when the customer created his account
             on the merchant's website. (YYYYMMDD)
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">password_change</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Date when the customer made a password change on
             his account. (YYYYMMDD)
-
             </div>
             </div>
             </div>
@@ -1275,55 +1119,40 @@ components:
             <div class="parameter__name">purchase</div>
             <div class="parameter__type">object</div>
             <div class="parameter__description">
-
-
             Customer's purchase information
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">count</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Number of purchases with the customer's account during the
             last six months.
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">card_stored_24h</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Number of attempts to add a card into the
             customer's account in the last 24 hours.
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">payment_attempts_24h</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Number of transactions (successful and
             abandoned) for this customer's account across all payment accounts
             in the previous 24 hours.
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">payment_attempts_1y</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Number of transactions (successful and
             abandoned) for this customer's account across all payment accounts
             in the previous year.
-
             </div>
             </div>
             </div>
@@ -1332,20 +1161,14 @@ components:
             <div class="parameter__name">payment</div>
             <div class="parameter__type">object</div>
             <div class="parameter__description">
-
-
             Customer's payment information
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">enrollment_date</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Date that the payment account was enrolled in the
             cardholder’s account with the 3DS Requestor.(YYYYMMDD)
-
             </div>
             </div>
             </div>
@@ -1354,70 +1177,47 @@ components:
             <div class="parameter__name">shipping</div>
             <div class="parameter__type">object</div>
             <div class="parameter__description">
-
-
             Customer's shipping information
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">shipping_used_date</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Date when the shipping address used for this
             transaction was first used. (YYYYMMDD)
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">address_usage_duration</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Indicates when the shipping address used
             for this transaction was first used with the merchant.
-
             - `1` : THIS TRANSACTION
-
             - `2` : LESS THAN 30 DAYS
-
             - `3` : 30-60 DAYS
-
             - `4` : MORE THAN 60 DAYS
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">name_indicator</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Indicates if the Cardholder Name on the account is
             identical to the shipping Name used for this transaction.
-
             - `1` : Account Name Identical to Shipping Name
-
             - `2` : Account Name different than shipping Name
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">suspicious_activity</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Indicates whether the merchant has
             experienced suspicious activity (including previous fraud) on the
             cardholder account.
-
             - `1` : No suspicious activity has been observed
-
             - `2` : Suspicious activity has been observed
-
             </div>
             </div>
             </div>
@@ -1538,15 +1338,10 @@ components:
         device_channel:
           description: >-
             **This parameter is specific to the PSD2.**
-
-
             Channel through which the transaction is being processed. By default
             this value is set to 2.
-
             - `1` : App-based (APP)
-
             - `2` : Browser (BRW)"
-
             - `3` : 3DS Requestor Initiated (3RI)
           type: integer
           enum:
@@ -1558,31 +1353,22 @@ components:
         recurring_info:
           description: >-
             **This parameter is specific to the PSD2.**
-
-
             Information on recurring transaction
-
             <hr>
             <div class="parameter__description__object">
             <div class="parameter__name">expiration_date</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Date after which no further authorisations shall
             be performed. (YYYYMMDD)
-
             </div>
             </div>
             <div class="parameter__description__object">
             <div class="parameter__name">frequency</div>
             <div class="parameter__type">integer</div>
             <div class="parameter__description">
-
-
             Indicates the minimum number of days between
             authorisations.
-
             </div>
             </div>
           type: object
