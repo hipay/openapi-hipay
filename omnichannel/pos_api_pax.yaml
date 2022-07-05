@@ -25,7 +25,7 @@ info:
   title: API POS POC PAX
   version: 1.1.0
 servers:
-- url: https://cloudrun-api-2okn563j3a-ew.a.run.app/
+- url: https://cloudrun-api-wdrkiwkw4q-ew.a.run.app/
   description: Stage
 paths:
   /v1/connector/order:
