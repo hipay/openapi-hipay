@@ -32,11 +32,11 @@ paths:
 
              The list of payment products to display on the payment page.
 
-            - `visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`,
-            `4xcb`, `4xcb-no-fees`, `american-express`, `bancontact`, `bcmc`,
-            `bcmc-mobile`, `giropay`, `ideal`, `paypal`,
-            `paysafecard`, `przelewy24`, `sdd`, `sisal`, `sofort-uberweisung`,
-            `carte-cadeau`, `bnpp-4xcb`, `bnpp-3xcb`, `multibanco`, `credit-long`
+            - `american-express`, `bcmc`,  `cb`, `maestro`, `mastercard`, `visa`, 
+            `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `alma-3x`, `alma-4x`, `bancontact`,
+            `bcmc-mobile`, `bnpp-3xcb`, `bnpp-4xcb`, `carte-cadeau`, `credit-long`, `giropay`, 
+            `ideal`, `illicado`, `mbway`, `mybank`, `multibanco`, `paypal`, `paysafecard`, `payshop`,
+            `postfinance-card`, `postfinance-efinance`, `przelewy24`, `sdd`, `sisal`, `sofort-uberweisung`
           in: formData
           name: payment_product_list
           type: string
@@ -486,75 +486,12 @@ paths:
             Custom data. You can use these parameters to submit custom values
             you wish to show in HiPay back office transaction details, receive
             back in the API response messages, in the notifications or to
-            activate specific FPS rules. Please note that cdata have been
-            deprecated. If you are still using them, they can’t be combined with
-            custom data. We thus recommend migrating to custom data as soon as
-            possible.
+            activate specific FPS rules.
           in: formData
           name: custom_data
           type: string
           format: json
           x-sort: 155
-        - description: 'Custom data 1. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata1
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 2. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata2
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 3. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata3
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 4. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata4
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 5. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata5
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 6. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata6
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 7. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata7
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 8. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata8
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 9. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata9
-          type: string
-          x-deprecated: true
-          x-sort: 156
-        - description: 'Custom data 10. Deprecated, please use *custom_data* parameter.'
-          in: formData
-          name: cdata10
-          type: string
-          x-deprecated: true
-          x-sort: 157
         - default: 7
           description: >2-
 
@@ -663,22 +600,6 @@ paths:
           type: integer
           x-sort: 206
         - description: |-
-            **This parameter is specific to providers QIWIWALLET and DIMOCO.**
-
-            Origin of payment.
-          in: formData
-          name: payment_connectivity
-          type: string
-          x-sort: 206
-        - description: |-
-            **This parameter is specific to providers DIMOCO and SINGTEL.**
-
-            Name of the mobile operator.
-          in: formData
-          name: phone_operator
-          type: string
-          x-sort: 206
-        - description: |-
             **This parameter is specific to provider ONEY (Gift Card).**
 
             Gift Card number.
@@ -694,30 +615,11 @@ paths:
           name: prepaid_card_security_code
           type: string
           x-sort: 206
-        - description: >-
-            **This parameter is specific to providers PAGOSMOVISTAR and
-            MOBILEPAY, only into the discover.**
-
-
-            Website identifier.
-          in: formData
-          name: website_id
-          type: string
-          x-sort: 206
         - description: The customer's e-mail address.
           in: formData
           name: email
           type: string
           x-sort: 210
-        - description: |-
-
-            **This parameter is specific to Astropay payment methods.**
-
-            Customer’s personal identification number.
-          in: formData
-          name: national_identification_number
-          type: string
-          x-sort: 217
         - description: The customer's phone number.
           in: formData
           name: phone
@@ -926,17 +828,6 @@ paths:
           name: issuer_bank_id
           type: string
           x-sort: 165
-        - description: >-
-
-            **This parameter is specific to the Qiwi Wallet payment product.**
-
-
-            The Qiwi user's ID, whom the invoice is issued to. It is the user's
-            phone number, in international format.
-          in: formData
-          name: qiwiuser
-          type: string
-          x-sort: 170
         - description: >-
 
             **This parameter is specific to the 3x and 4x Carte Bancaire payment
@@ -1519,6 +1410,17 @@ paths:
           in: formData
           type: integer
           x-sort: 410
+          enum:
+            - 0
+            - 1
+          default: 0
+          description: |
+            Indicates the tokenization module whether the payment card token should be generated either for a single-use or a multi-use.
+            Possible values:
+            - `0`: Generates a single-use token
+            - `1`: Generates a multi-use token
+
+            While a single-use token is typically generated for a short time and for processing a single transaction, multi-use tokens are generally generated.
         - name: payment_lifetime
           in: formData
           type: integer
