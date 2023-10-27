@@ -1222,11 +1222,6 @@ components:
           type: string
           example: web
           x-sort: 206
-        phone_operator:
-          description: "**This parameter is specific to providers DIMOCO.**\n\nName of the mobile operator."
-          type: string
-          example: FASTWEB
-          x-sort: 206
         prepaid_card_number:
           description: "**This parameter is specific to provider ONEY (Gift Card).**\n\nGift Card number."
           type: string
