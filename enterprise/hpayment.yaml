@@ -378,7 +378,7 @@ paths:
 
             redirection workflow, check the [HiPay Enterprise
 
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            Overview](/payment-fundamentals/requirements/redirect-pages).
           in: formData
           name: accept_url
           type: string
@@ -395,7 +395,7 @@ paths:
 
             workflow, check the [HiPay Enterprise
 
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            Overview](/payment-fundamentals/requirements/redirect-pages).
           in: formData
           name: decline_url
           type: string
@@ -412,7 +412,7 @@ paths:
 
             [HiPay Enterprise
 
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            Overview](/payment-fundamentals/requirements/redirect-pages).
           in: formData
           name: pending_url
           type: string
@@ -427,7 +427,7 @@ paths:
 
             [HiPay Enterprise
 
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            Overview](/payment-fundamentals/requirements/redirect-pages).
           in: formData
           name: exception_url
           type: string
@@ -442,7 +442,7 @@ paths:
 
             [HiPay Enterprise
 
-            Overview](/getting-started/platform-hipay-enterprise/overview/#redirect-pages).
+            Overview](/payment-fundamentals/requirements/redirect-pages).
           in: formData
           name: cancel_url
           type: string
@@ -565,7 +565,7 @@ paths:
 
             For more information about the 3-D Secure workflow, check the [HiPay
             Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#3-d-secure-integration).
+            Overview](/online-payments/features/3ds).
 
 
             ### SEPA Direct Debit
@@ -584,7 +584,7 @@ paths:
 
             For more information about the SEPA Direct Debit integration
             (including examples), check the [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#sepa-direct-debit-sdd).
+            Overview](/online-payments/payment-means/sepa-direct-debit).
           in: formData
           default: 0
           name: authentication_indicator
@@ -799,7 +799,7 @@ paths:
 
             For more information about the device fingerprint integration, check
             the [HiPay Enterprise
-            Overview](/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration).
+            Overview](/payment-fundamentals/requirements/device-fingerprint-integration).
           in: formData
           name: device_fingerprint
           type: string
@@ -1032,7 +1032,7 @@ paths:
             This is the token obtained from the HiPay Enterprise Secure Vault
             API when tokenizing a credit or debit card. To generate a token,
             please refer to the [HiPay Enterprise Tokenization API
-            documentation](/doc-api/enterprise/token/#/tokenization/createToken).
+            documentation](/api-explorer/api-tokenization#/tokenization/createToken).
           in: formData
           name: cardtoken
           type: string

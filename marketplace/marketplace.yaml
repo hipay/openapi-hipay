@@ -828,7 +828,7 @@ paths:
         ### Information
         Get the list of all identification documents for a user-space
 
-        For more information, please read the [HiPay Marketplace Account creation section.](/getting-started/platform-hipay-marketplace/overview/#how-when-to-use-our-apis-operational-apis-account-creation)
+        For more information, please read the [HiPay Marketplace Account creation section.](/marketplace/api-integration/vendors#account-creation)
       operationId: get_Identification
       parameters:
         - in: path
@@ -1967,7 +1967,7 @@ paths:
 
         The technical account is therefore a monitoring tool that provides a clear view of fund allocation (fund remittance, refunds, chargebacks).
 
-        For more information, please read the [HiPay Marketplace Fund allocation section](/getting-started/platform-hipay-marketplace/overview/#how-when-to-use-our-apis-operational-apis-fund-allocation)
+        For more information, please read the [HiPay Marketplace Fund allocation section](/marketplace/api-integration/cash-out#fund-allocation)
       operationId: post_transfer
       x-disableTryItOut: true
       parameters:
@@ -2119,7 +2119,7 @@ paths:
 
           - There must be a zero balance in the end.
 
-        For more information, please read the [HiPay Marketplace Withdrawal requests section](/getting-started/platform-hipay-marketplace/overview/#how-when-to-use-our-apis-operational-apis-withdrawal-requests)
+        For more information, please read the [HiPay Marketplace Withdrawal requests section](/marketplace/api-integration/cash-out#withdrawal-requests)
       operationId: post_withdrawal
       x-disableTryItOut: true
       parameters:

@@ -7,7 +7,7 @@ info:
     - creating the related transaction in HiPay Console, your dedicated management interface.
     
     *Please note: this documentation describes the POS API parameters and response fields and allows you to test the platform in real time.  
-    If you are looking for information about its integration, please check the [dedicated documentation](https://developer.hipay.com/point-of-sale/smart-terminal/pos-api).*
+    If you are looking for information about its integration, please check the [dedicated documentation](/point-of-sale/smart-terminal/pos-api).*
     ## Prerequisites
     - Internet connection:
       - a working and stable Wi-Fi connection is needed to join the payment terminal
@@ -788,8 +788,8 @@ components:
               description: |
                 Whether HiPay needs to interact directly with the POS payment terminal or with another product like the Omnichannel SDK or the ECR Connector:
                 - `POS`: interact with the POS payment terminal
-                - `SDK`: interact with the [Omnichannel SDK](https://developer.hipay.com/point-of-sale/smart-terminal/omnichannel-sdk)
-                - `ECR`: interact with the [ECR Connector](https://developer.hipay.com/point-of-sale/smart-terminal/desktop)
+                - `SDK`: interact with the [Omnichannel SDK](/point-of-sale/smart-terminal/omnichannel-sdk)
+                - `ECR`: interact with the [ECR Connector](/point-of-sale/smart-terminal/desktop)
               type: string
               enum:
                 - POS
