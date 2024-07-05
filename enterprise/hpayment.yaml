@@ -1440,6 +1440,8 @@ paths:
             Display or not the cancel button. Possible values:
               - `0`: the cancel button is not displayed
               - `1`: the cancel button is displayed
+
+            A `cancel_url` value must be provided to display the cancel button.
       responses:
         '200':
           description: Order successfully created and transaction executed.
