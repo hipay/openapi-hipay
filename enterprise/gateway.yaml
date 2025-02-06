@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 'HiPay Enterprise Gateway API'
-  description: "The Gateway API allows you to get paid and manage orders and transactions.\n\nPlease note: this documentation describes the Gateway API parameters and response fields and allows you to test the platform in real time.\nThis page is to be used alongside the **[HiPay Enterprise Platform Overview documentation](/getting-started/platform-hipay-enterprise/overview/)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documents in parallel when integrating HiPay Enterprise.\n\n# Integration\n\n## Integration via our API\n\nIn this case, the payment page is hosted on your website, allowing you to have a unified, fully customized workflow. Please refer to the **Request New Order API (`POST Order`)** below for more information.\n\nPlease note that if you want to execute transactions with credit or debit card payment products, you will need to tokenize card numbers beforehand by using the HiPay Enterprise Tokenization API.\n\n# Managing transactions\n\nOnce a transaction is executed, you may need to perform operations on it, such as a refund, a capture, etc. To do so, please refer to the `maintenance` web service.\n\nYou can also get all transaction details at any time by leveraging the `transaction` web services.\n\nBesides, you may need to be automatically informed when a transaction status gets updated. To this end, you need to leverage server-to-server notifications. For more information, please check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#server-to-server-notifications).\n\n# Web service information\n\n## Gateway API base URLs\n\n| Environment | Base URL |\n| --- | --- |\n| Stage | [https://stage-secure-gateway.hipay-tpp.com/rest/](https://stage-secure-gateway.hipay-tpp.com/rest/) |\n| Production | [https://secure-gateway.hipay-tpp.com/rest/](https://secure-gateway.hipay-tpp.com/rest/) |\n\n## Authentication\n\nAll requests to the HiPay Enterprise API require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.\n\n`Authorization: Basic base64('API login>:<API password>')`"
+  description: "The Gateway API allows you to get paid and manage orders and transactions.\n\nPlease note: this documentation describes the Gateway API parameters and response fields and allows you to test the platform in real time.\nThis page is to be used alongside the **[HiPay Enterprise Platform Overview documentation](/getting-started/platform-hipay-enterprise/overview/)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documents in parallel when integrating HiPay Enterprise.\n\n# Integration\n\nChoose from three types of integration to select the one best adapted to your business:\n\n## Hosted integration\n\nHiPay Enterprise hosts your payment page on a secured site. With this option you can benefit from a single point of contact, adaptable payment pages, and the PCI-DSS standard. You can therefore outsource heavy security requirements that are related to payment acceptance.\n\nIn order to use this integration, please refer to the **Generate Hosted Payment Page (`POST /hpayment`)** API service below.\n\n## iFrame integration\n\nThis is a hybrid solution in which the buyer remains on your website to make payment. In order to use this integration you need to generate a hosted payment page (as above) with a special template, allowing you to properly display it in an iFrame.\n\nFor more information, please refer to the **Generate Hosted Payment Page (`POST /hpayment`)** documentation below.\n\n## Integration via our API\n\nIn this case, the payment page is hosted on your website, allowing you to have a unified, fully customized workflow. Please refer to the **Request New Order API (`POST Order`)** below for more information.\n\nPlease note that if you want to execute transactions with credit or debit card payment products, you will need to tokenize card numbers beforehand by using the HiPay Enterprise Tokenization API.\n\n# Managing transactions\n\nOnce a transaction is executed, you may need to perform operations on it, such as a refund, a capture, etc. To do so, please refer to the `maintenance` web service.\n\nYou can also get all transaction details at any time by leveraging the `transaction` web services.\n\nBesides, you may need to be automatically informed when a transaction status gets updated. To this end, you need to leverage server-to-server notifications. For more information, please check the [HiPay Enterprise Overview](/getting-started/platform-hipay-enterprise/overview/#server-to-server-notifications).\n\n# Web service information\n\n## Gateway API base URLs\n\n| Environment | Base URL |\n| --- | --- |\n| Stage | [https://stage-secure-gateway.hipay-tpp.com/rest/](https://stage-secure-gateway.hipay-tpp.com/rest/) |\n| Production | [https://secure-gateway.hipay-tpp.com/rest/](https://secure-gateway.hipay-tpp.com/rest/) |\n\n## Authentication\n\nAll requests to the HiPay Enterprise API require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.\n\n`Authorization: Basic base64('API login>:<API password>')`"
   contact:
     email: pi-commerce@hipay.com
   version: 1.2.3
@@ -13,6 +13,48 @@ servers:
     url: 'https://secure-gateway.hipay-tpp.com/rest'
     description: Production
 paths:
+  /v1/hpayment:
+    post:
+      tags:
+        - payments
+      summary: 'Creates a secure payment page which you can redirect your customer to, in order to proceed checkout'
+      description: "This service allows you to **redirect your customer to a payment page\n(hosted by HiPay)** in order to proceed checkout. This service creates\nan order and returns a forward URL. This forward URL is dedicated to\ndisplay a payment page with your CSS and validated payment products.\nAfter payment form validation, the checkout is processed and the customer is\nbeing returned to your website.\n\nAccording to transaction state and `authentication_indicator` parameter (see below), the customer will be redirected either to the accept or the decline page.\n\nThere are two strategies for implementing this service:\n\n### Hosted: Full redirection mode\n\nOnce the payment page is created, you redirect your customer to it. Your customer is redirected back to your website once the transaction si executed.\n\n### iFrame mode\n\nYou may also display the payment page in an iFrame, in order to have a unified checkout workflow. To do so, you have to provide the `template` parameter with the value `iframe-js` (see below)."
+      operationId: generateHostedPaymentPage
+      requestBody:
+        description: 'HPayment information'
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/hpayment'
+      responses:
+        '200':
+          description: 'Order successfully created and transaction executed.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forward'
+        '400':
+          description: 'The request was rejected due to a validation error.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'An authentication error occurred/invalid credentials.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 'Access to this resource is fordidden.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        -
+          basicAuth: []
   '/v1/maintenance/transaction/{transaction_reference}':
     post:
       tags:
@@ -155,6 +197,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      deprecated: true
       security:
         -
           basicAuth: []
@@ -200,6 +243,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      deprecated: true
       security:
         -
           basicAuth: []
@@ -258,47 +302,108 @@ paths:
       security:
         -
           apiKey: []
-  '/v3/transaction/notify/{trxId}':
-    post:
-      tags:
-        - transaction
-      summary: 'Generates and send a merchant notification for a transaction'
-      operationId: f82296ffee93c7234b45bf118237c6fe
-      parameters:
-        -
-          name: trxId
-          in: path
-          description: 'Unique transaction Id'
-          required: true
-          schema:
-            type: integer
-          example: '76543210'
-      responses:
-        '200':
-          description: 'Transaction notified successfully.'
-        '401':
-          description: 'An authentication error occurred/invalid credentials.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: 'Transaction was not found.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: 'Technical error.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      security:
-        -
-          apiKey: []
 components:
   schemas:
+    Forward:
+      title: Forward
+      description: Forward
+      properties:
+        forwardUrl:
+          description: ''
+          type: string
+          example: 'https://stage-secure-gateway.hipay-tpp.com/payment/web/pay/df4d20da-7b6f-4fed-8603-c4ed3dca48'
+          x-sort: 1
+        mid:
+          description: ''
+          type: string
+          example: '00001326589'
+          x-sort: 5
+        order:
+          type: object
+          allOf:
+            -
+              $ref: '#/components/schemas/OrderResponse'
+          x-sort: 10
+      type: object
+    hpayment:
+      title: HPayment
+      description: 'HPayment model'
+      required:
+        - orderid
+        - description
+        - currency
+        - amount
+      type: object
+      allOf:
+        -
+          properties:
+            payment_product_list:
+              description: "The list of payment products to display on the payment page.\n\n`visa`, `mastercard`, `maestro`, `cb`, `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `american-express`, `bank-transfer`, `bcmc`, `bcmc-mobile`, `cbc-online`, `dexia-directnet`, `giropay`, `ideal`, `ing-homepay`, `kbc-online`, `paypal`, `paysafecard`, `payulatam`, `przelewy24`, `qiwi-wallet`, `sdd`, `sisal`, `sofort-uberweisung`, `yandex`, `aura`, `boleto-bancario`, `oxxo`, `itau`, `payshop`, `ukash`, `webmoney-transfer`, `elo-card`, `carte-cadeau`, `safetypay`, `skrill`, `bnpp-4xcb`, `bnpp-3xcb`, `discover`, `banco-do-brasil`, `bradesco`, `caixa`, `multibanco`, `cofinoga`, `hipercard`, `santander-home-banking`, `santander-cash`, `banamex`, `bbva-bancomer`, `credit-long`, `carte-titre-restaurant`, `divido`, `bacs`, `wechatpay`, `cup`, `bancontactqrcode`"
+              type: string
+              example: 'mastercard,visa,american-express'
+              x-sort: 20
+            payment_product_category_list:
+              description: "The categories of payment products to be displayed on the payment page.\n\n`credit-card`, `debit-card`, `realtime-banking`, `ewallet`, `prepaid-card`, `open-invoice`, `credit-consumption`"
+              type: string
+              enum:
+                - credit-card
+                - debit-card
+                - realtime-banking
+                - ewallet
+                - prepaid-card
+                - open-invoice
+                - credit-consumption
+              example: credit-card
+              additionalProperties:
+                default: credit-card
+              x-sort: 25
+            css:
+              description: 'URL to merchant style sheet. **HTTPS protocol is required.**'
+              type: string
+              example: 'https://developer.hipay.com/misc/simulator/css-responsive.css'
+              x-sort: 30
+            template:
+              description: "The template name. Possible values:\n\n* `basic-js` : Template with customizable CSS\n* `basic` [Deprecated] : Template with customizable CSS\n* `iframe-js` : Template with hosted iFrame integration\n* `iframe` [Deprecated] : Template with hosted iFrame integration\n* `autodetection` : Automatic detection of the brand of the card, if the merchant has the option"
+              type: string
+              enum:
+                - basic-js
+                - iframe-js
+                - autodetection
+                - basic
+                - iframe
+              example: basic-js
+              x-sort: 35
+            merchant_display_name:
+              description: 'The merchant name displayed on payment page, otherwise the name is retrieved from order.'
+              type: string
+              example: 'ACME Consolidated'
+              x-sort: 40
+            display_selector:
+              description: "Enable/disable the payment products selector. Possible values:\n\n* `0`: the selector is not displayed\n* `1`: the selector is displayed"
+              type: integer
+              enum:
+                - 0
+                - 1
+              example: '1'
+              x-sort: 45
+            time_limit_to_pay:
+              description: 'The time limit to pay allows you to specify the validity period of a payment page in seconds starting from the moment the payment link (forwardUrl) is generated. If empty, default value is fixed to 7 days. Max value: 24 days (2140000 seconds).'
+              type: string
+              example: '1800'
+              x-sort: 55
+            sca_preference:
+              description: "To indicate the preference for a frictionless flow during the authentication request, the merchant may send the sca_preference parameter.\nDepending on the merchant's assessment of the risk of fraud, specific values may be sent.\nThis parameter can only be used by merchants who have a fraud risk assessment mechanism of their own and who have subscribed to the SCA Preference merchant option.\nPlease contact your account manager to request it.\n\n`1` : No Preference.\n    If you are not sure about the transaction's risk of fraud, use this value. Using this value for all your transactions may result in a high strong customer authentication rate.\n`2` : No Challenge\n    If you think this transaction is safe. This will tell the acquirer a frictionless flow is preferred.\n`3` : Challenge Requested\n    If you think this transaction may be at risk, use this value. This will tell the acquirer that a strong customer authentication may be required, depending on the PSD2 specific information you sent along with the transaction."
+              type: integer
+              enum:
+                - 1
+                - 2
+                - 3
+              example: 1
+              x-sort: 60
+        -
+          $ref: '#/components/schemas/Common'
+        -
+          $ref: '#/components/schemas/Order'
     Maintenance:
       title: Maintenance
       description: 'Maintenance model'
@@ -1425,11 +1530,6 @@ components:
           additionalProperties:
             default: '0'
           x-sort: 195
-        debit_agreement_id:
-          description: 'Unique identifier for the debit agreement'
-          type: integer
-          example: '33452'
-          x-sort: 162
         one_click:
           description: "**This parameter indicates if the payment should be a one click payment.**`\n\n     * `1`: Initiate a one-click payment use case"
           type: boolean
@@ -1852,6 +1952,11 @@ components:
           description: "Date of last status change.\n\nThis date must comply with ISO 8601."
           type: string
           x-sort: 40
+        state:
+          description: 'Transaction state.'
+          type: string
+          example: completed
+          x-sort: 1
         mid:
           description: "Merchant id (MID).\n\nUnique identifier assigned to the merchant."
           type: integer
