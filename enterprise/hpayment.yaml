@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: HiPay HPayment API
+  title: HiPay Enterprise HostedPage API
   description: |2-
     The Hpayment API allows you to create secured payment pages you can then redirect your clients to.
 
@@ -32,10 +32,10 @@ paths:
 
              The list of payment products to display on the payment page.
 
-            - `american-express`, `bcmc`,  `cb`, `maestro`, `mastercard`, `visa`, 
+            - `american-express`, `bcmc`,  `cb`, `maestro`, `mastercard`, `visa`,
             `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `alma-3x`, `alma-4x`, `bancontact`,
-            `bcmc-mobile`, `bnpp-3xcb`, `bnpp-4xcb`, `carte-cadeau`, `credit-long`, `giropay`, 
-            `ideal`, `illicado`, `mbway`, `mybank`, `multibanco`, `paypal`, `paysafecard`, `payshop`,
+            `bcmc-mobile`, `bnpp-3xcb`, `bnpp-4xcb`, `carte-cadeau`, `credit-long`, `giropay`,
+            `ideal`, `illicado`, `klarna`, `mbway`, `mybank`, `multibanco`, `paypal`, `paysafecard`, `payshop`,
             `postfinance-card`, `postfinance-efinance`, `przelewy24`, `sdd`, `sisal`, `sofort-uberweisung`
           in: formData
           name: payment_product_list
@@ -54,18 +54,12 @@ paths:
           type: string
           format: paymentProductCategoryListHostedPage
           x-sort: 25
-        - description: URL to merchant style sheet. **HTTPS protocol is required.**
-          in: formData
-          name: css
-          type: string
-          format: uri
-          x-sort: 30
         - description: >-
             The template name. Possible values:
 
-            - `basic-js` : Template with customizable CSS
+            - `basic-js` : Template with customizable theme
 
-            - `basic` [Deprecated] : Template with customizable CSS
+            - `basic` [Deprecated] : Template with customizable theme
 
             - `iframe-js` : Template with hosted iFrame integration
 
@@ -790,8 +784,9 @@ paths:
             country code complies with ISO 3166-1 (alpha 2).
           in: formData
           name: shipto_country
-          pattern: '^[a-zA-Z]{1,2}$'
+          pattern: '^[a-zA-Z]+$'
           type: string
+          maxLength: 2
           x-sort: 325
         - description: >-
             This element should contain the value of the 'ioBB' hidden field.
@@ -1442,6 +1437,43 @@ paths:
               - `1`: the cancel button is displayed
 
             A `cancel_url` value must be provided to display the cancel button.
+        - name: paypal_v2_label
+          in: formData
+          type: string
+          enum:
+            - 'paypal'
+            - 'pay'
+            - 'subscribe'
+            - 'checkout'
+            - 'buynow'
+          description: Label of PayPal v2 button. Default is 'pay'.
+        - name: paypal_v2_shape
+          in: formData
+          type: string
+          enum:
+            - 'pill'
+            - 'rect'
+          description: Shape of PayPal v2 button. Default is 'pill'.
+        - name: paypal_v2_color
+          in: formData
+          type: string
+          enum:
+            - 'gold'
+            - 'blue'
+            - 'black'
+            - 'silver'
+            - 'white'
+          description: Color of PayPal v2 button. Default is 'gold'.
+        - name: paypal_v2_height
+          in: formData
+          type: number
+          minimum: 25
+          maximum: 55
+          description: Height of PayPal v2 button. Default is '40'.
+        - name: paypal_v2_bnpl
+          in: formData
+          type: integer
+          description: If 1, display “Buy Now / Pay Later” PayPal v2 button below classic PayPal v2 button. Default is '1'.
       responses:
         '200':
           description: Order successfully created and transaction executed.
@@ -1464,18 +1496,17 @@ paths:
       tags:
         - payments
       description: >2-
+        This service allows you to **redirect your customer to a payment page
+        (hosted by HiPay)** in order to proceed checkout.
+        
+        
+        This service creates an order and returns a forward URL.
+        This forward URL is dedicated to display a payment page with your a
+        customizable theme and validated payment products.
 
-         This service allows you to **redirect your customer to a payment page
-        (hosted by HiPay)** in order to proceed checkout. This service creates
-
-        an order and returns a forward URL. This forward URL is dedicated to
-
-        display a payment page with your CSS and validated payment products.
-
+        
         After payment form validation, the checkout is processed and the
-        customer is
-
-        being returned to your website.
+        customer is being returned to your website.
 
 
         According to transaction state and `authentication_indicator` parameter
@@ -1500,6 +1531,7 @@ paths:
         You may also display the payment page in an iFrame, in order to have a
         unified checkout workflow. To do so, you have to provide the `template`
         parameter with the value `iframe-js` (see below).
+      operationId: generatePage
       summary: >-
         Creates a secure payment page which you can redirect your customer to,
         in order to proceed checkout
