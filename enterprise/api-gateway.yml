@@ -155,11 +155,11 @@ components:
       properties:
         operation_id:
           description: 'Operation to be refunded.'
-          type: int
+          type: integer
           example: 58372649965
         amount:
           description: 'Amount to be refunded.'
-          type: float
+          type: number
           minimum: 0
           exclusiveMinimum: true
           example: 125.75
@@ -2428,4 +2428,3 @@ tags:
 externalDocs:
   description: 'Find out more about HiPay'
   url: 'https://developer.hipay.com/'
-
