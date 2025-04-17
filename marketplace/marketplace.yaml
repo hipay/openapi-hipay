@@ -1,8 +1,8 @@
 swagger: '2.0'
-host: test-merchant.hipaywallet.com
+host: test-professional.hipay.com
 basePath: /api
 info:
-  version: '0.2'
+  version: '0.3'
   title: HiPay Marketplace API
   description: |
 
@@ -10,11 +10,11 @@ info:
 
     ## Account creation:
 
-      1) The agent checks the e-mail availability with the Is-available API.
+      1) The agent checks the e-mail availability with the [Is-available API](#/user-account/post_user-account_is-available).
 
-      2) The agent creates a HiPay account for merchants using the User-account API.
+      2) The agent creates a HiPay account for merchants using the [User-account API](#/user-account/post_user-account).
 
-      3) The agent sends us the account number and the identification/KYC information using the Identification API. HiPay validates the identification/KYC information within three days and sends the agent a notification confirming that the merchant is fully operational.
+      3) The agent sends us the account number and the identification/KYC information using the [Identification API](#/identification/post_Identification). HiPay validates the identification/KYC information within three days and sends the agent a notification confirming that the merchant is fully operational.
 
     ## Bank account information submission:
 
@@ -23,22 +23,27 @@ info:
 
     ## Fund allocation:
 
-    HiPay suggests performing fund allocation and withdrawal all at once. All the funds are held in escrow before being deposited on the technical account.
-    The Transfer API is then used to allocate funds from the technical account to the merchants’ accounts. Try now the Transfer POST API.
+    Fund allocation is only possible if the merchant's account is validated by HiPay.
 
-    The Transfer API allows transfer requests to be made on the agent’s behalf or on the behalf of a third party.
+    All the funds are held in escrow before being deposited on the technical account.
+    
+    The [Transfer API](#/transfer/post_transfer]) is then used to allocate funds from the technical account to the merchant's account.
+    The [Transfer API](#/transfer/post_transfer]) allows transfer requests to be made on the agent’s behalf or on the behalf of a third party.
+    
     The technical account is therefore a monitoring tool that provides a clear view of fund allocation (fund remittance, refunds, chargebacks).
 
     ## Withdrawal requests:
 
+    Withdrawal is only possible if the merchant's account AND banking informations are validated by HiPay.
+
     Once funds are allocated, there are two withdrawal possibilities:
 
       - Whenever a transaction is made – please note that this option is not recommended by HiPay,
-      - Whenever a withdrawal request is made – for example, every ten days, depending on the agent.
+      - Whenever a withdrawal request is made by the merchant – for example, every ten days, depending on the agent.
 
     When agents want to do a withdrawal, they need to check the merchant’s account balance with the [Balance API.](#/balance/get_user-account)
 
-      - In case of a zero balance, funds can be allocated with the Transfer API.
+      - In case of a zero balance, funds must be allocated with the [Transfer API](#/transfer/post_transfer]).
       - If the balance equals the amount of the allocated funds, a fund withdrawal request can be made with the [Withdrawal API](#/withdrawal/post_withdrawal). (The Withdrawal API allows for a withdrawal request to transfer money to the merchant’s bank account and also to the partner’s bank account.)
       - There must be a zero balance in the end.
 
@@ -50,8 +55,8 @@ info:
 
     | Environment | Base URL |
     | --- | --- |
-    | Test | https://test-merchant.hipaywallet.com/api/ |
-    | Production | https://merchant.hipaywallet.com/api/ |
+    | Test | https://test-professional.hipay.com/api/ |
+    | Production | https://professional.hipay.com/api/ |
 
     ## Authentication:
 
@@ -95,7 +100,7 @@ tags:
 paths:
   '/user-account.{_format}':
     get:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -109,7 +114,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -149,6 +154,9 @@ paths:
                 description: True if the account is activated. activated = 0 => Means that the account can't access to the hipay backoffice. In fact, the password hasn't be registered or confirmed. activated = 1 => Means that the account can access to the hipay backoffice. Password registered.
                 format: int32
                 type: integer
+              ubo_statement_status_code:
+                description: 'UBO statement status code : -1: No UBO statement 0: New 1: Waiting 2: To check 3: Validated 4: Rejected 5: Updated.'
+                type: string
               identified:
                 description: True if the account is identified.
                 format: int32
@@ -242,7 +250,7 @@ paths:
       security:
         - basicAuth: []
     patch:
-      consumes: []
+      consumes: [application/x-www-form-urlencoded]
       description: |-
 
         ### Information
@@ -257,7 +265,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account email.
           in: formData
           name: email
@@ -274,39 +282,39 @@ paths:
           name: 'address[address]'
           in: formData
           type: string
-          value: 2 Avenue de Paris
+          default: 2 Avenue de Paris
         - description: Zip code.
           name: 'address[zipcode]'
           in: formData
           type: string
-          value: '75001'
+          default: '75001'
         - description: City.
           name: 'address[city]'
           in: formData
           type: string
-          value: Paris
+          default: Paris
         - description: |-
             Enter country code [using ISO_3166-1 convention.](https://en.wikipedia.org/wiki/ISO_3166-1#Officially_assigned_code_elements)
             Examples of values: `FR`, `AL`, `AU`, `PT`, `US`...
           name: 'address[country]'
           in: formData
           type: string
-          value: FR
+          default: FR
         - description: Phone number.
           name: 'address[phone_number]'
           in: formData
           type: string
-          value: 0123456789
+          default: 0123456789
         - description: Mobile phone number.
           name: 'address[mobile_phone_number]'
           in: formData
           type: string
-          value: 0612345789
+          default: 0612345789
         - description: Fax number.
           name: 'address[fax_number]'
           in: formData
           type: string
-          value: 0198765432
+          default: 0198765432
         - description: |
             `0` or `1` if user agrees.
           enum:
@@ -314,10 +322,8 @@ paths:
             - 1
           in: formData
           name: hipay_information
-          type: string
-          schema:
-            default: 0
-          value: 0
+          type: integer
+          default: 0
         - description: |
             `0` or `1` if user agrees.
           enum:
@@ -325,10 +331,8 @@ paths:
             - 1
           in: formData
           name: commercial_information
-          type: string
-          schema:
-            default: 0
-          value: 0
+          type: integer
+          default: 0
         - description: URL where the notifications concerning this account will be sent.
           in: formData
           name: callback_url
@@ -337,6 +341,23 @@ paths:
           in: formData
           name: callback_salt
           type: string
+        - description: City of birth.
+          in: formData
+          name: city_of_birth
+          type: string
+        - description: The country of birth code. This two-letter country code complies with ISO 3166-1
+          in: formData
+          name: country_of_birth
+          type: string
+        - description: |-
+            `0` or `1` if user agrees to validate HiPay terms (default : `0`).
+          enum:
+            - 0
+            - 1
+          in: formData
+          name: cgu_validation
+          type: integer
+          default: 0
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -408,7 +429,7 @@ paths:
       security:
         - basicAuth: []
     post:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -425,20 +446,18 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: New account email address.
           in: formData
           name: email
           type: string
-          value: developer+user-api@hipay.com
+          default: developer+user-api@hipay.com
         - description: 'For Marketplace implementation, please leave this field with default value to "credentials".'
           enum:
             - CREDENTIALS
             - CAPTCHA
           in: formData
-          schema:
-            default: CREDENTIALS
-          value: CREDENTIALS
+          default: CREDENTIALS
           name: controle_type
           type: string
         - in: formData
@@ -454,41 +473,41 @@ paths:
           in: formData
           name: 'credential[wslogin]'
           type: string
-          value: 8434b91c5766a3446cb65360d9c7c3e6
+          default: 8434b91c5766a3446cb65360d9c7c3e6
         - description: Your API web service password.
           in: formData
           name: 'credential[wspassword]'
           type: string
-          value: b592ed0e625b026d0a6b76ec99750792bb
+          default: b592ed0e625b026d0a6b76ec99750792bb
         - description: First name of the new account owner.
           in: formData
           name: firstname
           type: string
-          value: John
+          default: John
         - description: Last name of the new account owner.
           in: formData
           name: lastname
           type: string
-          value: Doe
+          default: Doe
         - description: |-
             Currency of the created account [using ISO 4217 Currency Codes convention.](http://www.xe.com/iso4217.php)
             Examples of values: `EUR`, `USD`, `PLN`...
           in: formData
           name: currency
           type: string
-          value: EUR
+          default: EUR
         - description: |-
 
             Language and country of the new account [using this convention.](https://www.softaculous.com/docs/Scripts_Language_Codes) Examples of values: `fr_FR`, `de_DE`, `es_ES`, `uk_UA`...
           in: formData
           name: locale
           type: string
-          value: fr_FR
+          default: fr_FR
         - description: 'New account login (default : _email_ parameter).'
           in: formData
           name: login
           type: string
-          value: customLogin
+          default: customLogin
         - description: |-
             Title of the account owner (default : `1`).
 
@@ -503,10 +522,8 @@ paths:
             - 3
           in: formData
           name: civility
-          type: string
-          schema:
-            default: 1
-          value: 1
+          type: integer
+          default: 1
         - description: IP of the initial query to create the account. Ipv4 valid IP accepted.
           in: formData
           name: ip_address
@@ -536,9 +553,8 @@ paths:
             - 1
           in: formData
           name: account_type
-          type: string
-          schema:
-            default: 1
+          type: integer
+          default: 1
         - description: |-
             Select your professional profile (default : `1`).
             - `1` = corporation, 
@@ -550,77 +566,86 @@ paths:
             - 3
           in: formData
           name: pro_type
-          type: string
-          schema:
-            default: 1
+          type: integer
+          default: 1
         - description: Alias of the created account.
           in: formData
           name: alias
           type: string
-          value: myalias
+          default: myalias
         - description: 'Type of company (e.g.:ltd...).'
           in: formData
           name: structure
           type: string
-          value: Startup
+          default: Startup
         - description: Name of the company.
           in: formData
           name: company_name
           type: string
-          value: Revolution Corp.
+          default: Revolution Corp.
         - description: VAT company number.
           in: formData
           name: vat_number
           type: string
-          value: AZERTY1234
+          default: AZERTY1234
         - description: Street address.
           name: 'address[address]'
           in: formData
           type: string
-          value: 2 Avenue de Paris
+          default: 2 Avenue de Paris
         - description: Zip code.
           name: 'address[zipcode]'
           in: formData
           type: string
-          value: '75001'
+          default: '75001'
         - description: City.
           name: 'address[city]'
           in: formData
           type: string
-          value: Paris
+          default: Paris
         - description: |-
             Enter country code [using ISO_3166-1 convention.](https://en.wikipedia.org/wiki/ISO_3166-1#Officially_assigned_code_elements)
             Examples of values: `FR`, `AL`, `AU`, `PT`, `US`...
           name: 'address[country]'
           in: formData
           type: string
-          value: FR
+          default: FR
         - description: Phone number.
           name: 'address[phone_number]'
           in: formData
           type: string
-          value: 0123456789
+          default: 0123456789
         - description: Mobile phone number.
           name: 'address[mobile_phone_number]'
           in: formData
           type: string
-          value: 0612345789
+          default: 0612345789
         - description: Fax number.
           name: 'address[fax_number]'
           in: formData
           type: string
-          value: 0198765432
+          default: 0198765432
         - description: 'Timezone (default : `Europe/Paris`).'
           in: formData
           name: timezone
           type: string
-          value: Europe/Paris
+          default: Europe/Paris
         - description: 'Birthdate of the account owner. E.g.: `1965-11-12` for November 12, 1965.'
           format: date
           in: formData
           name: birthdate
           type: string
-          value: '1965-11-12'
+          default: '1965-11-12'
+        - description: 'City of birth.'
+          format: string
+          in: formData
+          name: city_of_birth
+          type: string
+        - description: 'The country of birth code. This two-letter country code complies with ISO 3166-1'
+          format: string
+          in: formData
+          name: country_of_birth
+          type: string
         - description: Antiphishing string.
           in: formData
           name: anti_phishing_key
@@ -631,23 +656,21 @@ paths:
             - 1
           in: formData
           name: hipay_information
-          type: string
-          schema:
-            default: 1
+          type: integer
+          default: 1
         - description: '1 if the user agrees with the commercial offers (default : `0`).'
           enum:
             - 0
             - 1
           in: formData
           name: commercial_information
-          type: string
-          schema:
-            default: 1
+          type: integer
+          default: 1
         - description: URL where the notifications concerning this account will be sent.
           in: formData
           name: callback_url
           type: string
-          value: 'https://developer.hipay.com/callback-url'
+          default: 'https://developer.hipay.com/callback-url'
         - description: |-
             salt used in the notification signature.
             If this parameter is empty, a callback salt will be generated.
@@ -675,9 +698,7 @@ paths:
           enum:
             - RG
             - RNE
-          schema:
-            default: RG
-          value: RG
+          default: RG
         - description: “Cadastro de Pessoas Físicas” state (for Brazilian accounts).
           in: formData
           name: 'cpf[state]'
@@ -691,10 +712,34 @@ paths:
             - 1
           in: formData
           name: activation_type
+          type: integer
+          default: 0
+        - description: Account ID in an external application.
+          format: string
+          in: formData
+          name: external_account_id
           type: string
-          schema:
-            default: 0
-          value: 0
+        - description: |-
+            Authorized values: UNKNOWN, Mirakl, Izeberg, Prestashop, Magento.
+            {"UNKNOWN":`0`,"Mirakl":`1`,"Izeberg":`2`,"Prestashop":`3`,"Magento":`4`}
+          in: formData
+          name: external_type
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4  
+        - description: |-
+            `0` or `1` if user agrees to validate HiPay terms (default : `0`).
+          enum:
+            - 0
+            - 1
+          in: formData
+          name: cgu_validation
+          type: integer
+          default: 0
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -752,9 +797,217 @@ paths:
         - user-account
       security:
         - basicAuth: []
+  '/user-account/sub-account.{_format}':
+    post:
+      consumes: [multipart/form-data]
+      description: |-
+
+        ### Information
+        Create a HiPay Sub-Account inside an already created HiPay account.
+      operationId: post_user-account_sub-account
+      x-disableTryItOut: true
+      parameters:
+        - in: path
+          name: _format
+          required: true
+          type: string
+          enum:
+            - json
+            - xml
+          default: json
+        - description: Alias of the created account.
+          in: formData
+          name: alias
+          type: string
+          default: myalias
+          required: true
+        - description: First name of the new account owner.
+          in: formData
+          name: firstname
+          type: string
+          default: John
+          required: true
+        - description: Last name of the new account owner.
+          in: formData
+          name: lastname
+          type: string
+          default: Doe
+          required: true
+        - description: |-
+            Currency of the created account [using ISO 4217 Currency Codes convention.](http://www.xe.com/iso4217.php)
+            Examples of values: `EUR`, `USD`, `PLN`...
+          in: formData
+          name: currency
+          type: string
+          default: EUR
+          required: true
+        - description: Street address.
+          name: 'address[address]'
+          in: formData
+          type: string
+          default: 2 Avenue de Paris
+        - description: Zip code.
+          name: 'address[zipcode]'
+          in: formData
+          type: string
+          default: '75001'
+        - description: City.
+          name: 'address[city]'
+          in: formData
+          type: string
+          default: Paris
+        - description: |-
+            Enter country code [using ISO_3166-1 convention.](https://en.wikipedia.org/wiki/ISO_3166-1#Officially_assigned_code_elements)
+            Examples of values: `FR`, `AL`, `AU`, `PT`, `US`...
+          name: 'address[country]'
+          in: formData
+          type: string
+          default: FR
+        - description: Phone number.
+          name: 'address[phone_number]'
+          in: formData
+          type: string
+          default: 0123456789
+        - description: Mobile phone number.
+          name: 'address[mobile_phone_number]'
+          in: formData
+          type: string
+          default: 0612345789
+        - description: Fax number.
+          name: 'address[fax_number]'
+          in: formData
+          type: string
+          default: 0198765432
+        - description: 'Birthdate of the account owner. E.g.: `1965-11-12` for November 12, 1965.'
+          format: date
+          in: formData
+          name: birthdate
+          type: string
+          default: '1965-11-12'
+          required: true
+        - description: 'City of birth.'
+          format: string
+          in: formData
+          name: city_of_birth
+          type: string
+        - description: 'The country of birth code. This two-letter country code complies with ISO 3166-1'
+          format: string
+          in: formData
+          name: country_of_birth
+          type: string
+        - description: New account email address.
+          in: formData
+          name: email
+          type: string
+          default: developer+user-api@hipay.com
+        - description: 'New account login.'
+          in: formData
+          name: login
+          type: string
+          default: customLogin      
+        - description: 'New account password.'
+          in: formData
+          name: password
+          type: string
+          default: customPassword          
+        - description: 'Maximum spending allowance.'
+          in: formData
+          name: max_expense_amount
+          type: number
+        - description: 'Per period of 7, 15, 30 or 45 days.'
+          in: formData
+          name: max_expense_period_amount
+          type: string
+        - description: 'Maximum amount for a payment.'
+          in: formData
+          name: max_payment_amount
+          type: number
+        - description: URL where the notifications concerning this account will be sent.
+          in: formData
+          name: callback_url
+          type: string
+          default: 'https://developer.hipay.com/callback-url'
+        - description: |-
+            salt used in the notification signature.
+            If this parameter is empty, a callback salt will be generated.
+          in: formData
+          name: callback_salt
+          type: string
+        - description: 'Age category (+12 => For ages 13 and over, +16 => For ages 16 and over, +18 => * For ages 18 and over, ALL => For all ages), default is ALL'
+          in: formData
+          name: class
+          type: string 
+        - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
+          in: header
+          name: php-auth-subaccount-id
+          type: integer
+        - description: Account login (email address) if operations must be made on an account other than yours (you must have specific rights on this account).
+          in: header
+          name: php-auth-subaccount-login
+          type: string
+      produces: []
+      responses:
+        '200':
+          description: Error response
+          schema:
+            properties:
+              code:
+                description: Status code of the answer. 260 => An account with the given login already exists for the given entity 290 => Origin account is not a main account 330 => Origin account is not activated
+                format: int32
+                type: integer
+                default: 260
+              message:
+                description: Description of the answer.
+                type: string
+                default: 'An account with the given login already exists for the given entity'
+        '201':
+          description: Success response.
+          schema:
+            properties:
+              code:
+                description: Status code of the answer.
+                format: int32
+                type: integer
+              message:
+                description: Description of the answer.
+                type: string
+              parent_account_id:
+                description: Id of the parent HiPay Account.
+                format: int32
+                type: integer
+              subaccount_id:
+                description: Id of the created HiPay Sub-Account.
+                format: int32
+                type: integer
+              entity_code:
+                description: Id of the created HiPay Sub-Account.
+                type: string
+              merchant_group_id:
+                description: Merchant group ID of the created HiPay Sub-Account. /!\ Parameter deprecated !
+                format: int32
+                type: integer
+              merchant_group_code:
+                description: Merchant group code of the created HiPay Sub-Account.
+                type: string
+              callback_url:
+                description: URL where the notifications concerning this account will be sent.
+                type: string
+              callback_salt:
+                description: salt used in notification signature.
+                type: string
+        '400':
+          description: Validation failed.
+        '401':
+          description: Authentication failed.
+      summary: Create a HiPay account
+      tags:
+        - user-account
+      security:
+        - basicAuth: []
+
   '/user-account/is-available.{_format}':
     post:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -771,12 +1024,13 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Email address to verify.
           in: formData
           name: user_email
+          required: true
           type: string
-          value: developer@hipay.com
+          default: developer@hipay.com
         - description: 'Entity code to apply to the new account (HiPay will inform the merchant of the entity to use), the default one is wallet.'
           in: formData
           name: entity
@@ -822,7 +1076,7 @@ paths:
         - basicAuth: []
   '/identification.{_format}':
     get:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -838,7 +1092,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -854,7 +1108,7 @@ paths:
           schema:
             properties:
               code:
-                description: Status code of the answer.
+                description: Status code of the answer. 0 => Successful response 2 => Missing parameter 3 => Invalid parameter 7 => Not found 13 => An error occurred, please try again 400 => Bad request
                 format: int32
                 type: integer
               message:
@@ -936,17 +1190,25 @@ paths:
         __Type of document for a customer account__
           - `1`: Copy of a valid identification document
 
-          - `2`: Proof of address issued within the last three months
 
         __Type of document for a merchant account (corporation)__
-          - `3`: Copy of a valid identification document of the legal representative. *Deprecated, please use type 1 for all ID documents*
+          - `1`: Copy of a valid identification document of the legal representative. *Deprecated, please use type 1 for all ID documents*
           
           - `4`: Document certifying Company registration
 
           - `5`: Signed Articles of Association with the division of powers (featuring the address of the head office, the name of the company and the name of the legal representative)
 
+        __Type of document for a merchant account (corporation) with a gambling licence__
+          - `1`: Copy of a valid identification document of the legal representative. *Deprecated, please use type 1 for all ID documents*
+          
+          - `4`: Document certifying Company registration
+
+          - `5`: Signed Articles of Association with the division of powers (featuring the address of the head office, the name of the company and the name of the legal representative)
+
+          - `14`:  Gambling licence document
+
         __Type of document for a merchant account (person)__
-          - `7`: Copy of a valid identification document of the legal representative. *Deprecated, please use type 1 for all ID documents*
+          - `1`: Copy of a valid identification document of the legal representative. *Deprecated, please use type 1 for all ID documents*
 
           - `8`: Document certifying registration
 
@@ -978,21 +1240,21 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Type of document.
           format: int32
           in: formData
           required: true
           name: type
           type: integer
-          value: '1'
-        - description: 'File to upload (`jpg`, `gif`, `png`, `pdf`).'
+          default: '1'
+        - description: 'File to upload (jpg, gif, png, pdf). For ID documents, if you have a single file regrouping the front and back sides, please use only this field.'
           format: byte
           in: formData
           required: true
           name: file
           type: file
-        - description: 'Back of file to upload (`jpg`, `gif`, `png`, `pdf`). Required for id cards in Belgium and Italy'
+        - description: 'BBack of file to upload (jpg, gif, png, pdf). Only to be used in case the front and back sides of the ID document are in two separate files'
           in: formData
           name: back
           type: file
@@ -1002,7 +1264,7 @@ paths:
           in: formData
           name: validity_date
           type: string
-          value: '2020-11-20'
+          default: '2020-11-20'
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -1018,7 +1280,7 @@ paths:
           schema:
             properties:
               code:
-                description: Status code of the answer.
+                description: 'Status code of the answer. 0 => Document successfully uploaded 414 => User space already identified 415 => A document of this type is already waiting for validation'
                 format: int32
                 type: integer
               message:
@@ -1059,7 +1321,7 @@ paths:
         - basicAuth: []
   '/ubo.{_format}':
     post:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -1076,7 +1338,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -1094,8 +1356,7 @@ paths:
           name: title
           type: integer
           required: true
-          schema:
-            default: 1
+          default: 1
         - description: First name of this UBO
           in: formData
           name: first_name
@@ -1139,9 +1400,8 @@ paths:
           name: position
           required: true
           type: integer
-          schema:
-            default: 0
-        - description: 	If position is OTHER this parameter is needed
+          default: 1
+        - description: If position is OTHER this parameter is needed
           in: formData
           name: position_detail
           required: false
@@ -1154,8 +1414,7 @@ paths:
           name: decision_maker
           type: integer
           required: true
-          schema:
-            default: 0
+          default: 0
         - description: '`1` if this beneficial ower is a politicaly exposed, `0` otherwise'
           enum:
             - 0
@@ -1164,8 +1423,7 @@ paths:
           name: pep
           type: integer
           required: true
-          schema:
-            default: 0
+          default: 0
         - description: The identification number of the ID document (identification_file)
           in: formData
           name: id_number
@@ -1176,7 +1434,7 @@ paths:
           name: date_of_birth
           required: true
           type: string
-          value: '1965-11-12'
+          default: '1965-11-12'
         - description: Birth city of account owner.
           in: formData
           name: place_of_birth
@@ -1197,7 +1455,7 @@ paths:
           name: share
           required: true
           type: integer
-          value: 25
+          default: 25
         - description: Passport or ID card - File to upload (jpg, gif, png, pdf)
           in: formData
           name: 'id_document[file]'
@@ -1208,11 +1466,6 @@ paths:
           name: 'id_document_back[file]'
           required: false
           type: file
-        - description: Proof of address - File to upload (jpg, gif, png, pdf)
-          in: formData
-          name: 'address_proof_document[file]'
-          required: true
-          type: file
       produces: []
       responses:
         '201':
@@ -1220,7 +1473,7 @@ paths:
           schema:
             properties:
               code:
-                description: Status code of the answer.
+                description: Status code of the answer. 0 => Ubo successfully created
                 format: int32
                 type: integer
               message:
@@ -1247,9 +1500,64 @@ paths:
         - ubo
       security:
         - basicAuth: []
+  '/ubo/{id}.{_format}':
+    delete:
+      consumes: [multipart/form-data]
+      description: |-
+
+        ### Information
+        Delete an UBO
+
+      operationId: delete_ubo
+      x-disableTryItOut: true
+      parameters:
+        - in: path
+          name: _format
+          required: true
+          type: string
+          enum:
+            - json
+            - xml
+          default: json
+        - in: path
+          name: id
+          description: Id of the UBO.
+          required: true
+          type: string
+          default: 0
+        - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
+          in: header
+          name: php-auth-subaccount-id
+          type: integer
+        - description: Account login (email) if operations must be made on an account other than yours (you must have specific rights on this account).
+          in: header
+          name: php-auth-subaccount-login
+          type: string
+      produces: []
+      responses:
+        '200':
+          description: 'Success response : UBO has been deleted.'
+          schema:
+            properties:
+              code:
+                description: Status code of the answer. 0 => Ubo successfully deleted.
+                format: int32
+                type: integer
+              message:
+                description: Description of the answer.
+                type: string
+        '401':
+          description: Authentication failed.
+        '403':
+          description: Forbidden.
+      summary: Delete an UBO
+      tags:
+        - ubo
+      security:
+        - basicAuth: []
   '/ubo/legal-representative.{_format}':
     post:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -1270,7 +1578,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -1287,8 +1595,7 @@ paths:
           name: decision_maker
           type: integer
           required: true
-          schema:
-            default: 0
+          default: 0
         - description: The identification number of the ID document (identification_file)
           in: formData
           name: id_number
@@ -1302,14 +1609,13 @@ paths:
           name: pep
           type: integer
           required: true
-          schema:
-            default: 0
+          default: 0
         - description: Birth date of account owner. Ex. '1965-11-12' for November 12, 1965
           in: formData
           name: date_of_birth
           required: true
           type: string
-          value: '1965-11-12'
+          default: '1965-11-12'
         - description: Birth city of account owner.
           in: formData
           name: place_of_birth
@@ -1330,7 +1636,7 @@ paths:
           name: share
           required: true
           type: integer
-          value: 25
+          default: 25
         - description: Passport or ID card - File to upload (jpg, gif, png, pdf)
           in: formData
           name: 'id_document[file]'
@@ -1340,11 +1646,6 @@ paths:
           in: formData
           name: 'id_document_back[file]'
           required: false
-          type: file
-        - description: Proof of address - File to upload (jpg, gif, png, pdf)
-          in: formData
-          name: 'address_proof_document[file]'
-          required: true
           type: file
       produces: []
       responses:
@@ -1382,7 +1683,7 @@ paths:
         - basicAuth: []
   '/ubo/ubo-statement.{_format}':
     delete:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -1398,7 +1699,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -1430,7 +1731,7 @@ paths:
       security:
         - basicAuth: []
     get:
-          consumes: []
+          consumes: [multipart/form-data]
           description: |-
 
             ### Information
@@ -1445,7 +1746,7 @@ paths:
               enum:
                 - json
                 - xml
-              value: json
+              default: json
             - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
               in: header
               name: php-auth-subaccount-id
@@ -1521,7 +1822,7 @@ paths:
                                 description: '	If an UBO is refused (status_code = 3), this is the reason. -1: Without detail, 1: Invalid date, 2: Unreadable, 3: Missing information, 4: Other, 6: Invalid document type.'
                                 type: string
                               status_refused_label:
-                                description: 	Text version of ubo[status_refused_code].
+                                description:  Text version of ubo[status_refused_code].
                                 type: string
             '400':
               description: Validation failed.
@@ -1533,7 +1834,7 @@ paths:
           security:
             - basicAuth: []
     post:
-          consumes: []
+          consumes: [multipart/form-data]
           description: |-
 
             ### Information
@@ -1551,7 +1852,7 @@ paths:
               enum:
                 - json
                 - xml
-              value: json
+              default: json
             - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
               in: header
               name: php-auth-subaccount-id
@@ -1598,15 +1899,10 @@ paths:
       description: |-
 
         ### Information
+        Register new bank-details on an HiPay account.
+        
+        Must be called with the bank identity document and bank info together
 
-
-        Upload identification documents. Uploaded documents can't exceed 15MB.
-
-
-        __Type of document for a customer account / a merchant account (corporation) / a merchant account (person)__
-          - `6`: Bank account details / Account statement /...
-
-          - 
 
         __In test environment__
 
@@ -1624,18 +1920,7 @@ paths:
 
           - Any other name : document will be automatically accepted
 
-        Register new bank details on a HiPay account.
-
-        It can be called :
-
-        - Only with the bank identity document.
-
-        - With the bank identity and bank info documents together.
-
-        - Only with the bank information if the bank info document has been previously uploaded.
-
-        In other words, the bank information document is required if it has not already been provided.
-      operationId: post_user-account
+      operationId: post_user-account_bank-info
       parameters:
         - in: path
           name: _format
@@ -1644,7 +1929,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - in: formData
           description: 'Bank details file to upload (`jpg`, `gif`, `png`, `pdf`). Must match bank details to be validated.'
           name: file
@@ -1656,37 +1941,37 @@ paths:
           required: true
           name: bank_country
           type: string
-          value: FR
+          default: FR
         - description: Name of the bank (50 characters max.).
           in: formData
           name: bank_name
           type: string
-          value: BNP
+          default: BNP
         - description: Address of the bank.
           in: formData
           name: bank_address
           type: string
-          value: 1 Avenue des Champs-Élysées
+          default: 1 Avenue des Champs-Élysées
         - description: Zip code of the bank.
           in: formData
           name: bank_zip_code
           type: string
-          value: '75001'
+          default: '75001'
         - description: City of the bank (50 characters max.).
           in: formData
           name: bank_city
           type: string
-          value: Paris
+          default: Paris
         - description: IBAN.
           in: formData
           name: iban
           type: string
-          value: FR1420041010050500013M02606
+          default: FR1420041010050500013M02606
         - description: SWIFT / BIC.
           in: formData
           name: swift
           type: string
-          value: PSSTFRPPXXX
+          default: PSSTFRPPXXX
         - description: ABA number.
           in: formData
           name: aba_num
@@ -1722,7 +2007,7 @@ paths:
           schema:
             properties:
               code:
-                description: Status code of the answer.
+                description: 'Status code of the answer. 0 => Successful response 2 => Missing parameter 3 => Invalid parameter 7 => Not found 13 => An error occurred, please try again 400 => Bad request'
                 format: int32
                 type: integer
               message:
@@ -1782,12 +2067,12 @@ paths:
         - basicAuth: []
   '/user-account/bank-info/{locale}.{_format}':
     get:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
         Get bank details of a HiPay account.
-      operationId: get_user-account
+      operationId: get_user-account_bank-info_locale
       parameters:
         - in: path
           name: locale
@@ -1796,7 +2081,7 @@ paths:
           description: |-
 
             Enter locale code [using this convention.](https://www.softaculous.com/docs/Scripts_Language_Codes) Examples of values: `fr_FR`, `de_DE`, `es_ES`, `uk_UA`...
-          value: fr_FR
+          default: fr_FR
         - in: path
           name: _format
           required: true
@@ -1804,7 +2089,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       produces: []
       responses:
         '200':
@@ -1812,7 +2097,7 @@ paths:
           schema:
             properties:
               code:
-                description: Status code of the answer.
+                description: '/merchant-group/Status code of the answer. 0 => Successful response 2 => Missing parameter 3 => Invalid parameter 7 => Not found 13 => An error occurred, please try again 400 => Bad request'
                 format: int32
                 type: integer
               message:
@@ -1872,12 +2157,12 @@ paths:
         - basicAuth: []
   '/user-account/balance.{_format}':
     get:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
         Get the balance of a specific HiPay account.
-      operationId: get_user-account
+      operationId: get_user-account_balance
       parameters:
         - in: path
           name: _format
@@ -1886,13 +2171,13 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Date for the balance.
           format: date
           in: query
           name: date
           type: string
-          value: '2018-02-01'
+          default: '2018-02-01'
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -1957,7 +2242,7 @@ paths:
         - basicAuth: []
   '/transfer.{_format}':
     post:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -1978,47 +2263,45 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account ID of the recipient account.
           format: int32
           in: formData
           name: recipient_account_id
           type: integer
-          value: '592734'
+          default: '592734'
         - description: Login of the recipient account (email).
           in: formData
           name: recipient_account_login
           type: string
-          value: developer@hipay.com
+          default: developer@hipay.com
         - description: Amount of the transfer in the account currency.
           format: float
           in: formData
           name: amount
           type: number
-          value: '19.90'
+          default: '19.90'
         - description: Label of the transfer known by you and the recipient user.
           in: formData
           name: public_label
           type: string
-          value: Custom public label
+          default: Custom public label
         - description: Label of the transfer only known by you.
           in: formData
           name: private_label
           type: string
-          value: Custom private label
+          default: Custom private label
         - description: Unique ID of the transfer sent by the merchant. HiPay will process only 1 transfer with this ID.
           in: formData
           name: merchant_unique_id
           type: string
-          value: ORDER_1973645854
-        - schema:
-            default: direct
-          description: Periodicity type of the transfer.
+          default: ORDER_1973645854
+        - description: Periodicity type of the transfer.
           enum:
             - direct
             - deferred
             - periodic
-          value: direct
+          default: direct
           in: formData
           name: periodicity_type
           type: string
@@ -2030,13 +2313,13 @@ paths:
           in: formData
           name: periodicity
           type: integer
-          value: '15'
+          default: '15'
         - description: Execution date of the transfer (required for a deferred transfer).
           format: date
           in: formData
           name: date
           type: string
-          value: '2020-11-20'
+          default: '2020-11-20'
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -2047,6 +2330,19 @@ paths:
           type: string
       produces: []
       responses:
+        '200':
+          description: Error response
+          schema:
+            properties:
+              code:
+                description: Status code of the answer. 4 => Action not allowed 26 => Transfer in progress
+                format: int32
+                type: integer
+                default: 4
+              message:
+                description: Description of the answer.
+                type: string
+                default: 'Action not allowed'
         '201':
           description: Success response
           schema:
@@ -2100,7 +2396,7 @@ paths:
         - basicAuth: []
   '/withdrawal.{_format}':
     post:
-      consumes: []
+      consumes: [multipart/form-data]
       description: |-
 
         ### Information
@@ -2130,23 +2426,23 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Amount of the withdrawal in the account currency.
           format: float
           in: formData
           name: amount
           type: number
-          value: '19.90'
+          default: '19.90'
         - description: Label of the withdrawal in the account currency.
           in: formData
           name: label
           type: string
-          value: Custom label here
+          default: Custom label here
         - description: Unique ID of the withdrawal sent by the merchant. HiPay will process only 1 withdrawal with this ID.
           in: formData
           name: merchant_unique_id
           type: string
-          value: ORDER_1973645854
+          default: ORDER_1973645854
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -2157,12 +2453,25 @@ paths:
           type: string
       produces: []
       responses:
+        '200':
+          description: Error response
+          schema:
+            properties:
+              code:
+                description: Status code of the answer. 13 => Withdrawal not created 26 => Withdrawal in progress
+                format: int32
+                type: integer
+                default: 13
+              message:
+                description: Description of the answer.
+                type: string
+                default: 'Withdrawal not created'
         '201':
           description: Success response
           schema:
             properties:
               code:
-                description: Status code of the answer.
+                description: Status code of the answer. 0 => Withdrawal successfully created
                 format: int32
                 type: integer
               message:
@@ -2188,7 +2497,7 @@ paths:
           description: Validation failed.
         '401':
           description: Authentication failed.
-        400x - Error code detail:
+        '40xx - Error code detail':
           description: |
             See standard HTTP status code reason for 400x - Error code detail :
 
@@ -2220,7 +2529,7 @@ paths:
   '/transaction.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Get transactions list
       description: |-
 
@@ -2235,12 +2544,12 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - in: query
           description: 'Start of transaction date range. Accepted formats : yyyy-MM-dd HH:MM:ss and yyyy-MM-dd. Default date : 7 days ago. Default time : 00:00:00.'
           name: start-date
           type: string
-          value: '2018-01-31'
+          default: '2018-01-31'
         - in: query
           description: |
             End of transaction date range. Accepted formats : yyyy-MM-dd HH:MM:ss and yyyy-MM-dd. Default date : today. Default time : 23:59:59.
@@ -2248,19 +2557,19 @@ paths:
             Interval between start-date and end-date cannot be greater than 3 months (92 days).
           name: end-date
           type: string
-          value: '2018-04-07'
+          default: '2018-04-07'
         - in: query
           description: 'Number of results to display on each page. Cannot exceed 1000. Default : 20'
           name: nb-result-per-page
           type: integer
           format: int32
-          value: 20
+          default: 20
         - in: query
           description: 'Page number. First page has number 1. Default : 1'
           name: page
           type: integer
           format: int32
-          value: 1
+          default: 1
         - in: query
           description: 'Properties sorting configuration. Ex: sort-props[email]=asc&sort-props[status]=desc. Default : sort-props[captured]=desc'
           name: sort-props
@@ -2305,7 +2614,7 @@ paths:
   '/transaction/{id}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Get transaction details
       description: |-
 
@@ -2315,9 +2624,10 @@ paths:
       parameters:
         - in: path
           name: id
+          description: HiPay transaction ID or Merchant reference of transaction ID to verify.
           required: true
           type: string
-          value: 5a71d61c6778932713
+          default: 5a71d61c6778932713
         - in: path
           name: _format
           required: true
@@ -2325,7 +2635,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -2359,6 +2669,9 @@ paths:
               creation_date:
                 type: string
                 description: Transaction creation date.
+              collect_date:
+                type: string
+                description: Transaction collect date.
               transaction_status:
                 type: string
                 description: |-
@@ -2417,6 +2730,9 @@ paths:
               currency_fees:
                 type: string
                 description: Currency linked to fees.
+              refusal_reason:
+                type: string
+                description: Refusal reason.
         '400':
           description: Validation failed.
         '401':
@@ -2428,7 +2744,7 @@ paths:
   '/merchant-group/{merchant_group_code}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: List merchant group member
       description: |-
 
@@ -2440,7 +2756,7 @@ paths:
           name: merchant_group_code
           required: true
           type: string
-          value: devportaltest
+          default: devportaltest
         - in: path
           name: _format
           required: true
@@ -2448,18 +2764,18 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - in: query
           description: The date from which the member accounts were created
           name: past_date
           type: string
           format: date
-          value: '2018-01-01'
+          default: '2018-01-01'
         - in: query
           description: Account type
           name: 'account_type[]'
           type: string
-          value: merchant
+          default: merchant
           enum:
             - merchant
             - associator
@@ -2469,13 +2785,13 @@ paths:
           name: nb_result_per_page
           type: integer
           format: int32
-          value: 20
+          default: 20
         - in: query
           description: Page number. First page has number 1. Default is 1
           name: page
           type: integer
           format: int32
-          value: 1
+          default: 1
         - description: Account ID if operations must be made on an account other than yours (you must have specific rights on this account).
           in: header
           name: php-auth-subaccount-id
@@ -2535,7 +2851,7 @@ paths:
   '/merchant-group/{merchant_group_code}/count.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Count merchant group member
       description: |-
 
@@ -2547,7 +2863,7 @@ paths:
           name: merchant_group_code
           required: true
           type: string
-          value: devportaltest
+          default: devportaltest
         - in: path
           name: _format
           required: true
@@ -2555,18 +2871,18 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - in: query
           description: The date from which the member accounts were created
           name: past_date
           type: string
           format: date
-          value: '2018-01-01'
+          default: '2018-01-01'
         - in: query
           description: Account type
           name: 'account_type[]'
           type: string
-          value: merchant
+          default: merchant
           enum:
             - merchant
             - associator
@@ -2617,7 +2933,7 @@ paths:
   '/marketplace/invoice.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: List marketplace invoices
       description: |-
 
@@ -2631,7 +2947,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
         - in: query
           description: Invoice reference
           name: reference
@@ -2642,7 +2958,7 @@ paths:
           name: year
           type: integer
           format: int32
-          value: 2018
+          default: 2018
       responses:
         '200':
           description: Success response.
@@ -2655,7 +2971,7 @@ paths:
   '/marketplace/invoice/{reference}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Download an invoice
       description: |-
 
@@ -2665,8 +2981,8 @@ paths:
         - in: path
           name: reference
           required: true
-          type: string
-          value: '1'
+          type: integer
+          default: '1'
         - in: path
           name: _format
           required: true
@@ -2674,10 +2990,10 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
-          description: Success response.
+          description: PDF document successfully returned
         '403':
           description: Access forbidden.
         '404':
@@ -2689,7 +3005,7 @@ paths:
   '/tools/captcha.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       operationId: get_Captcha-generation
       summary: Generate a captcha
       description: |-
@@ -2705,7 +3021,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '201':
           description: Success response.
@@ -2734,7 +3050,7 @@ paths:
   '/tools/bank-info-fields/{country}/{locale}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Get bank details required for a HiPay account depending on its country
       description: |-
 
@@ -2746,7 +3062,7 @@ paths:
           name: country
           required: true
           type: string
-          value: FR
+          default: FR
           description: |-
             Enter country code [using ISO_3166-1 convention.](https://en.wikipedia.org/wiki/ISO_3166-1#Officially_assigned_code_elements)
             Examples of values: `FR`, `AL`, `AU`, `PT`, `US`...
@@ -2754,7 +3070,7 @@ paths:
           name: locale
           required: true
           type: string
-          value: fr_FR
+          default: fr_FR
           description: |-
             Enter locale code [using this convention.](https://www.softaculous.com/docs/Scripts_Language_Codes)
             Examples of values: `fr_FR`, `de_DE`, `es_ES`, `uk_UA`...
@@ -2765,7 +3081,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
           description: Success response.
@@ -2802,7 +3118,7 @@ paths:
   '/tools/business-lines/{locale}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Return business lines
       description: |-
 
@@ -2814,7 +3130,7 @@ paths:
           name: locale
           required: true
           type: string
-          value: fr_FR
+          default: fr_FR
           description: |-
             Enter locale code [using this convention.](https://www.softaculous.com/docs/Scripts_Language_Codes)
             Examples of values: `fr_FR`, `de_DE`, `es_ES`, `uk_UA`...
@@ -2825,7 +3141,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
           description: Success response.
@@ -2860,7 +3176,7 @@ paths:
   '/tools/locale/codes.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Return locales codes and names
       description: |-
 
@@ -2875,7 +3191,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
           description: Success response.
@@ -2909,7 +3225,7 @@ paths:
   '/tools/locale/countries/{locale}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Return locales codes and names
       description: |-
 
@@ -2921,7 +3237,7 @@ paths:
           name: locale
           required: true
           type: string
-          value: fr_FR
+          default: fr_FR
           description: |-
             Enter locale code [using this convention.](https://www.softaculous.com/docs/Scripts_Language_Codes)
             Examples of values: `fr_FR`, `de_DE`, `es_ES`, `uk_UA`...
@@ -2932,7 +3248,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
           description: Success response.
@@ -2966,7 +3282,7 @@ paths:
   '/tools/locale/currencies/{locale}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Return currencies codes and labels by locale
       description: |-
 
@@ -2978,7 +3294,7 @@ paths:
           name: locale
           required: true
           type: string
-          value: fr_FR
+          default: fr_FR
           description: |-
             Enter locale code [using this convention.](https://www.softaculous.com/docs/Scripts_Language_Codes)
             Examples of values: `fr_FR`, `de_DE`, `es_ES`, `uk_UA`...
@@ -2989,7 +3305,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
           description: Success response.
@@ -3023,7 +3339,7 @@ paths:
   '/tools/locale/timezones.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Return timezones
       description: |-
 
@@ -3038,7 +3354,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
           description: Success response.
@@ -3072,7 +3388,7 @@ paths:
   '/tools/website-topics/{business_line_id}/{locale}.{_format}':
     get:
       produces: []
-      consumes: []
+      consumes: [multipart/form-data]
       summary: Return website topics
       description: |-
 
@@ -3084,7 +3400,7 @@ paths:
           name: locale
           required: true
           type: string
-          value: fr_FR
+          default: fr_FR
           description: |-
             Enter locale code [using this convention.](https://www.softaculous.com/docs/Scripts_Language_Codes)
             Examples of values: `fr_FR`, `de_DE`, `es_ES`, `uk_UA`...
@@ -3092,7 +3408,7 @@ paths:
           name: business_line_id
           required: true
           type: string
-          value: '2'
+          default: '2'
         - in: path
           name: _format
           required: true
@@ -3100,7 +3416,7 @@ paths:
           enum:
             - json
             - xml
-          value: json
+          default: json
       responses:
         '200':
           description: Success response.
