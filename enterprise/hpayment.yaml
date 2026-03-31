@@ -10,7 +10,7 @@ info:
     | Environment | Base URL |
     | --- | --- |
     | Stage | [https://stage-api.hipay.com/](https://stage-api.hipay.com/) |
-    | Production | [https://api.hipay.com/](https://stage-api.hipay.com/) |
+    | Production | [https://api.hipay.com/](https://api.hipay.com/) |
 
     ## Authentication
     All requests to the HiPay Hpayment API require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.
@@ -32,7 +32,7 @@ paths:
 
              The list of payment products to display on the payment page.
 
-            - `american-express`, `bcmc`,  `cb`, `maestro`, `mastercard`, `visa`,
+            - `american-express`, `bancomatpay`, `bizum`, `bcmc`,  `cb`, `maestro`, `mastercard`, `visa`,
             `3xcb`, `3xcb-no-fees`, `4xcb`, `4xcb-no-fees`, `alma-3x`, `alma-4x`, `bancontact`,
             `bcmc-mobile`, `bnpp-3xcb`, `bnpp-4xcb`, `carte-cadeau`, `credit-long`, `giropay`,
             `ideal`, `illicado`, `klarna`, `mbway`, `mybank`, `multibanco`, `paypal`, `paysafecard`, `payshop`,
@@ -40,7 +40,7 @@ paths:
           in: formData
           name: payment_product_list
           type: string
-          format: paymentProductListHostedPage
+          # format: paymentProductList
           x-sort: 20
         - default: credit-card
           description: >2-
@@ -52,7 +52,7 @@ paths:
           in: formData
           name: payment_product_category_list
           type: string
-          format: paymentProductCategoryListHostedPage
+          # format: paymentProductCategoryList
           x-sort: 25
         - description: >-
             The template name. Possible values:
@@ -328,7 +328,7 @@ paths:
           name: amount
           required: true
           type: string
-          pattern: '^[0-9]+(\.[0-9]+)?$'
+          pattern: '^-?[0-9]+(\.[0-9]+)?$'
           x-sort: 75
         - description: >-
             The order shipping fee. It can be omitted if the shipping fee value
@@ -588,10 +588,10 @@ paths:
             **This parameter is specific to provider COMPRAFACIL.**
 
             Validity period of the payment code in days.
-          default: 3
+          default: '3'
           in: formData
           name: expiration_limit
-          type: integer
+          type: string
           x-sort: 206
         - description: |-
             **This parameter is specific to provider ONEY (Gift Card).**
@@ -1564,6 +1564,10 @@ definitions:
         type: string
       order:
         $ref: '#/definitions/HostedPage_OrderResponse'
+      numberRetry:
+        description: Maximum number of payment attempts
+        example: 3
+        type: integer
     title: Forward
     type: object
   HostedPage_OrderResponse:

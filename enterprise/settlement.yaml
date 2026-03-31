@@ -57,10 +57,11 @@ paths:
       operationId: getSettlements
       parameters:
         - in: query
+          schema:
+            example: 19.99
           required: false
           name: amount
           type: number
-          value: 19.9
           description: Parameter which filters settlements equal to this amount.
         - in: query
           required: false
@@ -68,7 +69,6 @@ paths:
           description: Parameter which filters settlements in this currency. This three-character currency code complies with ISO 4217.
           type: string
           enum:
-            - EUR
             - AED
             - AFN
             - ALL
@@ -231,25 +231,27 @@ paths:
             - ZAR
             - ZMW
             - ZWD
-          value: EUR
           schema:
+            example: EUR
             default: EUR
         - in: query
           required: false
           name: date_from
           type: string
-          value: '2016-11-22'
+          schema:
+            example: '2016-11-22'
           description: Parameter which filters settlements after this date (format YYYY-MM-DD).
         - in: query
           required: false
           name: date_to
           type: string
-          value: '2017-01-05'
+          schema:
+            example: '2017-01-05'
           description: Parameter which filters settlements before this date (format YYYY-MM-DD).
         - in: query
           required: false
-          value: settlementid
           schema:
+            example: settlementid
             default: settlementid
           name: sort
           type: string
@@ -261,14 +263,16 @@ paths:
             - date_value
         - in: query
           required: false
-          value: 1
+          schema:
+            example: 1
           name: page
           type: integer
           minimum: 1
           description: Range of settlements to return.
         - in: query
           required: false
-          value: 10
+          schema:
+            example: 10
           name: per_page
           type: integer
           minimum: 1
@@ -278,7 +282,8 @@ paths:
           description: The settlements were properly returned.
           schema:
             type: object
-            required: settlements
+            required:
+              - settlements
             description: List of settlements
             properties:
               settlements:
@@ -429,7 +434,8 @@ paths:
           name: id
           type: integer
           required: true
-          value: 123456
+          schema:
+            example: 123456
           description: The settlement ID.
       responses:
         '200':
@@ -594,7 +600,8 @@ paths:
         - in: path
           name: id
           type: integer
-          value: 123456
+          schema:
+            example: 123456
           required: true
           description: The settlement ID.
         - in: path
@@ -606,8 +613,8 @@ paths:
             - .xls
             - .txt
           description: The format of the settlement raw file you want to download.
-          value: .csv
           schema:
+            example: .csv
             default: .csv
       responses:
         '200':
