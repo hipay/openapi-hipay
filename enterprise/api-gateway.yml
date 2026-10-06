@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   title: 'Hipay Payment Gateway'
-  description: "## Version 1.12.1 - July 28, 2026\n\nThe Gateway API allows you to get paid and manage orders and transactions.\n\nPlease note: this documentation describes the Gateway API parameters and response fields and allows you to test the platform in real time.\n\nThis page is to be used alongside the **[HiPay Enterprise Platform Overview documentation](https://developer.hipay.com/api-explorer/api-online-payments)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documents in parallel when integrating HiPay Enterprise.\n# Web service information\n## Gateway API base URLs\n| Environment | Base URL |\n| --- | --- |\n| Stage | [https://stage-api-gateway.hipay.com](https://stage-api-gateway.hipay.com) |\n| Production |  [https://api-gateway.hipay.com](https://api-gateway.hipay.com) |\n## Authentication\nAll requests to the HiPay Enterprise API require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.\n`Authorization: Basic base64('API login>:<API password>')`\n"
-  version: 1.12.1
+  description: "## Version 1.15.0 - October 06, 2026\n\nThe Gateway API allows you to get paid and manage orders and transactions.\n\nPlease note: this documentation describes the Gateway API parameters and response fields and allows you to test the platform in real time.\n\nThis page is to be used alongside the **[HiPay Enterprise Platform Overview documentation](https://developer.hipay.com/api-explorer/api-online-payments)**, which gives you more information and details on the HiPay Enterprise workflow. You may use both documents in parallel when integrating HiPay Enterprise.\n# Web service information\n## Gateway API base URLs\n| Environment | Base URL |\n| --- | --- |\n| Stage | [https://stage-api-gateway.hipay.com](https://stage-api-gateway.hipay.com) |\n| Production |  [https://api-gateway.hipay.com](https://api-gateway.hipay.com) |\n## Authentication\nAll requests to the HiPay Enterprise API require identification through *HTTP Basic Authentication*. Your API credentials can be found in the Integration section of your HiPay Enterprise back office. Most HTTP clients (including web browsers) have built-in support for HTTP basic authentication. If not, the following header must be included in all HTTP requests.\n`Authorization: Basic base64('API login>:<API password>')`\n"
+  version: 1.15.0
 servers:
   -
     url: 'https://stage-api-gateway.hipay.com'
@@ -11,6 +11,88 @@ servers:
     url: 'https://api-gateway.hipay.com'
     description: Production
 paths:
+  '/v3/debit-agreement/{debit_agreement_id}':
+    get:
+      tags:
+        - 'Debit Agreement'
+      operationId: get_api_debit_agreement_debit_agreement_consultation_public
+      parameters:
+        -
+          name: debit_agreement_id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '[a-zA-Z0-9-]+'
+      responses:
+        '200':
+          description: 'Debit agreement retrieved successfully.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DebitAgreement'
+        '401':
+          description: 'An authentication error occurred/invalid credentials.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'This debit agreement is not found.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        -
+          ApiKeyAuth: []
+        -
+          BasicAuth: []
+  /v3/debit-agreements:
+    get:
+      tags:
+        - 'Debit Agreement'
+      operationId: get_api_debit_agreement_debit_agreement_consultation_list_public
+      parameters:
+        -
+          name: page
+          in: query
+          required: false
+          example: '1'
+        -
+          name: per_page
+          in: query
+          description: 'Number of items per page. Must be between 1 and 100.'
+          required: false
+          example: '10'
+      responses:
+        '200':
+          description: 'Debit agreements retrieved successfully.'
+          content:
+            application/json:
+              schema:
+                properties:
+                  _links: { $ref: '#/components/schemas/Links' }
+                  pagination: { $ref: '#/components/schemas/Pagination' }
+                  data: { type: array, items: { $ref: '#/components/schemas/DebitAgreement' } }
+                type: object
+        '401':
+          description: 'An authentication error occurred/invalid credentials.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'No debit agreement has been reached.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        -
+          BasicAuth: []
+        -
+          ApiKeyAuth: []
   '/v3/order/{orderid}':
     get:
       tags:
@@ -349,157 +431,154 @@ components:
           default: []
           example: '1, 3'
       type: object
-    Customer:
-      required:
-        - email
-        - phone
-      properties:
-        id:
-          type: string
-          example: '283749291'
-          nullable: true
-        firstname:
-          description: 'The customer’s first name. This value will be use to pre-fill cardholder name on credit card payment form.'
-          type: string
-          example: Rose
-          nullable: true
-        lastname:
-          description: 'The customer’s last name. This value will be use to pre-fill cardholder name on credit card payment form.'
-          type: string
-          example: Dévent
-          nullable: true
-        email:
-          description: 'The customer’s e-mail address.'
-          type: string
-          example: otto.graph@foobar.email
-        phone:
-          description: 'The customer’s phone.'
-          type: string
-          example: '01234567890'
-        language:
-          type: string
-          example: en_GB
-          nullable: true
-      type: object
-    ShippingAddress:
-      properties:
-        house_number:
-          description: 'House number.'
-          type: string
-          example: '101'
-          nullable: true
-        house_extension:
-          description: 'House extension.'
-          type: string
-          example: B
-          nullable: true
-        street:
-          description: 'Street address.'
-          type: string
-          example: 'Rue de Rivoli'
-          nullable: true
-        street_additional:
-          description: 'Additional address information of the customer (e.g., building, floor, flat, etc.).'
-          type: string
-          example: 'Immeuble B'
-          nullable: true
-        locality:
-          description: City.
-          type: string
-          example: Paris
-          nullable: true
-        locality_additional:
-          description: 'The USA state or the Canada state of the customer making the purchase. Send this information only if the address country of the customer is US (USA) or CA (Canada)'
-          type: string
-          example: ''
-          nullable: true
-        postal_code:
-          description: 'The zip or postal code of the customer.'
-          type: string
-          example: '75001'
-          nullable: true
-        country:
-          description: 'Country code to which the order is being shipped. This two-letter country code complies with ISO 3166-1 (alpha 2).'
-          type: string
-          example: FR
-          nullable: true
-      type: object
-    CardEntryMode:
+    Status:
       type: string
       enum:
-        - 'Not specified'
-        - Magstripe
-        - 'Contactless chip transaction using EMV chip data'
-        - 'Contactless chip transaction using magstripe data'
-        - ICC
-        - 'Manual entry'
-        - 'Magstripe, after attempt to read chip'
-        - 'Provided by a server'
-        - Card-on-File
-    TerminalInformation:
+        - available
+        - created
+        - error
+        - incomplete
+        - pending
+        - suspended
+        - terminated
+    CofType:
+      type: string
+      enum:
+        - ONE_CLICK
+        - RECURRING
+    DebitAgreement:
+      required:
+        - status
+        - properties
+        - cof_type
       properties:
-        payment_context:
-          description: 'Payment context'
-          type: string
-          example: online
+        id:
+          type: integer
           nullable: true
-        input_mode:
-          description: 'Input mode'
-          type: string
-          example: contact
-          nullable: true
-        aid:
-          description: Aid
-          type: string
-          example: A0000000422010
-          nullable: true
-        payment_gateway:
-          description: 'Payment gateway'
-          type: string
-          example: nepting
-          nullable: true
-        authorization_code:
-          description: 'Authorization code'
-          type: string
-          example: '00'
-          nullable: true
-        authorization_number:
-          description: 'Authorization number'
-          type: string
-          example: '963379'
-          nullable: true
-        customer_receipt:
-          description: 'Customer receipt'
+        provider_agreement_ref:
           type: string
           nullable: true
-        payment_source:
-          description: 'Payment source'
-          type: string
-          example: 'IPN Nepting'
+        status:
+          $ref: '#/components/schemas/Status'
+        recurring_payment_frequency:
+          type: integer
           nullable: true
-        payment_terminal_serial_number:
-          description: 'Payment terminal serial number'
+        recurring_payment_duration:
+          type: integer
+          nullable: true
+        properties:
+          oneOf:
+            -
+              type: array
+              items:
+                nullable: true
+            -
+              type: object
+              additionalProperties:
+                nullable: true
+        token:
           type: string
           nullable: true
-        idsa:
-          description: 'Acceptance system identifier assigned by an acquirer'
+        cof_type:
+          $ref: '#/components/schemas/CofType'
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+        recurring_payment_start_date:
           type: string
           nullable: true
-        rts:
-          description: 'Transaction ID generated by the issuer auth system'
+        recurring_payment_end_date:
           type: string
           nullable: true
-        card_entry_mode:
-          description: 'Card entry mode'
-          example: magstripe
+        scheme_reference_data:
+          type: string
+          nullable: true
+        transaction_link_identifier:
+          type: string
+          nullable: true
+      type: object
+    Error:
+      required:
+        - message
+        - code
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+        details:
+          default: null
           nullable: true
           oneOf:
             -
-              $ref: '#/components/schemas/CardEntryMode'
-        file_number:
-          description: 'File number'
+              type: array
+              items:
+                nullable: true
+            -
+              type: object
+              additionalProperties:
+                nullable: true
+        description:
           type: string
           nullable: true
+      type: object
+    Links:
+      title: 'Navigation Links'
+      description: 'Navigation links.'
+      required:
+        - self
+      properties:
+        first:
+          description: 'Link to the first page of the collection.'
+          type: string
+          example: '/api/objects?page=1'
+          nullable: true
+        prev:
+          description: 'Link to the previous page of the collection.'
+          type: string
+          example: '/api/objects?page=7'
+          nullable: true
+        self:
+          description: 'Link to the current resource or collection page.'
+          type: string
+          example: '/api/object?page=8'
+        next:
+          description: 'Link to the next page of the collection.'
+          type: string
+          example: '/api/objects?page=9'
+          nullable: true
+        last:
+          description: 'Link to the last page of the collection.'
+          type: string
+          example: '/api/objects?page=76'
+          nullable: true
+      type: object
+    Pagination:
+      title: Pagination
+      description: 'Metadata related to the pagination of a collection.'
+      required:
+        - total_items
+        - total_pages
+      properties:
+        total_items:
+          description: 'Total number of items available in the entire collection.'
+          type: integer
+          example: 758
+        items_per_page:
+          description: 'Maximum number of items requested per page.'
+          type: integer
+          default: 25
+          example: 10
+        current_page:
+          description: 'The page number currently being returned.'
+          type: integer
+          default: 1
+          example: 8
+        total_pages:
+          description: 'Total number of pages available.'
+          type: integer
+          example: 76
       type: object
     Currency:
       type: string
@@ -666,6 +745,38 @@ components:
         - ZAR
         - ZMK
         - ZWL
+    Customer:
+      required:
+        - email
+        - phone
+      properties:
+        id:
+          type: string
+          example: '283749291'
+          nullable: true
+        firstname:
+          description: 'The customer’s first name. This value will be use to pre-fill cardholder name on credit card payment form.'
+          type: string
+          example: Rose
+          nullable: true
+        lastname:
+          description: 'The customer’s last name. This value will be use to pre-fill cardholder name on credit card payment form.'
+          type: string
+          example: Dévent
+          nullable: true
+        email:
+          description: 'The customer’s e-mail address.'
+          type: string
+          example: otto.graph@foobar.email
+        phone:
+          description: 'The customer’s phone.'
+          type: string
+          example: '01234567890'
+        language:
+          type: string
+          example: en_GB
+          nullable: true
+      type: object
     Address:
       properties:
         house_number:
@@ -709,56 +820,180 @@ components:
           example: FR
           nullable: true
       type: object
+    ShippingAddress:
+      properties:
+        house_number:
+          description: 'House number.'
+          type: string
+          example: '101'
+          nullable: true
+        house_extension:
+          description: 'House extension.'
+          type: string
+          example: B
+          nullable: true
+        street:
+          description: 'Street address.'
+          type: string
+          example: 'Rue de Rivoli'
+          nullable: true
+        street_additional:
+          description: 'Additional address information of the customer (e.g., building, floor, flat, etc.).'
+          type: string
+          example: 'Immeuble B'
+          nullable: true
+        locality:
+          description: City.
+          type: string
+          example: Paris
+          nullable: true
+        locality_additional:
+          description: 'The USA state or the Canada state of the customer making the purchase. Send this information only if the address country of the customer is US (USA) or CA (Canada)'
+          type: string
+          example: ''
+          nullable: true
+        postal_code:
+          description: 'The zip or postal code of the customer.'
+          type: string
+          example: '75001'
+          nullable: true
+        country:
+          description: 'Country code to which the order is being shipped. This two-letter country code complies with ISO 3166-1 (alpha 2).'
+          type: string
+          example: FR
+          nullable: true
+      type: object
+    CardEntryMode:
+      type: string
+      enum:
+        - 'Not specified'
+        - Magstripe
+        - 'Contactless chip transaction using EMV chip data'
+        - 'Contactless chip transaction using magstripe data'
+        - ICC
+        - 'Manual entry'
+        - 'Magstripe, after attempt to read chip'
+        - 'Provided by a server'
+        - Card-on-File
+    TerminalInformation:
+      properties:
+        payment_context:
+          description: 'Payment context'
+          type: string
+          example: online
+          nullable: true
+        input_mode:
+          description: 'Input mode'
+          type: string
+          example: contact
+          nullable: true
+        aid:
+          description: Aid
+          type: string
+          example: A0000000422010
+          nullable: true
+        payment_gateway:
+          description: 'Payment gateway'
+          type: string
+          example: nepting
+          nullable: true
+        authorization_code:
+          description: 'Authorization code'
+          type: string
+          example: '00'
+          nullable: true
+        authorization_number:
+          description: 'Authorization number'
+          type: string
+          example: '963379'
+          nullable: true
+        customer_receipt:
+          description: 'Customer receipt'
+          type: string
+          nullable: true
+        payment_source:
+          description: 'Payment source'
+          type: string
+          example: 'IPN Nepting'
+          nullable: true
+        payment_terminal_serial_number:
+          description: 'Payment terminal serial number'
+          type: string
+          nullable: true
+        idsa:
+          description: 'Acceptance system identifier assigned by an acquirer'
+          type: string
+          nullable: true
+        rts:
+          description: 'Transaction ID generated by the issuer auth system'
+          type: string
+          nullable: true
+        card_entry_mode:
+          description: 'Card entry mode'
+          example: magstripe
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/CardEntryMode'
+        file_number:
+          description: 'File number'
+          type: string
+          nullable: true
+        payment_terminal_type:
+          description: 'Payment terminal type'
+          type: string
+          example: TPE
+          nullable: true
+        payment_terminal_model:
+          description: 'Payment terminal model'
+          type: string
+          nullable: true
+        payment_terminal_manufacturer:
+          description: 'Payment terminal manufacturer'
+          type: string
+          nullable: true
+        scheme:
+          description: 'Payment scheme'
+          type: string
+          nullable: true
+        payment_application:
+          description: 'Payment application'
+          type: string
+          nullable: true
+        test_transaction:
+          description: 'Whether the transaction is a test transaction'
+          type: boolean
+          nullable: true
+        payment_terminal_id:
+          description: 'Payment terminal identifier'
+          type: string
+          nullable: true
+        payment_terminal_name:
+          description: 'Payment terminal name'
+          type: string
+          nullable: true
+      type: object
     Order:
       required:
-        - id
         - merchant_order_id
+        - transactions
         - attempts
         - amount
+        - currency
+        - decimals
         - shipping
         - tax
         - customer
         - shipping_to
         - date_created
-        - transactions
-        - currency
-        - decimals
       properties:
         id:
           description: 'Unique order ID.'
           type: integer
           example: '1537532589263'
+          nullable: true
         merchant_order_id:
           type: string
-        attempts:
-          description: 'Attempt identifier'
-          type: integer
-          example: 1
-        amount:
-          description: 'Total order amount, calculated as the sum of purchased items, plus shipping fees (if present), plus tax fees (if present).'
-          type: string
-          example: '8.99'
-        shipping:
-          description: 'The order shipping fee. It can be omitted if the shipping fee value is zero.'
-          type: string
-          example: '1.30'
-        tax:
-          description: 'The order tax fee. It can be omitted if the order tax value is zero...'
-          type: string
-          example: '1.10'
-        customer:
-          $ref: '#/components/schemas/Customer'
-        shipping_to:
-          $ref: '#/components/schemas/ShippingAddress'
-        terminal_information:
-          description: 'The customer terminal informations used for the order.'
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/TerminalInformation'
-        date_created:
-          type: string
-          format: date-time
         transactions:
           oneOf:
             -
@@ -769,44 +1004,48 @@ components:
               type: object
               additionalProperties:
                 nullable: true
+        attempts:
+          description: 'Attempt identifier'
+          type: integer
+          example: 1
+        amount:
+          description: 'Total order amount, calculated as the sum of purchased items, plus shipping fees (if present), plus tax fees (if present).'
+          type: string
+          example: '8.99'
         currency:
           $ref: '#/components/schemas/Currency'
         decimals:
           type: integer
           example: '2'
+        shipping:
+          description: 'The order shipping fee. It can be omitted if the shipping fee value is zero.'
+          type: string
+          example: '1.30'
+        tax:
+          description: 'The order tax fee. It can be omitted if the order tax value is zero...'
+          type: string
+          example: '1.10'
+        customer:
+          $ref: '#/components/schemas/Customer'
         billing_to:
           nullable: true
           oneOf:
             -
               $ref: '#/components/schemas/Address'
+        shipping_to:
+          $ref: '#/components/schemas/ShippingAddress'
         custom_data:
           type: string
           nullable: true
-      type: object
-    Error:
-      required:
-        - message
-        - code
-      properties:
-        message:
-          type: string
-        code:
-          type: integer
-        details:
-          default: null
+        terminal_information:
+          description: 'The customer terminal informations used for the order.'
           nullable: true
           oneOf:
             -
-              type: array
-              items:
-                nullable: true
-            -
-              type: object
-              additionalProperties:
-                nullable: true
-        description:
+              $ref: '#/components/schemas/TerminalInformation'
+        date_created:
           type: string
-          nullable: true
+          format: date-time
       type: object
     AvailablePaymentProduct:
       required:
@@ -823,21 +1062,21 @@ components:
       type: object
     Order2:
       required:
-        - id
         - attempts
         - amount
+        - currency
+        - decimals
         - shipping
         - tax
         - customer
         - shipping_to
         - date_created
-        - currency
-        - decimals
       properties:
         id:
           description: 'Unique order ID.'
           type: integer
           example: '1537532589263'
+          nullable: true
         attempts:
           description: 'Attempt identifier'
           type: integer
@@ -846,6 +1085,11 @@ components:
           description: 'Total order amount, calculated as the sum of purchased items, plus shipping fees (if present), plus tax fees (if present).'
           type: string
           example: '8.99'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        decimals:
+          type: integer
+          example: '2'
         shipping:
           description: 'The order shipping fee. It can be omitted if the shipping fee value is zero.'
           type: string
@@ -856,8 +1100,16 @@ components:
           example: '1.10'
         customer:
           $ref: '#/components/schemas/Customer'
+        billing_to:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Address'
         shipping_to:
           $ref: '#/components/schemas/ShippingAddress'
+        custom_data:
+          type: string
+          nullable: true
         terminal_information:
           description: 'The customer terminal informations used for the order.'
           nullable: true
@@ -867,17 +1119,90 @@ components:
         date_created:
           type: string
           format: date-time
+      type: object
+    Subtype:
+      type: string
+      enum:
+        - SCHEME_REJECTION
+        - FUNDS_MISSING
+        - FUNDS_RECEIVED
+        - FUNDS_REJECTED
+    Operation:
+      required:
+        - type
+        - status
+        - request_source
+        - amount
+        - currency
+        - arn
+        - date_created
+        - decimals
+      properties:
+        id:
+          description: 'Unique operation ID.'
+          type: integer
+          example: '58372649965'
+          nullable: true
+        type:
+          description: 'Operation type.'
+          type: string
+          enum: Domain\Order\Transaction\Operation\OperationType
+          example: capture
+        status:
+          description: 'Operation status.'
+          type: string
+          enum: Domain\Order\Transaction\Operation\OperationStatus
+          example: completed
+        request_source:
+          description: 'Request source.'
+          type: string
+          enum: Domain\Common\Refcode\RequestSource
+          example: SAPI
+        amount:
+          description: 'Operation Amount.'
+          type: string
+          example: '10.00'
         currency:
           $ref: '#/components/schemas/Currency'
-        decimals:
-          type: integer
-          example: '2'
-        billing_to:
+        arn:
+          description: 'Acquirer Reference Number.'
+          type: string
+          example: '75064953264000221624949'
+        merchant_reference:
+          type: string
+          nullable: true
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+        date_remitted:
+          type: string
+          format: date-time
+          nullable: true
+        date_processed:
+          type: string
+          format: date-time
+          nullable: true
+        date_reconciled:
+          type: string
+          format: date-time
+          nullable: true
+        date_fraud_by_acquirer:
+          type: string
+          format: date-time
+          nullable: true
+        subtype:
           nullable: true
           oneOf:
             -
-              $ref: '#/components/schemas/Address'
-        custom_data:
+              $ref: '#/components/schemas/Subtype'
+        decimals:
+          type: integer
+          example: '2'
+        caseid:
           type: string
           nullable: true
       type: object
@@ -890,7 +1215,7 @@ components:
         - declined
         - forwarding
         - error
-    Status:
+    Status2:
       type: integer
       enum:
         - 1
@@ -939,6 +1264,7 @@ components:
         - 81
         - 82
         - 83
+        - 84
         - 50
         - 51
         - 53
@@ -1003,6 +1329,12 @@ components:
           nullable: true
       type: object
     AcquirerTraContext:
+      properties:
+        is_exempted:
+          description: 'Acquirer TRA exemption.'
+          type: boolean
+          default: false
+          example: false
       type: object
     Issuer:
       properties:
@@ -1039,29 +1371,25 @@ components:
         token:
           type: string
           nullable: true
+        expiry_month:
+          type: string
+          nullable: true
+        expiry_year:
+          type: string
+          nullable: true
       type: object
-    Status2:
-      type: string
-      enum:
-        - available
-        - created
-        - error
-        - incomplete
-        - pending
-        - suspended
-        - terminated
-    DebitAgreement:
+    DebitAgreement2:
       required:
-        - id
         - status
       properties:
         id:
           type: integer
+          nullable: true
         provider_agreement_ref:
           type: string
           nullable: true
         status:
-          $ref: '#/components/schemas/Status2'
+          $ref: '#/components/schemas/Status'
         recurring_payment_end_date:
           type: string
           nullable: true
@@ -1117,7 +1445,6 @@ components:
             - 32
             - 48
           example: 24
-          nullable: true
         screen_height:
           description: 'Total height of the Cardholder’s screen in pixels.'
           type: integer
@@ -1242,97 +1569,18 @@ components:
         - 'Not Processed'
         - Missing
         - 'Not Supported'
-    Operation:
-      required:
-        - type
-        - status
-        - request_source
-        - amount
-        - arn
-        - date_created
-        - id
-        - currency
-        - decimals
-      properties:
-        type:
-          description: 'Operation type.'
-          type: string
-          enum: Domain\Order\Transaction\Operation\OperationType
-          example: capture
-        status:
-          description: 'Operation status.'
-          type: string
-          enum: Domain\Order\Transaction\Operation\OperationStatus
-          example: completed
-        request_source:
-          description: 'Request source.'
-          type: string
-          enum: Domain\Common\Refcode\RequestSource
-          example: SAPI
-        amount:
-          description: 'Operation Amount.'
-          type: string
-          example: '10.00'
-        arn:
-          description: 'Acquirer Reference Number.'
-          type: string
-          example: '75064953264000221624949'
-        merchant_reference:
-          type: string
-          nullable: true
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-        date_remitted:
-          type: string
-          format: date-time
-          nullable: true
-        date_processed:
-          type: string
-          format: date-time
-          nullable: true
-        date_reconciled:
-          type: string
-          format: date-time
-          nullable: true
-        date_fraud_by_acquirer:
-          type: string
-          format: date-time
-          nullable: true
-        id:
-          type: integer
-        currency:
-          $ref: '#/components/schemas/Currency'
-        decimals:
-          type: integer
-          example: '2'
-        caseid:
-          type: string
-          nullable: true
-      type: object
     Transaction:
       required:
-        - id
+        - sub_transactions
         - attemptid
+        - mid
         - merchant_order_id
+        - operations
         - state
         - status
         - eci
         - amount
-        - acquirer
-        - issuer
-        - device
-        - forward_url
-        - customer_country
-        - date_created
-        - date_updated
-        - sub_transactions
-        - mid
-        - operations
+        - currency
         - authorized_amount
         - captured_amount
         - refunded_amount
@@ -1342,13 +1590,37 @@ components:
         - chargebacked_refund_amount
         - rdr_amount
         - rdr_return_amount
-        - currency
+        - adjustment_credit_amount
+        - adjustment_debit_amount
         - decimals
+        - acquirer
+        - issuer
+        - device
+        - forward_url
+        - fraud_reported_by_acquirer
+        - customer_country
+        - date_created
+        - date_updated
       properties:
         id:
           description: 'Unique transaction ID.'
           type: integer
           example: '2456731565945'
+          nullable: true
+        master_trxid:
+          description: 'Master transaction ID'
+          type: integer
+          nullable: true
+        sub_transactions:
+          oneOf:
+            -
+              type: array
+              items:
+                nullable: true
+            -
+              type: object
+              additionalProperties:
+                nullable: true
         order:
           nullable: true
           oneOf:
@@ -1356,12 +1628,19 @@ components:
               $ref: '#/components/schemas/Order2'
         attemptid:
           type: integer
+        mid:
+          description: "Merchant id (MID).\n\nUnique identifier assigned to the merchant."
+          type: integer
         merchant_order_id:
           type: string
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation'
         state:
           $ref: '#/components/schemas/TransactionState'
         status:
-          $ref: '#/components/schemas/Status'
+          $ref: '#/components/schemas/Status2'
         computed_authentication_status:
           description: 'Transaction computed authentication status.'
           example: 'Successful authentication'
@@ -1382,105 +1661,8 @@ components:
           description: 'Transaction amount.'
           type: string
           example: '125.75'
-        payment_product:
-          description: 'The payment product used for processing current transaction.'
-          example: visa
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/PaymentProduct'
-        acquirer:
-          $ref: '#/components/schemas/Acquirer'
-        acquirer_tra:
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/AcquirerTraContext'
-        issuer:
-          $ref: '#/components/schemas/Issuer'
-        card:
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/Card'
-        debit_agreement:
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/DebitAgreement'
-        browser_useragent:
-          type: string
-          nullable: true
-        browser_information:
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/BrowserInformation'
-        device:
-          $ref: '#/components/schemas/Device'
-        authentication:
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/Authentication'
-        authorization_code:
-          type: string
-          nullable: true
-        forward_url:
-          description: 'URL of the page on which to redirect the customer.'
-          type: string
-          example: ''
-        fraud_screening:
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/FraudResult'
-        information:
-          description: 'Additional information'
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/Information'
-        cvc_result:
-          nullable: true
-          oneOf:
-            -
-              $ref: '#/components/schemas/Cvc'
-        customer_country:
-          type: string
-          example: FR
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          description: "Date of last status change.\n\nThis date must comply with ISO 8601."
-          type: string
-          format: date-time
-        date_authorized:
-          type: string
-          format: date-time
-          nullable: true
-        master_trxid:
-          description: 'Master transaction ID'
-          type: integer
-          nullable: true
-        sub_transactions:
-          oneOf:
-            -
-              type: array
-              items:
-                nullable: true
-            -
-              type: object
-              additionalProperties:
-                nullable: true
-        mid:
-          description: "Merchant id (MID).\n\nUnique identifier assigned to the merchant."
-          type: integer
-        operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Operation'
+        currency:
+          $ref: '#/components/schemas/Currency'
         authorized_amount:
           description: 'Authorized amount.'
           type: string
@@ -1517,11 +1699,97 @@ components:
           description: 'RDR return amount.'
           type: string
           example: '0.00'
-        currency:
-          $ref: '#/components/schemas/Currency'
+        adjustment_credit_amount:
+          description: 'Adjustment credit amount.'
+          type: string
+          example: '0.00'
+        adjustment_debit_amount:
+          description: 'Adjustment debit amount.'
+          type: string
+          example: '0.00'
         decimals:
           type: integer
           example: '2'
+        payment_product:
+          description: 'The payment product used for processing current transaction.'
+          example: visa
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/PaymentProduct'
+        acquirer:
+          $ref: '#/components/schemas/Acquirer'
+        acquirer_tra:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/AcquirerTraContext'
+        issuer:
+          $ref: '#/components/schemas/Issuer'
+        card:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Card'
+        debit_agreement:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/DebitAgreement2'
+        browser_useragent:
+          type: string
+          nullable: true
+        browser_information:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/BrowserInformation'
+        device:
+          $ref: '#/components/schemas/Device'
+        authentication:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Authentication'
+        authorization_code:
+          type: string
+          nullable: true
+        forward_url:
+          description: 'URL of the page on which to redirect the customer.'
+          type: string
+          example: ''
+        fraud_screening:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/FraudResult'
+        fraud_reported_by_acquirer:
+          type: boolean
+        information:
+          description: 'Additional information'
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Information'
+        cvc_result:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Cvc'
+        customer_country:
+          type: string
+          example: FR
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          description: "Date of last status change.\n\nThis date must comply with ISO 8601."
+          type: string
+          format: date-time
+        date_authorized:
+          type: string
+          format: date-time
+          nullable: true
       type: object
     TransactionCollection:
       properties:
@@ -1546,6 +1814,8 @@ components:
       name: X-API-KEY
       in: header
 tags:
+  -
+    name: 'Debit Agreement'
   -
     name: Order
   -
