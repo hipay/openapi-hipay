@@ -34,7 +34,7 @@ paths:
         description: 'Maintenance information'
         required: true
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Maintenance'
       responses:
@@ -82,7 +82,7 @@ paths:
         description: 'Order information'
         required: true
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/InputOrder'
       responses:
