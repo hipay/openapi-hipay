@@ -55,6 +55,20 @@ paths:
           # format: paymentProductCategoryList
           x-sort: 25
         - description: >-
+            List of wallet payment methods to display in the Wallet Checkout
+            zone above other payment methods. Possible values:
+
+            - `applepay` — Apple Pay (requires billing country in request)
+          in: formData
+          name: wallets
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+            enum:
+              - applepay
+          x-sort: 22
+        - description: >-
             The template name. Possible values:
 
             - `basic-js` : Template with customizable theme
